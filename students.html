@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIENSE Mini-Exámenes · Alumno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a1a2e;
+    --sky: #5b9bd8;
+    --sky-light: #e8f2fc;
+    --sky-dark: #2d6ea8;
+    --text: #1a1a2e;
+    --text-2: #4a5568;
+    --text-3: #8896a6;
+    --bg: #f7f9fc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --success: #22c55e;
+    --success-bg: #f0fdf4;
+    --danger: #ef4444;
+    --danger-bg: #fef2f2;
+    --warning: #f59e0b;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .screen {
+    display: none;
+    width: 100%;
+    max-width: 560px;
+  }
+  .screen.active { display: block; }
+
+  /* ── ENTRY SCREEN ── */
+  .entry-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .entry-header { text-align: center; margin-bottom: 32px; }
+  .entry-icon { font-size: 40px; margin-bottom: 10px; }
+  .entry-title { font-size: 22px; font-weight: 600; color: var(--navy); }
+  .entry-sub { font-size: 14px; color: var(--text-3); margin-top: 4px; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+  .field input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.15s;
+  }
+  .field input:focus { outline: none; border-color: var(--sky); }
+  .field input.code-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--sky); color: #fff; }
+  .btn-primary:hover { background: var(--sky-dark); }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-2); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── WAITING SCREEN ── */
+  .waiting-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 40px 36px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .waiting-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--sky-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 16px;
+  }
+
+  .waiting-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .waiting-exam { font-size: 14px; color: var(--text-3); margin-bottom: 24px; }
+
+  .waiting-status {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .pulse-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--warning);
+    margin: 0 auto 12px;
+    animation: pulse 1.5s infinite;
+  }
+
+  .pulse-dot.active { background: var(--success); animation: none; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .waiting-msg { font-size: 14px; color: var(--text-3); }
+
+  /* ── EXAM SCREEN ── */
+  .exam-wrapper {
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .exam-header {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .timer-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+
+  .timer-display.urgent { color: #f87171; }
+
+  .exam-progress-text { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .exam-name-header { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 500; }
+
+  .progress-bar-exam {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 99px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 4px;
+    background: var(--sky);
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+
+  .q-number { font-size: 12px; font-weight: 500; color: var(--text-3); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .q-stem { font-size: 17px; color: var(--text); line-height: 1.6; margin-bottom: 24px; font-weight: 400; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .option:hover { border-color: var(--sky); background: var(--sky-light); }
+  .option.selected { border-color: var(--sky); background: var(--sky-light); }
+  .option.selected .option-letter { background: var(--sky); color: #fff; border-color: var(--sky); }
+
+  /* Result states */
+  .option.correct { border-color: var(--success); background: var(--success-bg); }
+  .option.correct .option-letter { background: var(--success); color: #fff; border-color: var(--success); }
+  .option.wrong { border-color: var(--danger); background: var(--danger-bg); }
+  .option.wrong .option-letter { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+  .option-letter {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-3);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .option-text { font-size: 15px; color: var(--text); line-height: 1.4; }
+
+  .nav-buttons { display: flex; gap: 10px; }
+  .nav-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text-2);
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { border-color: var(--sky); color: var(--sky); }
+  .nav-btn.primary { background: var(--sky); color: #fff; border-color: var(--sky); }
+  .nav-btn.primary:hover { background: var(--sky-dark); }
+  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .q-dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .q-dot {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    color: var(--text-3);
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+
+  .q-dot.answered { background: var(--sky-light); border-color: var(--sky); color: var(--sky-dark); }
+  .q-dot.current { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  /* ── RESULT SCREEN ── */
+  .result-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .score-display {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .score-big {
+    font-size: 72px;
+    font-weight: 600;
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  .score-label { font-size: 14px; color: var(--text-3); }
+
+  .score-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+
+  .score-stat {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .score-stat-value { font-size: 22px; font-weight: 600; margin-bottom: 2px; }
+  .score-stat-label { font-size: 12px; color: var(--text-3); }
+
+  .review-section { margin-top: 20px; }
+  .review-title { font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 12px; }
+  .review-item { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .review-item:last-child { border-bottom: none; }
+  .review-q { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+  .review-answer { font-size: 13px; padding: 6px 12px; border-radius: 6px; display: inline-block; }
+  .review-correct { background: var(--success-bg); color: #15803d; }
+  .review-wrong { background: var(--danger-bg); color: #b91c1c; }
+
+  /* ── SPINNER ── */
+  .spinner-center {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    gap: 10px;
+  }
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: var(--sky);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     SCREEN 1: ENTRADA
+     ================================================================ -->
+<div class="screen active" id="screenEntry">
+  <div class="entry-card">
+    <div class="entry-header">
+      <div class="entry-icon">📚</div>
+      <div class="entry-title">Mini-Examen PIENSE</div>
+      <div class="entry-sub">6to grado · Ingresa el código de tu examen</div>
+    </div>
+
+    <div class="field">
+      <label>Código del examen</label>
+      <input type="text" id="examCode" class="code-input" placeholder="XXXXXXXX" maxlength="8" autocomplete="off"
+        oninput="this.value=this.value.toUpperCase()" onkeyup="if(event.key==='Enter') goToName()">
+    </div>
+    <button class="btn btn-primary" onclick="goToName()" id="btnSearchExam">Buscar examen →</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 2: NOMBRE DEL ALUMNO
+     ================================================================ -->
+<div class="screen" id="screenName">
+  <div class="entry-card">
+    <div class="entry-header">
+      <div class="entry-icon">👋</div>
+      <div class="entry-title" id="foundExamName">Examen encontrado</div>
+      <div class="entry-sub" id="foundExamGroup">Grupo · 6to grado</div>
+    </div>
+
+    <div class="field">
+      <label>Tu nombre completo</label>
+      <input type="text" id="studentName" placeholder="Ej. Ana Martínez García" autocomplete="name"
+        onkeyup="if(event.key==='Enter') registerAndWait()">
+    </div>
+    <button class="btn btn-primary" onclick="registerAndWait()">Entrar al examen →</button>
+    <button class="btn btn-outline" style="margin-top:10px;" onclick="goToEntry()">← Cambiar código</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 3: SALA DE ESPERA
+     ================================================================ -->
+<div class="screen" id="screenWaiting">
+  <div class="waiting-card">
+    <div class="waiting-avatar">😊</div>
+    <div class="waiting-name" id="waitStudentName">Alumno</div>
+    <div class="waiting-exam" id="waitExamName">Esperando el examen...</div>
+
+    <div class="waiting-status">
+      <div class="pulse-dot" id="statusDot"></div>
+      <div style="font-size:16px;font-weight:500;margin-bottom:4px;" id="statusMsg">Esperando a la maestra</div>
+      <div class="waiting-msg" id="statusSub">El examen comenzará cuando la maestra lo active</div>
+    </div>
+
+    <div style="font-size:13px;color:var(--text-3);">Mantén esta página abierta. No cierres el navegador.</div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 4: EXAMEN
+     ================================================================ -->
+<div class="screen" id="screenExam">
+  <div class="exam-wrapper">
+    <!-- Header con timer -->
+    <div class="exam-header">
+      <div>
+        <div class="exam-name-header" id="examHeaderName">Examen</div>
+        <div class="exam-progress-text" id="examProgressText">Pregunta 1 de 10</div>
+        <div class="progress-bar-exam"><div class="progress-fill" id="progressFill" style="width:10%;"></div></div>
+      </div>
+      <div class="timer-display" id="timerDisplay">10:00</div>
+    </div>
+
+    <!-- Navegación por puntos -->
+    <div class="q-dots" id="qDots"></div>
+
+    <!-- Pregunta actual -->
+    <div class="question-card">
+      <div class="q-number" id="qNumber">Pregunta 1</div>
+      <div class="q-stem" id="qStem">Cargando pregunta...</div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="nav-buttons">
+        <button class="nav-btn" id="btnPrev" onclick="prevQuestion()">← Anterior</button>
+        <button class="nav-btn primary" id="btnNext" onclick="nextQuestion()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 5: RESULTADOS
+     ================================================================ -->
+<div class="screen" id="screenResult">
+  <div class="result-card">
+    <div class="score-display">
+      <div class="score-label">¡Terminaste el examen!</div>
+      <div class="score-big" id="scoreBig">-</div>
+      <div class="score-label">de 10 aciertos</div>
+    </div>
+
+    <div class="score-breakdown">
+      <div class="score-stat">
+        <div class="score-stat-value" id="resultCorrect" style="color:var(--success);">-</div>
+        <div class="score-stat-label">Correctas</div>
+      </div>
+      <div class="score-stat">
+        <div class="score-stat-value" id="resultWrong" style="color:var(--danger);">-</div>
+        <div class="score-stat-label">Incorrectas</div>
+      </div>
+      <div class="score-stat">
+        <div class="score-stat-value" id="resultTime" style="color:var(--sky);">-</div>
+        <div class="score-stat-label">Tiempo</div>
+      </div>
+    </div>
+
+    <div class="review-section">
+      <div class="review-title">Revisión de respuestas</div>
+      <div id="reviewList"></div>
+    </div>
+
+    <button class="btn btn-outline" style="margin-top:16px;" onclick="goToEntry()">Nuevo examen</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     SUPABASE + SCRIPTS
+     ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ================================================================
+// CONFIG
+// ================================================================
+const SUPABASE_URL = 'TU_SUPABASE_URL';
+const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ================================================================
+// STATE
+// ================================================================
+let currentExam = null;
+let currentStudent = null;
+let currentQuestions = [];
+let currentQIndex = 0;
+let userAnswers = {};
+let timerInterval = null;
+let waitInterval = null;
+let startTime = null;
+let elapsedSeconds = 0;
+let secondsRemaining = 600;
+
+// ================================================================
+// SCREENS
+// ================================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goToEntry() {
+  clearInterval(waitInterval);
+  clearInterval(timerInterval);
+  currentExam = null;
+  currentStudent = null;
+  currentQuestions = [];
+  userAnswers = {};
+  document.getElementById('examCode').value = '';
+  showScreen('screenEntry');
+}
+
+// ================================================================
+// SCREEN 1: BUSCAR EXAMEN
+// ================================================================
+async function goToName() {
+  const code = document.getElementById('examCode').value.trim().toUpperCase();
+  if (code.length < 4) return alert('Ingresa el código del examen');
+
+  const btn = document.getElementById('btnSearchExam');
+  btn.disabled = true;
+  btn.textContent = 'Buscando...';
+
+  const { data, error } = await sb.from('exams')
+    .select('*, groups(name)')
+    .eq('exam_code', code)
+    .single();
+
+  btn.disabled = false;
+  btn.textContent = 'Buscar examen →';
+
+  if (error || !data) return alert('Código no encontrado. Verifica el código con tu maestra.');
+  if (data.status === 'closed') return alert('Este examen ya está cerrado.');
+
+  currentExam = data;
+  document.getElementById('foundExamName').textContent = data.name;
+  document.getElementById('foundExamGroup').textContent = data.groups?.name || '6to grado';
+  showScreen('screenName');
+}
+
+// ================================================================
+// SCREEN 2: REGISTRAR ALUMNO
+// ================================================================
+async function registerAndWait() {
+  const name = document.getElementById('studentName').value.trim();
+  if (!name) return alert('Escribe tu nombre completo');
+
+  // Registrar alumno en el grupo
+  const { data: student, error } = await sb.from('students')
+    .insert({ group_id: currentExam.group_id, name })
+    .select()
+    .single();
+
+  if (error) return alert('Error al registrar. Intenta de nuevo.');
+  currentStudent = student;
+
+  document.getElementById('waitStudentName').textContent = name.split(' ')[0];
+  document.getElementById('waitExamName').textContent = currentExam.name;
+  showScreen('screenWaiting');
+  startWaiting();
+}
+
+// ================================================================
+// SCREEN 3: SALA DE ESPERA
+// ================================================================
+function startWaiting() {
+  checkExamStatus();
+  waitInterval = setInterval(checkExamStatus, 3000);
+}
+
+async function checkExamStatus() {
+  const { data } = await sb.from('exams').select('status').eq('id', currentExam.id).single();
+  if (!data) return;
+
+  const dot = document.getElementById('statusDot');
+  const msg = document.getElementById('statusMsg');
+  const sub = document.getElementById('statusSub');
+
+  if (data.status === 'active') {
+    dot.classList.add('active');
+    msg.textContent = '¡El examen está listo!';
+    sub.textContent = 'Comenzando en un momento...';
+    clearInterval(waitInterval);
+    setTimeout(() => startExam(), 1500);
+  } else if (data.status === 'closed') {
+    msg.textContent = 'Examen cerrado';
+    sub.textContent = 'Este examen ya no está disponible.';
+    clearInterval(waitInterval);
+  } else {
+    msg.textContent = 'Esperando a la maestra';
+    sub.textContent = 'El examen comenzará pronto';
+  }
+}
+
+// ================================================================
+// SCREEN 4: EXAMEN
+// ================================================================
+async function startExam() {
+  // Cargar preguntas
+  const { data } = await sb.from('questions')
+    .select('*')
+    .in('id', currentExam.question_ids);
+
+  if (!data || data.length === 0) return alert('Error al cargar preguntas.');
+
+  // Ordenar según question_ids
+  currentQuestions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
+
+  showScreen('screenExam');
+  document.getElementById('examHeaderName').textContent = currentExam.name;
+
+  // Init timer
+  secondsRemaining = currentExam.duration_seconds || 600;
+  startTime = Date.now();
+  renderTimer();
+  timerInterval = setInterval(() => {
+    secondsRemaining--;
+    if (secondsRemaining <= 0) {
+      secondsRemaining = 0;
+      submitExam(true);
+    }
+    renderTimer();
+  }, 1000);
+
+  renderQuestion();
+  renderDots();
+}
+
+function renderTimer() {
+  const mins = Math.floor(secondsRemaining / 60);
+  const secs = String(secondsRemaining % 60).padStart(2, '0');
+  const el = document.getElementById('timerDisplay');
+  el.textContent = `${mins}:${secs}`;
+  el.classList.toggle('urgent', secondsRemaining <= 60);
+}
+
+function renderQuestion() {
+  const q = currentQuestions[currentQIndex];
+  const total = currentQuestions.length;
+
+  document.getElementById('qNumber').textContent = `Pregunta ${currentQIndex + 1}`;
+  document.getElementById('qStem').textContent = q.stem;
+  document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
+  document.getElementById('progressFill').style.width = `${((currentQIndex + 1) / total) * 100}%`;
+
+  const selected = userAnswers[q.id];
+  const letters = ['A', 'B', 'C', 'D'];
+  const opts = [q.option_a, q.option_b, q.option_c, q.option_d];
+
+  document.getElementById('optionsContainer').innerHTML = opts.map((opt, i) => `
+    <div class="option ${selected === letters[i] ? 'selected' : ''}" onclick="selectAnswer('${q.id}', '${letters[i]}')">
+      <div class="option-letter">${letters[i]}</div>
+      <div class="option-text">${opt}</div>
+    </div>
+  `).join('');
+
+  // Buttons
+  document.getElementById('btnPrev').disabled = currentQIndex === 0;
+  const isLast = currentQIndex === total - 1;
+  const btnNext = document.getElementById('btnNext');
+  btnNext.textContent = isLast ? '✅ Entregar examen' : 'Siguiente →';
+  btnNext.onclick = isLast ? () => confirmSubmit() : () => nextQuestion();
+
+  renderDots();
+}
+
+function renderDots() {
+  const total = currentQuestions.length;
+  document.getElementById('qDots').innerHTML = currentQuestions.map((q, i) => `
+    <div class="q-dot ${i === currentQIndex ? 'current' : userAnswers[q.id] ? 'answered' : ''}"
+         onclick="goToQuestion(${i})">${i + 1}</div>
+  `).join('');
+}
+
+function selectAnswer(qId, letter) {
+  userAnswers[qId] = letter;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (currentQIndex < currentQuestions.length - 1) {
+    currentQIndex++;
+    renderQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (currentQIndex > 0) {
+    currentQIndex--;
+    renderQuestion();
+  }
+}
+
+function goToQuestion(i) {
+  currentQIndex = i;
+  renderQuestion();
+}
+
+function confirmSubmit() {
+  const answered = Object.keys(userAnswers).length;
+  const total = currentQuestions.length;
+  if (answered < total) {
+    const left = total - answered;
+    if (!confirm(`Tienes ${left} pregunta(s) sin contestar. ¿Quieres entregar de todas formas?`)) return;
+  }
+  submitExam(false);
+}
+
+async function submitExam(timeUp) {
+  clearInterval(timerInterval);
+  elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
+
+  // Calcular puntaje
+  let score = 0;
+  currentQuestions.forEach(q => {
+    if (userAnswers[q.id] === q.correct_answer) score++;
+  });
+
+  // Guardar en Supabase
+  await sb.from('responses').insert({
+    exam_id: currentExam.id,
+    student_id: currentStudent.id,
+    answers: userAnswers,
+    score,
+    total_questions: currentQuestions.length,
+    elapsed_seconds: elapsedSeconds
+  });
+
+  showResults(score, timeUp);
+}
+
+function showResults(score, timeUp) {
+  const total = currentQuestions.length;
+  const pct = Math.round((score / total) * 100);
+  const mins = Math.floor(elapsedSeconds / 60);
+  const secs = String(elapsedSeconds % 60).padStart(2, '0');
+
+  let scoreColor = pct >= 70 ? '#22c55e' : pct >= 50 ? '#f59e0b' : '#ef4444';
+  let emoji = pct >= 80 ? '🌟' : pct >= 60 ? '👍' : pct < 50 ? '💪' : '✅';
+
+  document.getElementById('scoreBig').textContent = `${emoji} ${score}`;
+  document.getElementById('scoreBig').style.color = scoreColor;
+  document.getElementById('resultCorrect').textContent = score;
+  document.getElementById('resultWrong').textContent = total - score;
+  document.getElementById('resultTime').textContent = `${mins}:${secs}`;
+
+  // Revisión
+  const letters = ['A', 'B', 'C', 'D'];
+  const optsMap = q => [q.option_a, q.option_b, q.option_c, q.option_d];
+  document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {
+    const userAns = userAnswers[q.id];
+    const correct = userAns === q.correct_answer;
+    const opts = optsMap(q);
+    const answerIdx = letters.indexOf(q.correct_answer);
+    const userIdx = letters.indexOf(userAns);
+    return `
+      <div class="review-item">
+        <div class="review-q"><strong>${i + 1}.</strong> ${q.stem}</div>
+        ${!correct && userAns ? `<div class="review-answer review-wrong">Tu respuesta: ${userAns}. ${opts[userIdx] || '—'}</div>` : ''}
+        <div class="review-answer review-correct">✓ Correcta: ${q.correct_answer}. ${opts[answerIdx]}</div>
+      </div>
+    `;
+  }).join('');
+
+  showScreen('screenResult');
+}
+</script>
+</body>
+</html>
