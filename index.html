@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIENSE Mini-Exámenes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1a1a2e;
+    --sky: #5b9bd8;
+    --sky-light: #e8f2fc;
+    --sky-dark: #2d6ea8;
+    --text: #1a1a2e;
+    --text-2: #4a5568;
+    --text-3: #8896a6;
+    --bg: #f7f9fc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --success: #22c55e;
+    --success-bg: #f0fdf4;
+    --warning: #f59e0b;
+    --warning-bg: #fffbeb;
+    --danger: #ef4444;
+    --danger-bg: #fef2f2;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── LAYOUT ── */
+  .app { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    flex-shrink: 0;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo-mark {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
+  .nav-item.active { background: rgba(91,155,216,0.2); color: #5b9bd8; }
+
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 12px 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .teacher-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+  }
+
+  .teacher-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--sky);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .teacher-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
+  .teacher-role { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+  .btn-logout {
+    display: block;
+    margin-top: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+  .main { margin-left: 220px; flex: 1; }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); }
+
+  .content { padding: 28px; max-width: 1100px; }
+
+  /* ── VIEWS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── LOGIN ── */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--navy);
+    padding: 20px;
+  }
+
+  .login-box {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .login-logo { font-size: 24px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: var(--text-3); margin-bottom: 28px; }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+  .field input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.15s;
+  }
+  .field input:focus { outline: none; border-color: var(--sky); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .btn-primary { background: var(--sky); color: #fff; }
+  .btn-primary:hover { background: var(--sky-dark); }
+  .btn-secondary { background: var(--sky-light); color: var(--sky-dark); border: 1px solid var(--sky); }
+  .btn-secondary:hover { background: var(--sky); color: #fff; }
+  .btn-outline { background: transparent; color: var(--text-2); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--sky); color: var(--sky); }
+  .btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid #fca5a5; }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .btn-full { width: 100%; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .login-toggle { margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-3); }
+  .login-toggle a { color: var(--sky); cursor: pointer; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+
+  /* ── STAT CARDS ── */
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
+  .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  /* ── GROUP CARDS ── */
+  .group-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .group-card:hover { border-color: var(--sky); transform: translateY(-1px); }
+  .group-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .group-meta { font-size: 13px; color: var(--text-3); }
+  .group-code {
+    display: inline-block;
+    background: var(--sky-light);
+    color: var(--sky-dark);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-active { background: var(--success-bg); color: #16a34a; }
+  .badge-draft { background: #f1f5f9; color: var(--text-3); }
+  .badge-closed { background: #f1f5f9; color: var(--text-3); }
+
+  /* ── BANK FILTER ── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+
+  .filter-bar select, .filter-bar input {
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .filter-bar select:focus, .filter-bar input:focus {
+    outline: none;
+    border-color: var(--sky);
+  }
+
+  .questions-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .question-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .question-item.selected { border-color: var(--sky); background: var(--sky-light); }
+  .question-item:hover:not(.selected) { border-color: #c0d5ea; }
+
+  .q-check {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+    margin-top: 1px;
+  }
+
+  .question-item.selected .q-check {
+    background: var(--sky);
+    border-color: var(--sky);
+    color: #fff;
+  }
+
+  .q-body { flex: 1; min-width: 0; }
+  .q-stem { font-size: 14px; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
+  .q-meta { font-size: 12px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; }
+  .q-topic { color: var(--sky-dark); font-weight: 500; }
+
+  .selected-counter {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+
+  .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+  /* ── TABLES ── */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-3);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .data-table td {
+    padding: 12px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { background: #e2e8f0; border-radius: 99px; height: 6px; }
+  .progress-bar { height: 6px; border-radius: 99px; background: var(--sky); transition: width 0.3s; }
+
+  /* ── ALERT ── */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
+  .alert-success { background: var(--success-bg); color: #15803d; border: 1px solid #bbf7d0; }
+  .alert-warning { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-3);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+  .empty-text { font-size: 14px; }
+
+  /* ── EXAM CODE DISPLAY ── */
+  .exam-code-display {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .exam-code-big {
+    font-family: 'DM Mono', monospace;
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--sky);
+    line-height: 1;
+    margin: 8px 0;
+  }
+  .exam-code-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  /* ── SCORE VISUAL ── */
+  .score-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── UTILS ── */
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .flex-gap { display: flex; gap: 8px; align-items: center; }
+  .mb-4 { margin-bottom: 4px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-20 { margin-bottom: 20px; }
+  .mb-24 { margin-bottom: 24px; }
+  .text-sm { font-size: 13px; }
+  .text-xs { font-size: 12px; }
+  .text-muted { color: var(--text-3); }
+  .text-sky { color: var(--sky); }
+  .fw-600 { font-weight: 600; }
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* ── LOADING ── */
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(91,155,216,0.2);
+    border-top-color: var(--sky);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toast {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    animation: slideIn 0.2s ease;
+    max-width: 320px;
+  }
+  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* ── RESPONSIVE SIDEBAR ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     LOGIN / REGISTRO
+     ================================================================ -->
+<div id="authSection" style="display:none;">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
+      <div class="login-sub">Plataforma docente · 6to grado</div>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
+        <div class="login-toggle">¿No tienes cuenta? <a onclick="toggleAuth()">Crear cuenta</a></div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" style="display:none;">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="regName" placeholder="Ej. Mtra. Lucía Ramírez">
+        </div>
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" id="regEmail" placeholder="tu@escuela.edu.mx">
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
+        </div>
+        <button class="btn btn-primary btn-full" onclick="doRegister()">Crear cuenta</button>
+        <div class="login-toggle">¿Ya tienes cuenta? <a onclick="toggleAuth()">Iniciar sesión</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     DASHBOARD APP
+     ================================================================ -->
+<div id="appSection" style="display:none;">
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">📚 PIENSE</div>
+        <div class="logo-sub">Mini-Exámenes · 6to grado</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')">
+          <span class="nav-icon">👥</span> Mis grupos
+        </a>
+        <a class="nav-item" data-view="banco" onclick="showView('banco')">
+          <span class="nav-icon">📋</span> Banco de reactivos
+        </a>
+        <a class="nav-item" data-view="examenes" onclick="showView('examenes')">
+          <span class="nav-icon">📝</span> Exámenes
+        </a>
+        <a class="nav-item" data-view="resultados" onclick="showView('resultados')">
+          <span class="nav-icon">📊</span> Resultados
+        </a>
+        <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <a class="nav-item" onclick="window.open('alumno.html','_blank')">
+            <span class="nav-icon">🔗</span> Vista alumno ↗
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="teacher-info">
+          <div class="teacher-avatar" id="sidebarInitials">M</div>
+          <div>
+            <div class="teacher-name" id="sidebarName">Docente</div>
+            <div class="teacher-role">Maestra 6to</div>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="topbarTitle">Mis grupos</div>
+        <div class="flex-gap">
+          <button class="btn btn-primary btn-sm" id="topbarAction" onclick="openCreateGroupModal()">+ Nuevo grupo</button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- ── VIEW: GRUPOS ── -->
+        <div class="view active" id="view-grupos">
+          <div class="mb-20" id="groupsGrid">
+            <div class="empty">
+              <div class="empty-icon">👥</div>
+              <div class="empty-title">Sin grupos todavía</div>
+              <div class="empty-text">Crea tu primer grupo para empezar</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VIEW: BANCO DE REACTIVOS ── -->
+        <div class="view" id="view-banco">
+          <div class="card mb-16">
+            <div class="card-title">Banco de reactivos</div>
+            <div class="filter-bar">
+              <select id="filterSubject" onchange="filterQuestions()">
+                <option value="">Todas las materias</option>
+                <option value="matematicas">Matemáticas</option>
+                <option value="espanol">Español</option>
+                <option value="habilidad">Habilidad Cognoscitiva</option>
+              </select>
+              <select id="filterTopic" onchange="filterQuestions()">
+                <option value="">Todos los temas</option>
+              </select>
+              <select id="filterDifficulty" onchange="filterQuestions()">
+                <option value="">Cualquier dificultad</option>
+                <option value="facil">Fácil</option>
+                <option value="medio">Medio</option>
+                <option value="dificil">Difícil</option>
+              </select>
+              <input type="text" id="searchQ" placeholder="Buscar..." style="flex:1; min-width:160px;" oninput="filterQuestions()">
+            </div>
+          </div>
+
+          <div class="selected-counter" id="selectedCounter" style="display:none;">
+            <span>✅ <span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
+            <button class="btn btn-primary btn-sm" onclick="openCreateExamModal()">Crear examen con estos reactivos →</button>
+          </div>
+
+          <div class="questions-list" id="questionsList">
+            <div class="empty"><span class="spinner"></span></div>
+          </div>
+        </div>
+
+        <!-- ── VIEW: EXÁMENES ── -->
+        <div class="view" id="view-examenes">
+          <div class="card">
+            <div class="card-title">
+              Exámenes creados
+              <button class="btn btn-secondary btn-sm" onclick="showView('banco')">+ Crear desde banco →</button>
+            </div>
+            <div id="examsList">
+              <div class="empty">
+                <div class="empty-icon">📝</div>
+                <div class="empty-title">Sin exámenes todavía</div>
+                <div class="empty-text">Ve al banco de reactivos para crear uno</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VIEW: RESULTADOS ── -->
+        <div class="view" id="view-resultados">
+          <div class="mb-16">
+            <select id="resultExamSelect" class="filter-bar" style="display:block;max-width:400px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);" onchange="loadResults()">
+              <option value="">Selecciona un examen para ver resultados</option>
+            </select>
+          </div>
+
+          <div id="resultsPanel">
+            <div class="empty">
+              <div class="empty-icon">📊</div>
+              <div class="empty-title">Selecciona un examen</div>
+              <div class="empty-text">Los resultados aparecerán aquí</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </main>
+  </div>
+</div>
+
+<!-- ================================================================
+     MODALS
+     ================================================================ -->
+
+<!-- Modal: Crear grupo -->
+<div class="modal-overlay" id="modalCreateGroup">
+  <div class="modal">
+    <div class="modal-title">Crear nuevo grupo</div>
+    <div class="field">
+      <label>Nombre del grupo</label>
+      <input type="text" id="newGroupName" placeholder="Ej. 6A Mañana, Grupo Jaguar...">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalCreateGroup')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createGroup()">Crear grupo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Crear examen -->
+<div class="modal-overlay" id="modalCreateExam">
+  <div class="modal">
+    <div class="modal-title">Crear examen</div>
+    <div class="field">
+      <label>Nombre del examen</label>
+      <input type="text" id="newExamName" placeholder="Ej. Fracciones y porcentajes - Semana 1">
+    </div>
+    <div class="field">
+      <label>Grupo destino</label>
+      <select id="newExamGroup" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
+        <option value="">Selecciona un grupo...</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Duración</label>
+      <select id="newExamDuration" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
+        <option value="600">10 minutos (estándar)</option>
+        <option value="900">15 minutos</option>
+        <option value="1200">20 minutos</option>
+      </select>
+    </div>
+    <div id="examPreviewSelected" class="alert alert-info" style="font-size:13px;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalCreateExam')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createExam()">Crear y generar código →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver examen (código) -->
+<div class="modal-overlay" id="modalExamCode">
+  <div class="modal">
+    <div class="modal-title">Examen creado</div>
+    <div class="exam-code-display">
+      <div class="exam-code-label">Código del examen</div>
+      <div class="exam-code-big" id="examCodeDisplay">------</div>
+      <div class="exam-code-label">Comparte este código con tus alumnos</div>
+    </div>
+    <div class="alert alert-info">
+      Los alumnos deben entrar a <strong>alumno.html</strong> e ingresar el código del examen + su nombre.
+    </div>
+    <div class="flex-gap mb-12" style="justify-content:center;gap:12px;">
+      <button class="btn btn-outline" onclick="toggleExamStatus()">
+        <span id="statusBtnText">▶ Activar examen</span>
+      </button>
+      <button class="btn btn-danger btn-sm" onclick="closeExamStatus()">⬛ Cerrar examen</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('modalExamCode')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ================================================================
+     SUPABASE + SCRIPTS
+     ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ================================================================
+// CONFIG — pon aquí tus credenciales de Supabase
+// ================================================================
+const SUPABASE_URL = 'TU_SUPABASE_URL';
+const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ================================================================
+// STATE
+// ================================================================
+let currentTeacher = null;
+let allQuestions = [];
+let selectedQuestionIds = new Set();
+let currentExamId = null;
+let currentExamForCode = null;
+
+// ================================================================
+// INIT
+// ================================================================
+window.onload = async () => {
+  const saved = localStorage.getItem('piense_teacher');
+  if (saved) {
+    currentTeacher = JSON.parse(saved);
+    showApp();
+  } else {
+    document.getElementById('authSection').style.display = 'block';
+  }
+};
+
+function showApp() {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('appSection').style.display = 'block';
+  const initials = currentTeacher.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('sidebarInitials').textContent = initials;
+  document.getElementById('sidebarName').textContent = currentTeacher.name.split(' ')[0] + ' ' + (currentTeacher.name.split(' ')[1] || '');
+  loadGroups();
+  loadQuestions();
+  loadExams();
+}
+
+// ================================================================
+// AUTH
+// ================================================================
+function toggleAuth() {
+  const lf = document.getElementById('loginForm');
+  const rf = document.getElementById('registerForm');
+  lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
+  rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return toast('Completa todos los campos');
+
+  const { data, error } = await sb.from('teachers').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  if (error || !data) return toast('Credenciales incorrectas');
+  currentTeacher = data;
+  localStorage.setItem('piense_teacher', JSON.stringify(data));
+  showApp();
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!name || !email || !password) return toast('Completa todos los campos');
+  if (password.length < 6) return toast('Contraseña mínimo 6 caracteres');
+
+  const { data, error } = await sb.from('teachers').insert({ name, email, password_hash: btoa(password) }).select().single();
+  if (error) return toast(error.code === '23505' ? 'Este correo ya está registrado' : 'Error al crear cuenta');
+  currentTeacher = data;
+  localStorage.setItem('piense_teacher', JSON.stringify(data));
+  showApp();
+}
+
+function doLogout() {
+  localStorage.removeItem('piense_teacher');
+  currentTeacher = null;
+  location.reload();
+}
+
+// ================================================================
+// NAVIGATION
+// ================================================================
+const viewTitles = { grupos: 'Mis grupos', banco: 'Banco de reactivos', examenes: 'Exámenes', resultados: 'Resultados' };
+const viewActions = {
+  grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
+  banco: { text: '🔄 Actualizar', fn: 'loadQuestions()' },
+  examenes: { text: '+ Crear examen', fn: "showView('banco')" },
+  resultados: { text: '🔄 Actualizar', fn: 'loadResults()' },
+};
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelector(`[data-view="${name}"]`).classList.add('active');
+  document.getElementById('topbarTitle').textContent = viewTitles[name] || name;
+  const action = viewActions[name];
+  if (action) {
+    document.getElementById('topbarAction').textContent = action.text;
+    document.getElementById('topbarAction').setAttribute('onclick', action.fn);
+  }
+  if (name === 'resultados') loadResultsExamSelect();
+}
+
+// ================================================================
+// GROUPS
+// ================================================================
+async function loadGroups() {
+  const { data } = await sb.from('groups').select('*, students(count)').eq('teacher_id', currentTeacher.id).order('created_at');
+  const grid = document.getElementById('groupsGrid');
+  if (!data || data.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>`;
+    return;
+  }
+  grid.innerHTML = `<div class="grid-2">${data.map(g => `
+    <div class="group-card">
+      <div class="group-name">${g.name}</div>
+      <div class="group-meta">${g.students[0]?.count || 0} alumnos inscritos</div>
+      <div class="group-code">${g.access_code}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-3);">Código de grupo — comparte con alumnos</div>
+    </div>
+  `).join('')}</div>`;
+  // Populate exam group selects
+  const sel = document.getElementById('newExamGroup');
+  sel.innerHTML = '<option value="">Selecciona un grupo...</option>' + data.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+}
+
+function openCreateGroupModal() { openModal('modalCreateGroup'); }
+
+async function createGroup() {
+  const name = document.getElementById('newGroupName').value.trim();
+  if (!name) return toast('Escribe el nombre del grupo');
+  const code = genCode(6);
+  const { error } = await sb.from('groups').insert({ teacher_id: currentTeacher.id, name, access_code: code });
+  if (error) return toast('Error al crear grupo');
+  closeModal('modalCreateGroup');
+  document.getElementById('newGroupName').value = '';
+  toast('Grupo creado ✅');
+  loadGroups();
+}
+
+// ================================================================
+// QUESTIONS
+// ================================================================
+async function loadQuestions() {
+  const { data } = await sb.from('questions').select('*').order('subject').order('topic');
+  allQuestions = data || [];
+  populateTopicFilter();
+  filterQuestions();
+}
+
+function populateTopicFilter() {
+  const subjectSel = document.getElementById('filterSubject').value;
+  const topics = [...new Set(allQuestions.filter(q => !subjectSel || q.subject === subjectSel).map(q => q.topic))].sort();
+  const sel = document.getElementById('filterTopic');
+  sel.innerHTML = '<option value="">Todos los temas</option>' + topics.map(t => `<option value="${t}">${t}</option>`).join('');
+}
+
+function filterQuestions() {
+  const subject = document.getElementById('filterSubject').value;
+  const topic = document.getElementById('filterTopic').value;
+  const difficulty = document.getElementById('filterDifficulty').value;
+  const search = document.getElementById('searchQ').value.toLowerCase();
+  populateTopicFilter();
+
+  let filtered = allQuestions.filter(q => {
+    if (subject && q.subject !== subject) return false;
+    if (topic && q.topic !== topic) return false;
+    if (difficulty && q.difficulty !== difficulty) return false;
+    if (search && !q.stem.toLowerCase().includes(search) && !q.topic.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  renderQuestions(filtered);
+  updateSelectedCounter();
+}
+
+const subjectLabels = { matematicas: '📐 Matemáticas', espanol: '📖 Español', habilidad: '🧠 Habilidad' };
+const diffColors = { facil: '#16a34a', medio: '#d97706', dificil: '#dc2626' };
+
+function renderQuestions(list) {
+  const el = document.getElementById('questionsList');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div><div class="empty-text">Prueba con otros filtros</div></div>';
+    return;
+  }
+  el.innerHTML = list.map(q => `
+    <div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''}" onclick="toggleQuestion('${q.id}')">
+      <div class="q-check">${selectedQuestionIds.has(q.id) ? '✓' : ''}</div>
+      <div class="q-body">
+        <div class="q-stem">${q.stem}</div>
+        <div class="q-meta">
+          <span>${subjectLabels[q.subject] || q.subject}</span>
+          <span class="q-topic">📌 ${q.topic}</span>
+          <span style="color:${diffColors[q.difficulty]}">● ${q.difficulty}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleQuestion(id) {
+  if (selectedQuestionIds.has(id)) {
+    selectedQuestionIds.delete(id);
+  } else {
+    if (selectedQuestionIds.size >= 10) return toast('Máximo 10 reactivos por examen');
+    selectedQuestionIds.add(id);
+  }
+  updateSelectedCounter();
+  filterQuestions();
+}
+
+function updateSelectedCounter() {
+  const n = selectedQuestionIds.size;
+  const counter = document.getElementById('selectedCounter');
+  document.getElementById('selectedCount').textContent = n;
+  counter.style.display = n > 0 ? 'flex' : 'none';
+}
+
+// ================================================================
+// EXAMS
+// ================================================================
+async function loadExams() {
+  const { data } = await sb.from('exams').select('*, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
+  const el = document.getElementById('examsList');
+  if (!data || data.length === 0) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`;
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>Nombre</th><th>Grupo</th><th>Código</th><th>Estado</th><th>Reactivos</th><th>Acciones</th></tr></thead>
+    <tbody>${data.map(e => `
+      <tr>
+        <td><span class="fw-600">${e.name}</span></td>
+        <td class="text-muted">${e.groups?.name || '-'}</td>
+        <td><span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--sky-dark);font-weight:500;">${e.exam_code}</span></td>
+        <td><span class="badge badge-${e.status}">${e.status === 'active' ? '🟢 Activo' : e.status === 'closed' ? '⬛ Cerrado' : '⚪ Borrador'}</span></td>
+        <td class="text-muted">${e.question_ids?.length || 0} reactivos</td>
+        <td>
+          <div class="flex-gap">
+            <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
+            <button class="btn btn-outline btn-sm" onclick="showView('resultados');setTimeout(()=>{document.getElementById('resultExamSelect').value='${e.id}';loadResults();},200)">📊</button>
+          </div>
+        </td>
+      </tr>
+    `).join('')}</tbody>
+  </table>`;
+}
+
+function openCreateExamModal() {
+  if (selectedQuestionIds.size < 1) return toast('Selecciona al menos 1 reactivo');
+  document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
+  openModal('modalCreateExam');
+}
+
+async function createExam() {
+  const name = document.getElementById('newExamName').value.trim();
+  const groupId = document.getElementById('newExamGroup').value;
+  const duration = parseInt(document.getElementById('newExamDuration').value);
+  if (!name) return toast('Escribe el nombre del examen');
+  if (!groupId) return toast('Selecciona un grupo');
+  const code = genCode(8);
+  const { data, error } = await sb.from('exams').insert({
+    teacher_id: currentTeacher.id,
+    group_id: groupId,
+    name,
+    question_ids: [...selectedQuestionIds],
+    duration_seconds: duration,
+    exam_code: code,
+    status: 'draft'
+  }).select().single();
+  if (error) return toast('Error al crear examen');
+  closeModal('modalCreateExam');
+  document.getElementById('newExamName').value = '';
+  selectedQuestionIds.clear();
+  updateSelectedCounter();
+  filterQuestions();
+  toast('Examen creado ✅');
+  loadExams();
+  openExamCodeModal(data.id, code, 'draft');
+}
+
+function openExamCodeModal(examId, code, status) {
+  currentExamForCode = { id: examId, code, status };
+  document.getElementById('examCodeDisplay').textContent = code;
+  document.getElementById('statusBtnText').textContent = status === 'active' ? '⏸ Pausar examen' : '▶ Activar examen';
+  openModal('modalExamCode');
+}
+
+async function toggleExamStatus() {
+  if (!currentExamForCode) return;
+  const newStatus = currentExamForCode.status === 'active' ? 'draft' : 'active';
+  const { error } = await sb.from('exams').update({ status: newStatus, activated_at: newStatus === 'active' ? new Date().toISOString() : null }).eq('id', currentExamForCode.id);
+  if (error) return toast('Error al actualizar');
+  currentExamForCode.status = newStatus;
+  document.getElementById('statusBtnText').textContent = newStatus === 'active' ? '⏸ Pausar examen' : '▶ Activar examen';
+  toast(newStatus === 'active' ? '🟢 Examen activado — los alumnos ya pueden entrar' : '⏸ Examen pausado');
+  loadExams();
+}
+
+async function closeExamStatus() {
+  if (!currentExamForCode) return;
+  const { error } = await sb.from('exams').update({ status: 'closed', closed_at: new Date().toISOString() }).eq('id', currentExamForCode.id);
+  if (error) return toast('Error al cerrar');
+  toast('⬛ Examen cerrado');
+  closeModal('modalExamCode');
+  loadExams();
+}
+
+// ================================================================
+// RESULTS
+// ================================================================
+async function loadResultsExamSelect() {
+  const { data } = await sb.from('exams').select('id, name, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
+  const sel = document.getElementById('resultExamSelect');
+  if (!data) return;
+  sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.name} · ${e.groups?.name || ''}</option>`).join('');
+}
+
+async function loadResults() {
+  const examId = document.getElementById('resultExamSelect').value;
+  const panel = document.getElementById('resultsPanel');
+  if (!examId) {
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Selecciona un examen</div></div>`;
+    return;
+  }
+
+  panel.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+
+  const [{ data: responses }, { data: examData }] = await Promise.all([
+    sb.from('responses').select('*, students(name)').eq('exam_id', examId).order('submitted_at'),
+    sb.from('exams').select('*, questions:question_ids, groups(name)').eq('id', examId).single()
+  ]);
+
+  if (!responses || responses.length === 0) {
+    panel.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">Sin respuestas todavía</div><div class="empty-text">Los alumnos aún no han contestado este examen</div></div>`;
+    return;
+  }
+
+  const total = responses.length;
+  const avg = (responses.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
+  const maxScore = Math.max(...responses.map(r => r.score));
+  const minScore = Math.min(...responses.map(r => r.score));
+  const avgTime = Math.round(responses.reduce((s, r) => s + r.elapsed_seconds, 0) / total);
+
+  panel.innerHTML = `
+    <div class="grid-stats mb-20">
+      <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}/10</div></div>
+      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}/10</div><div class="stat-sub">mejor calificación</div></div>
+      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}/10</div><div class="stat-sub">calificación más baja</div></div>
+      <div class="stat-card"><div class="stat-label">Tiempo prom.</div><div class="stat-value">${Math.floor(avgTime/60)}:${String(avgTime%60).padStart(2,'0')}</div><div class="stat-sub">minutos</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Resultados por alumno</div>
+      <table class="data-table">
+        <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Entregado</th></tr></thead>
+        <tbody>${responses.map(r => {
+          const pct = Math.round((r.score / r.total_questions) * 100);
+          const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+          const mins = Math.floor(r.elapsed_seconds / 60);
+          const secs = String(r.elapsed_seconds % 60).padStart(2, '0');
+          return `<tr>
+            <td><span class="fw-600">${r.students?.name || 'Alumno'}</span></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:16px;font-weight:600;color:${color};">${r.score}/${r.total_questions}</span>
+                <div style="flex:1;max-width:100px;">
+                  <div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div>
+                </div>
+                <span class="text-xs text-muted">${pct}%</span>
+              </div>
+            </td>
+            <td class="text-muted">${r.score} de ${r.total_questions}</td>
+            <td class="text-muted">${mins}:${secs}</td>
+            <td class="text-xs text-muted">${new Date(r.submitted_at).toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'})}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+// ================================================================
+// UTILS
+// ================================================================
+function genCode(len) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+function toast(msg, duration = 3000) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+</script>
+</body>
+</html>
