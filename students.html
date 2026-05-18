@@ -514,7 +514,10 @@ function goToEntry() {
   currentStudent = null;
   currentQuestions = [];
   userAnswers = {};
+  currentQIndex = 0;
+  selectedQuestionIds = new Set();
   document.getElementById('examCode').value = '';
+  document.getElementById('studentName').value = '';
   showScreen('screenEntry');
 }
 
