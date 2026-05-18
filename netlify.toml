@@ -1,3 +1,8 @@
+[[redirects]]
+  from = "/alumno"
+  to = "/alumno.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
