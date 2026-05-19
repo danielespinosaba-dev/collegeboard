@@ -1,28 +1,31 @@
 exports.handler = async (event) => {
   try {
     const { prompt } = JSON.parse(event.body);
-    const GEMINI_KEY = 'AIzaSyBgs_CqmAeY3k81t5bOT2nONwyoNjh9zZA';
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }]
-        })
-      }
-    );
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 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',
+        'HTTP-Referer': 'https://college-board.netlify.app',
+        'X-Title': 'PIENSE Mini-Examenes'
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
 
     const data = await res.json();
+    const text = data?.choices?.[0]?.message?.content || 'Sin respuesta';
 
     return {
       statusCode: 200,
-      headers: { 
+      headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text: JSON.stringify(data) })
+      body: JSON.stringify({ text })
     };
   } catch (err) {
     return {
