@@ -17,7 +17,7 @@ exports.handler = async (event) => {
     });
 
     const data = await res.json();
-    const text = data?.choices?.[0]?.message?.content || 'Sin respuesta';
+    const text = JSON.stringify(data);
 
     return {
       statusCode: 200,
