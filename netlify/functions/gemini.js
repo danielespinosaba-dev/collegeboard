@@ -11,7 +11,7 @@ exports.handler = async (event) => {
         'X-Title': 'PIENSE Mini-Examenes'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        model: 'google/gemma-3-4b-it:free',
         messages: [{ role: 'user', content: prompt }]
       })
     });
