@@ -1292,7 +1292,7 @@ Por favor:
 Responde en español, de forma clara y práctica, como si le hablaras directamente a la maestra. Usa encabezados para organizar tu respuesta.`;
  
 try {
-    const res = await fetch('/.netlify/functions/gemini', {
+    const res = await fetch('/api/gemini', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt })
