@@ -15,7 +15,6 @@ exports.handler = async (event) => {
     );
 
     const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sin respuesta de Gemini';
 
     return {
       statusCode: 200,
@@ -23,7 +22,7 @@ exports.handler = async (event) => {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text: JSON.stringify(data) })
     };
   } catch (err) {
     return {
