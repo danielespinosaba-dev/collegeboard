@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
   :root {
     --navy: #1a1a2e;
     --sky: #5b9bd8;
@@ -29,7 +29,7 @@
     --radius: 10px;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
   }
-
+ 
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
@@ -38,10 +38,10 @@
     font-size: 15px;
     line-height: 1.6;
   }
-
+ 
   /* ── LAYOUT ── */
   .app { display: flex; min-height: 100vh; }
-
+ 
   .sidebar {
     width: 220px;
     background: var(--navy);
@@ -55,25 +55,25 @@
     top: 0;
     z-index: 100;
   }
-
+ 
   .sidebar-logo {
     padding: 20px 20px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-
+ 
   .logo-mark {
     font-size: 18px;
     font-weight: 600;
     color: #fff;
     letter-spacing: -0.02em;
   }
-
+ 
   .logo-sub {
     font-size: 11px;
     color: rgba(255,255,255,0.4);
     margin-top: 2px;
   }
-
+ 
   .sidebar-nav {
     flex: 1;
     padding: 12px 10px;
@@ -82,7 +82,7 @@
     gap: 2px;
     overflow-y: auto;
   }
-
+ 
   .nav-item {
     display: flex;
     align-items: center;
@@ -95,17 +95,17 @@
     transition: all 0.15s;
     text-decoration: none;
   }
-
+ 
   .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
   .nav-item.active { background: rgba(91,155,216,0.2); color: #5b9bd8; }
-
+ 
   .nav-icon { font-size: 16px; width: 20px; text-align: center; }
-
+ 
   .sidebar-footer {
     padding: 12px 10px;
     border-top: 1px solid rgba(255,255,255,0.08);
   }
-
+ 
   .teacher-info {
     display: flex;
     align-items: center;
@@ -113,7 +113,7 @@
     padding: 8px 10px;
     border-radius: 8px;
   }
-
+ 
   .teacher-avatar {
     width: 32px; height: 32px;
     border-radius: 50%;
@@ -124,10 +124,10 @@
     color: #fff;
     flex-shrink: 0;
   }
-
+ 
   .teacher-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
   .teacher-role { font-size: 11px; color: rgba(255,255,255,0.3); }
-
+ 
   .btn-logout {
     display: block;
     margin-top: 6px;
@@ -142,11 +142,11 @@
     text-align: left;
     transition: all 0.15s;
   }
-
+ 
   .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
-
+ 
   .main { margin-left: 220px; flex: 1; }
-
+ 
   .topbar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -159,15 +159,15 @@
     top: 0;
     z-index: 50;
   }
-
+ 
   .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); }
-
+ 
   .content { padding: 28px; max-width: 1100px; }
-
+ 
   /* ── VIEWS ── */
   .view { display: none; }
   .view.active { display: block; }
-
+ 
   /* ── LOGIN ── */
   .login-wrap {
     min-height: 100vh;
@@ -177,7 +177,7 @@
     background: var(--navy);
     padding: 20px;
   }
-
+ 
   .login-box {
     background: var(--surface);
     border-radius: 16px;
@@ -185,10 +185,10 @@
     width: 100%;
     max-width: 400px;
   }
-
+ 
   .login-logo { font-size: 24px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
   .login-sub { font-size: 13px; color: var(--text-3); margin-bottom: 28px; }
-
+ 
   .field { margin-bottom: 16px; }
   .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
   .field input {
@@ -203,7 +203,7 @@
     transition: border-color 0.15s;
   }
   .field input:focus { outline: none; border-color: var(--sky); }
-
+ 
   .btn {
     display: inline-flex;
     align-items: center;
@@ -219,7 +219,7 @@
     transition: all 0.15s;
     text-decoration: none;
   }
-
+ 
   .btn-primary { background: var(--sky); color: #fff; }
   .btn-primary:hover { background: var(--sky-dark); }
   .btn-secondary { background: var(--sky-light); color: var(--sky-dark); border: 1px solid var(--sky); }
@@ -230,10 +230,10 @@
   .btn-sm { padding: 6px 12px; font-size: 13px; }
   .btn-full { width: 100%; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
+ 
   .login-toggle { margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-3); }
   .login-toggle a { color: var(--sky); cursor: pointer; }
-
+ 
   /* ── CARDS ── */
   .card {
     background: var(--surface);
@@ -242,7 +242,7 @@
     padding: 20px 24px;
     box-shadow: var(--shadow);
   }
-
+ 
   .card-title {
     font-size: 15px;
     font-weight: 600;
@@ -252,10 +252,10 @@
     align-items: center;
     justify-content: space-between;
   }
-
+ 
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
   .grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-
+ 
   /* ── STAT CARDS ── */
   .stat-card {
     background: var(--surface);
@@ -267,7 +267,7 @@
   .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
   .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
   .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-
+ 
   /* ── GROUP CARDS ── */
   .group-card {
     background: var(--surface);
@@ -293,7 +293,7 @@
     margin-top: 8px;
     letter-spacing: 0.05em;
   }
-
+ 
   /* ── BADGES ── */
   .badge {
     display: inline-flex;
@@ -307,7 +307,7 @@
   .badge-active { background: var(--success-bg); color: #16a34a; }
   .badge-draft { background: #f1f5f9; color: var(--text-3); }
   .badge-closed { background: #f1f5f9; color: var(--text-3); }
-
+ 
   /* ── BANK FILTER ── */
   .filter-bar {
     display: flex;
@@ -316,7 +316,7 @@
     margin-bottom: 16px;
     align-items: center;
   }
-
+ 
   .filter-bar select, .filter-bar input {
     padding: 8px 12px;
     border: 1.5px solid var(--border);
@@ -327,14 +327,14 @@
     background: var(--surface);
     cursor: pointer;
   }
-
+ 
   .filter-bar select:focus, .filter-bar input:focus {
     outline: none;
     border-color: var(--sky);
   }
-
+ 
   .questions-list { display: flex; flex-direction: column; gap: 8px; }
-
+ 
   .question-item {
     background: var(--surface);
     border: 1.5px solid var(--border);
@@ -346,10 +346,10 @@
     cursor: pointer;
     transition: all 0.15s;
   }
-
+ 
   .question-item.selected { border-color: var(--sky); background: var(--sky-light); }
   .question-item:hover:not(.selected) { border-color: #c0d5ea; }
-
+ 
   .q-check {
     width: 20px; height: 20px;
     border-radius: 5px;
@@ -360,18 +360,18 @@
     transition: all 0.15s;
     margin-top: 1px;
   }
-
+ 
   .question-item.selected .q-check {
     background: var(--sky);
     border-color: var(--sky);
     color: #fff;
   }
-
+ 
   .q-body { flex: 1; min-width: 0; }
   .q-stem { font-size: 14px; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
   .q-meta { font-size: 12px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; }
   .q-topic { color: var(--sky-dark); font-weight: 500; }
-
+ 
   .selected-counter {
     background: var(--navy);
     color: #fff;
@@ -383,7 +383,7 @@
     margin-bottom: 16px;
     font-size: 14px;
   }
-
+ 
   /* ── MODAL ── */
   .modal-overlay {
     position: fixed;
@@ -396,7 +396,7 @@
     padding: 20px;
   }
   .modal-overlay.open { display: flex; }
-
+ 
   .modal {
     background: var(--surface);
     border-radius: 14px;
@@ -407,10 +407,10 @@
     padding: 28px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
-
+ 
   .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
   .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
-
+ 
   /* ── TABLES ── */
   .data-table { width: 100%; border-collapse: collapse; }
   .data-table th {
@@ -432,11 +432,11 @@
   }
   .data-table tr:last-child td { border-bottom: none; }
   .data-table tr:hover td { background: var(--bg); }
-
+ 
   /* ── PROGRESS BAR ── */
   .progress-wrap { background: #e2e8f0; border-radius: 99px; height: 6px; }
   .progress-bar { height: 6px; border-radius: 99px; background: var(--sky); transition: width 0.3s; }
-
+ 
   /* ── ALERT ── */
   .alert {
     padding: 12px 16px;
@@ -447,7 +447,7 @@
   .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
   .alert-success { background: var(--success-bg); color: #15803d; border: 1px solid #bbf7d0; }
   .alert-warning { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
-
+ 
   /* ── EMPTY STATE ── */
   .empty {
     text-align: center;
@@ -457,7 +457,7 @@
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
   .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
   .empty-text { font-size: 14px; }
-
+ 
   /* ── EXAM CODE DISPLAY ── */
   .exam-code-display {
     background: var(--navy);
@@ -477,7 +477,7 @@
     margin: 8px 0;
   }
   .exam-code-label { font-size: 13px; color: rgba(255,255,255,0.5); }
-
+ 
   /* ── SCORE VISUAL ── */
   .score-circle {
     width: 80px; height: 80px;
@@ -486,7 +486,7 @@
     font-size: 22px; font-weight: 600;
     flex-shrink: 0;
   }
-
+ 
   /* ── UTILS ── */
   .flex { display: flex; }
   .flex-between { display: flex; justify-content: space-between; align-items: center; }
@@ -503,7 +503,7 @@
   .text-sky { color: var(--sky); }
   .fw-600 { font-weight: 600; }
   .divider { height: 1px; background: var(--border); margin: 16px 0; }
-
+ 
   /* ── LOADING ── */
   .spinner {
     width: 20px; height: 20px;
@@ -514,7 +514,7 @@
     display: inline-block;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
   /* ── TOAST ── */
   .toast-container {
     position: fixed;
@@ -535,7 +535,7 @@
     max-width: 320px;
   }
   @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
+ 
   /* ── RESPONSIVE SIDEBAR ── */
   @media (max-width: 768px) {
     .sidebar { display: none; }
@@ -544,7 +544,7 @@
 </style>
 </head>
 <body>
-
+ 
 <!-- ================================================================
      LOGIN / REGISTRO
      ================================================================ -->
@@ -553,7 +553,7 @@
     <div class="login-box">
       <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
       <div class="login-sub">Plataforma docente · 6to grado</div>
-
+ 
       <!-- Login Form -->
       <div id="loginForm">
         <div class="field">
@@ -567,7 +567,7 @@
         <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
         <div class="login-toggle">¿No tienes cuenta? <a onclick="toggleAuth()">Crear cuenta</a></div>
       </div>
-
+ 
       <!-- Register Form -->
       <div id="registerForm" style="display:none;">
         <div class="field">
@@ -588,13 +588,13 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      DASHBOARD APP
      ================================================================ -->
 <div id="appSection" style="display:none;">
   <div class="app">
-
+ 
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
@@ -614,8 +614,11 @@
         <a class="nav-item" data-view="resultados" onclick="showView('resultados')">
           <span class="nav-icon">📊</span> Resultados
         </a>
+        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')">
+          <span class="nav-icon">🤖</span> Recomendaciones IA
+        </a>
         <div style="margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08);">
-          <a class="nav-item" onclick="window.open('alumno.html','_blank')">
+          <a class="nav-item" onclick="window.open('students.html','_blank')">
             <span class="nav-icon">🔗</span> Vista alumno ↗
           </a>
         </div>
@@ -631,7 +634,7 @@
         <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
       </div>
     </aside>
-
+ 
     <!-- MAIN -->
     <main class="main">
       <div class="topbar">
@@ -640,9 +643,9 @@
           <button class="btn btn-primary btn-sm" id="topbarAction" onclick="openCreateGroupModal()">+ Nuevo grupo</button>
         </div>
       </div>
-
+ 
       <div class="content">
-
+ 
         <!-- ── VIEW: GRUPOS ── -->
         <div class="view active" id="view-grupos">
           <div class="mb-20" id="groupsGrid">
@@ -653,7 +656,7 @@
             </div>
           </div>
         </div>
-
+ 
         <!-- ── VIEW: BANCO DE REACTIVOS ── -->
         <div class="view" id="view-banco">
           <div class="card mb-16">
@@ -663,7 +666,6 @@
                 <option value="">Todas las materias</option>
                 <option value="matematicas">Matemáticas</option>
                 <option value="espanol">Español</option>
-               <option value="ingles">Inglés</option>
                 <option value="habilidad">Habilidad Cognoscitiva</option>
               </select>
               <select id="filterTopic" onchange="filterQuestions()">
@@ -678,17 +680,17 @@
               <input type="text" id="searchQ" placeholder="Buscar..." style="flex:1; min-width:160px;" oninput="filterQuestions()">
             </div>
           </div>
-
+ 
           <div class="selected-counter" id="selectedCounter" style="display:none;">
             <span>✅ <span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
             <button class="btn btn-primary btn-sm" onclick="openCreateExamModal()">Crear examen con estos reactivos →</button>
           </div>
-
+ 
           <div class="questions-list" id="questionsList">
             <div class="empty"><span class="spinner"></span></div>
           </div>
         </div>
-
+ 
         <!-- ── VIEW: EXÁMENES ── -->
         <div class="view" id="view-examenes">
           <div class="card">
@@ -705,7 +707,7 @@
             </div>
           </div>
         </div>
-
+ 
         <!-- ── VIEW: RESULTADOS ── -->
         <div class="view" id="view-resultados">
           <div class="mb-16">
@@ -713,7 +715,7 @@
               <option value="">Selecciona un examen para ver resultados</option>
             </select>
           </div>
-
+ 
           <div id="resultsPanel">
             <div class="empty">
               <div class="empty-icon">📊</div>
@@ -722,16 +724,37 @@
             </div>
           </div>
         </div>
-
+ 
+        <!-- ── VIEW: RECOMENDACIONES ── -->
+        <div class="view" id="view-recomendaciones">
+          <div class="card mb-16">
+            <div class="card-title">Recomendaciones con Inteligencia Artificial</div>
+            <p class="text-sm text-muted mb-16">Selecciona un examen ya aplicado y la IA analizará los resultados para sugerirte qué contenidos deben repasar tus alumnos.</p>
+            <div class="flex-gap mb-16">
+              <select id="recExamSelect" style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);">
+                <option value="">Selecciona un examen...</option>
+              </select>
+              <button class="btn btn-primary" onclick="generateRecommendations()">Analizar con IA →</button>
+            </div>
+          </div>
+          <div id="recPanel">
+            <div class="empty">
+              <div class="empty-icon">🤖</div>
+              <div class="empty-title">Selecciona un examen para analizar</div>
+              <div class="empty-text">La IA identificará los temas con más errores y sugerirá estrategias de repaso</div>
+            </div>
+          </div>
+        </div>
+ 
       </div><!-- /content -->
     </main>
   </div>
 </div>
-
+ 
 <!-- ================================================================
      MODALS
      ================================================================ -->
-
+ 
 <!-- Modal: Crear grupo -->
 <div class="modal-overlay" id="modalCreateGroup">
   <div class="modal">
@@ -746,7 +769,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- Modal: Crear examen -->
 <div class="modal-overlay" id="modalCreateExam">
   <div class="modal">
@@ -776,7 +799,7 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- Modal: Ver examen (código) -->
 <div class="modal-overlay" id="modalExamCode">
   <div class="modal">
@@ -800,10 +823,10 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
-
+ 
 <!-- ================================================================
      SUPABASE + SCRIPTS
      ================================================================ -->
@@ -812,12 +835,12 @@
 // ================================================================
 // CONFIG — pon aquí tus credenciales de Supabase
 // ================================================================
-const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
-
+const SUPABASE_URL = 'TU_SUPABASE_URL';
+const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+ 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
+ 
 // ================================================================
 // STATE
 // ================================================================
@@ -826,7 +849,7 @@ let allQuestions = [];
 let selectedQuestionIds = new Set();
 let currentExamId = null;
 let currentExamForCode = null;
-
+ 
 // ================================================================
 // INIT
 // ================================================================
@@ -839,7 +862,7 @@ window.onload = async () => {
     document.getElementById('authSection').style.display = 'block';
   }
 };
-
+ 
 function showApp() {
   document.getElementById('authSection').style.display = 'none';
   document.getElementById('appSection').style.display = 'block';
@@ -849,8 +872,9 @@ function showApp() {
   loadGroups();
   loadQuestions();
   loadExams();
+  loadRecExamSelect();
 }
-
+ 
 // ================================================================
 // AUTH
 // ================================================================
@@ -860,50 +884,51 @@ function toggleAuth() {
   lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
 }
-
+ 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   if (!email || !password) return toast('Completa todos los campos');
-
+ 
   const { data, error } = await sb.from('teachers').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
   if (error || !data) return toast('Credenciales incorrectas');
   currentTeacher = data;
   localStorage.setItem('piense_teacher', JSON.stringify(data));
   showApp();
 }
-
+ 
 async function doRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   if (!name || !email || !password) return toast('Completa todos los campos');
   if (password.length < 6) return toast('Contraseña mínimo 6 caracteres');
-
+ 
   const { data, error } = await sb.from('teachers').insert({ name, email, password_hash: btoa(password) }).select().single();
   if (error) return toast(error.code === '23505' ? 'Este correo ya está registrado' : 'Error al crear cuenta');
   currentTeacher = data;
   localStorage.setItem('piense_teacher', JSON.stringify(data));
   showApp();
 }
-
+ 
 function doLogout() {
   localStorage.removeItem('piense_teacher');
   currentTeacher = null;
   location.reload();
 }
-
+ 
 // ================================================================
 // NAVIGATION
 // ================================================================
-const viewTitles = { grupos: 'Mis grupos', banco: 'Banco de reactivos', examenes: 'Exámenes', resultados: 'Resultados' };
+const viewTitles = { grupos: 'Mis grupos', banco: 'Banco de reactivos', examenes: 'Exámenes', resultados: 'Resultados', recomendaciones: 'Recomendaciones IA' };
 const viewActions = {
   grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
-  banco: { text: '🔄 Actualizar', fn: 'loadQuestions()' },
+  banco: { text: 'Actualizar', fn: 'loadQuestions()' },
   examenes: { text: '+ Crear examen', fn: "showView('banco')" },
-  resultados: { text: '🔄 Actualizar', fn: 'loadResults()' },
+  resultados: { text: 'Actualizar', fn: 'loadResults()' },
+  recomendaciones: { text: 'Actualizar', fn: 'loadRecExamSelect()' },
 };
-
+ 
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -916,8 +941,9 @@ function showView(name) {
     document.getElementById('topbarAction').setAttribute('onclick', action.fn);
   }
   if (name === 'resultados') loadResultsExamSelect();
+  if (name === 'recomendaciones') loadRecExamSelect();
 }
-
+ 
 // ================================================================
 // GROUPS
 // ================================================================
@@ -940,9 +966,9 @@ async function loadGroups() {
   const sel = document.getElementById('newExamGroup');
   sel.innerHTML = '<option value="">Selecciona un grupo...</option>' + data.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
 }
-
+ 
 function openCreateGroupModal() { openModal('modalCreateGroup'); }
-
+ 
 async function createGroup() {
   const name = document.getElementById('newGroupName').value.trim();
   if (!name) return toast('Escribe el nombre del grupo');
@@ -954,7 +980,7 @@ async function createGroup() {
   toast('Grupo creado ✅');
   loadGroups();
 }
-
+ 
 // ================================================================
 // QUESTIONS
 // ================================================================
@@ -964,21 +990,21 @@ async function loadQuestions() {
   populateTopicFilter();
   filterQuestions();
 }
-
+ 
 function populateTopicFilter() {
   const subjectSel = document.getElementById('filterSubject').value;
   const topics = [...new Set(allQuestions.filter(q => !subjectSel || q.subject === subjectSel).map(q => q.topic))].sort();
   const sel = document.getElementById('filterTopic');
   sel.innerHTML = '<option value="">Todos los temas</option>' + topics.map(t => `<option value="${t}">${t}</option>`).join('');
 }
-
+ 
 function filterQuestions() {
   const subject = document.getElementById('filterSubject').value;
   const topic = document.getElementById('filterTopic').value;
   const difficulty = document.getElementById('filterDifficulty').value;
   const search = document.getElementById('searchQ').value.toLowerCase();
   populateTopicFilter();
-
+ 
   let filtered = allQuestions.filter(q => {
     if (subject && q.subject !== subject) return false;
     if (topic && q.topic !== topic) return false;
@@ -986,14 +1012,14 @@ function filterQuestions() {
     if (search && !q.stem.toLowerCase().includes(search) && !q.topic.toLowerCase().includes(search)) return false;
     return true;
   });
-
+ 
   renderQuestions(filtered);
   updateSelectedCounter();
 }
-
-const subjectLabels = { matematicas: '📐 Matemáticas', espanol: '📖 Español', ingles: '🇺🇸 Inglés', habilidad: '🧠 Habilidad' };
+ 
+const subjectLabels = { matematicas: '📐 Matemáticas', espanol: '📖 Español', habilidad: '🧠 Habilidad' };
 const diffColors = { facil: '#16a34a', medio: '#d97706', dificil: '#dc2626' };
-
+ 
 function renderQuestions(list) {
   const el = document.getElementById('questionsList');
   if (!list.length) {
@@ -1014,7 +1040,7 @@ function renderQuestions(list) {
     </div>
   `).join('');
 }
-
+ 
 function toggleQuestion(id) {
   if (selectedQuestionIds.has(id)) {
     selectedQuestionIds.delete(id);
@@ -1025,14 +1051,14 @@ function toggleQuestion(id) {
   updateSelectedCounter();
   filterQuestions();
 }
-
+ 
 function updateSelectedCounter() {
   const n = selectedQuestionIds.size;
   const counter = document.getElementById('selectedCounter');
   document.getElementById('selectedCount').textContent = n;
   counter.style.display = n > 0 ? 'flex' : 'none';
 }
-
+ 
 // ================================================================
 // EXAMS
 // ================================================================
@@ -1062,13 +1088,13 @@ async function loadExams() {
     `).join('')}</tbody>
   </table>`;
 }
-
+ 
 function openCreateExamModal() {
   if (selectedQuestionIds.size < 1) return toast('Selecciona al menos 1 reactivo');
   document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
   openModal('modalCreateExam');
 }
-
+ 
 async function createExam() {
   const name = document.getElementById('newExamName').value.trim();
   const groupId = document.getElementById('newExamGroup').value;
@@ -1095,14 +1121,14 @@ async function createExam() {
   loadExams();
   openExamCodeModal(data.id, code, 'draft');
 }
-
+ 
 function openExamCodeModal(examId, code, status) {
   currentExamForCode = { id: examId, code, status };
   document.getElementById('examCodeDisplay').textContent = code;
   document.getElementById('statusBtnText').textContent = status === 'active' ? '⏸ Pausar examen' : '▶ Activar examen';
   openModal('modalExamCode');
 }
-
+ 
 async function toggleExamStatus() {
   if (!currentExamForCode) return;
   const newStatus = currentExamForCode.status === 'active' ? 'draft' : 'active';
@@ -1113,7 +1139,7 @@ async function toggleExamStatus() {
   toast(newStatus === 'active' ? '🟢 Examen activado — los alumnos ya pueden entrar' : '⏸ Examen pausado');
   loadExams();
 }
-
+ 
 async function closeExamStatus() {
   if (!currentExamForCode) return;
   const { error } = await sb.from('exams').update({ status: 'closed', closed_at: new Date().toISOString() }).eq('id', currentExamForCode.id);
@@ -1122,7 +1148,7 @@ async function closeExamStatus() {
   closeModal('modalExamCode');
   loadExams();
 }
-
+ 
 // ================================================================
 // RESULTS
 // ================================================================
@@ -1132,46 +1158,41 @@ async function loadResultsExamSelect() {
   if (!data) return;
   sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.name} · ${e.groups?.name || ''}</option>`).join('');
 }
-
+ 
 async function loadResults() {
   const examId = document.getElementById('resultExamSelect').value;
   const panel = document.getElementById('resultsPanel');
   if (!examId) {
-    panel.innerHTML = `<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Selecciona un examen</div></div>`;
+    panel.innerHTML = `<div class="empty"><div class="empty-title">Selecciona un examen</div></div>`;
     return;
   }
-
   panel.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
-
   const [{ data: responses }, { data: examData }] = await Promise.all([
     sb.from('responses').select('*, students(name)').eq('exam_id', examId).order('submitted_at'),
-    sb.from('exams').select('*, questions:question_ids, groups(name)').eq('id', examId).single()
+    sb.from('exams').select('*').eq('id', examId).single()
   ]);
-
   if (!responses || responses.length === 0) {
-    panel.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">Sin respuestas todavía</div><div class="empty-text">Los alumnos aún no han contestado este examen</div></div>`;
+    panel.innerHTML = `<div class="empty"><div class="empty-title">Sin respuestas todavía</div><div class="empty-text">Los alumnos aún no han contestado este examen</div></div>`;
     return;
   }
-
   const total = responses.length;
   const avg = (responses.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
   const maxScore = Math.max(...responses.map(r => r.score));
   const minScore = Math.min(...responses.map(r => r.score));
   const avgTime = Math.round(responses.reduce((s, r) => s + r.elapsed_seconds, 0) / total);
-
+ 
   panel.innerHTML = `
     <div class="grid-stats mb-20">
       <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
       <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}/10</div></div>
-      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}/10</div><div class="stat-sub">mejor calificación</div></div>
-      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}/10</div><div class="stat-sub">calificación más baja</div></div>
-      <div class="stat-card"><div class="stat-label">Tiempo prom.</div><div class="stat-value">${Math.floor(avgTime/60)}:${String(avgTime%60).padStart(2,'0')}</div><div class="stat-sub">minutos</div></div>
+      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}/10</div></div>
+      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}/10</div></div>
+      <div class="stat-card"><div class="stat-label">Tiempo prom.</div><div class="stat-value">${Math.floor(avgTime/60)}:${String(avgTime%60).padStart(2,'0')}</div></div>
     </div>
-
     <div class="card">
       <div class="card-title">Resultados por alumno</div>
       <table class="data-table">
-        <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Entregado</th></tr></thead>
+        <thead><tr><th>Alumno</th><th>Calificación</th><th>Tiempo</th><th>Entregado</th></tr></thead>
         <tbody>${responses.map(r => {
           const pct = Math.round((r.score / r.total_questions) * 100);
           const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
@@ -1182,13 +1203,10 @@ async function loadResults() {
             <td>
               <div style="display:flex;align-items:center;gap:10px;">
                 <span style="font-size:16px;font-weight:600;color:${color};">${r.score}/${r.total_questions}</span>
-                <div style="flex:1;max-width:100px;">
-                  <div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div>
-                </div>
+                <div style="flex:1;max-width:100px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
                 <span class="text-xs text-muted">${pct}%</span>
               </div>
             </td>
-            <td class="text-muted">${r.score} de ${r.total_questions}</td>
             <td class="text-muted">${mins}:${secs}</td>
             <td class="text-xs text-muted">${new Date(r.submitted_at).toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'})}</td>
           </tr>`;
@@ -1197,7 +1215,128 @@ async function loadResults() {
     </div>
   `;
 }
-
+ 
+// ================================================================
+// RECOMENDACIONES CON GEMINI
+// ================================================================
+const GEMINI_KEY = 'AIzaSyBgs_CqmAeY3k81t5bOT2nONwyoNjh9zZA';
+ 
+async function loadRecExamSelect() {
+  const { data } = await sb.from('exams').select('id, name, groups(name), status').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
+  const sel = document.getElementById('recExamSelect');
+  if (!data) return;
+  sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.name} · ${e.groups?.name || ''} · ${e.status}</option>`).join('');
+}
+ 
+async function generateRecommendations() {
+  const examId = document.getElementById('recExamSelect').value;
+  const panel = document.getElementById('recPanel');
+  if (!examId) return toast('Selecciona un examen primero');
+ 
+  panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando resultados con IA...</span></div>';
+ 
+  // Cargar respuestas y preguntas
+  const [{ data: responses }, { data: exam }] = await Promise.all([
+    sb.from('responses').select('*, students(name)').eq('exam_id', examId),
+    sb.from('exams').select('*, groups(name)').eq('id', examId).single()
+  ]);
+ 
+  if (!responses || responses.length === 0) {
+    panel.innerHTML = '<div class="empty"><div class="empty-title">Sin respuestas para analizar</div></div>';
+    return;
+  }
+ 
+  const { data: questions } = await sb.from('questions').select('*').in('id', exam.question_ids);
+  if (!questions) return;
+ 
+  // Calcular errores por pregunta y por tema
+  const qMap = {};
+  questions.forEach(q => { qMap[q.id] = q; });
+ 
+  const topicErrors = {};
+  const questionStats = questions.map(q => {
+    let correct = 0, wrong = 0;
+    responses.forEach(r => {
+      if (r.answers[q.id] === q.correct_answer) correct++;
+      else wrong++;
+    });
+    const topic = q.topic;
+    if (!topicErrors[topic]) topicErrors[topic] = { correct: 0, wrong: 0, subject: q.subject };
+    topicErrors[topic].correct += correct;
+    topicErrors[topic].wrong += wrong;
+    return { stem: q.stem.substring(0, 80), topic: q.topic, correct, wrong, total: responses.length };
+  });
+ 
+  // Preparar resumen para Gemini
+  const summary = Object.entries(topicErrors).map(([topic, stats]) => {
+    const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
+    return `- ${topic} (${stats.subject}): ${pct}% de errores (${stats.wrong} incorrectas de ${stats.correct + stats.wrong} respuestas)`;
+  }).join('\n');
+ 
+  const prompt = `Eres un experto en educación primaria y en la prueba PIENSE I de College Board Puerto Rico. Analiza los siguientes resultados de un examen de 6to grado y genera recomendaciones pedagógicas específicas para la docente.
+ 
+GRUPO: ${exam.groups?.name || '6to grado'}
+EXAMEN: ${exam.name}
+TOTAL DE ALUMNOS: ${responses.length}
+PROMEDIO GENERAL: ${(responses.reduce((s,r) => s + r.score, 0) / responses.length).toFixed(1)} de ${questions.length}
+ 
+ERRORES POR TEMA:
+${summary}
+ 
+Por favor:
+1. Identifica los 3 temas con mayor porcentaje de errores y explica por qué pueden ser difíciles para estudiantes de 6to grado
+2. Para cada tema problemático, sugiere 2-3 actividades concretas de repaso que la maestra puede hacer en clase
+3. Sugiere recursos o estrategias generales para reforzar los contenidos con más errores
+4. Da un mensaje motivador breve para compartir con los alumnos
+ 
+Responde en español, de forma clara y práctica, como si le hablaras directamente a la maestra. Usa encabezados para organizar tu respuesta.`;
+ 
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No se pudo generar el análisis.';
+ 
+    // Formatear la respuesta
+    const formatted = text
+      .replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+)/g, '<li style="margin-bottom:6px;">$1</li>')
+      .replace(/\n\n/g, '</p><p style="margin-bottom:10px;">')
+      .replace(/\n/g, '<br>');
+ 
+    panel.innerHTML = `
+      <div class="card mb-16">
+        <div class="card-title">Analisis de rendimiento — ${exam.name}</div>
+        <div class="grid-stats mb-16">
+          ${Object.entries(topicErrors).sort((a,b) => (b[1].wrong/(b[1].correct+b[1].wrong)) - (a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([topic, stats]) => {
+            const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
+            const color = pct >= 60 ? 'var(--danger)' : pct >= 40 ? 'var(--warning)' : 'var(--success)';
+            return `<div class="stat-card">
+              <div class="stat-label">${topic}</div>
+              <div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div>
+              <div class="stat-sub">de errores</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Recomendaciones de la IA</div>
+        <div style="font-size:14px;line-height:1.7;color:var(--text);">
+          <p style="margin-bottom:10px;">${formatted}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="text-xs text-muted">Análisis generado con Google Gemini 1.5 Flash · ${new Date().toLocaleDateString('es-MX')}</div>
+      </div>
+    `;
+  } catch(e) {
+    panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div><div class="empty-text">Verifica tu conexión e intenta de nuevo</div></div>';
+  }
+}
+ 
 // ================================================================
 // UTILS
 // ================================================================
@@ -1205,15 +1344,15 @@ function genCode(len) {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
-
+ 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
+ 
 // Close modal on overlay click
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-
+ 
 function toast(msg, duration = 3000) {
   const el = document.createElement('div');
   el.className = 'toast';
