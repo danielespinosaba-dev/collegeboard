@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         'X-Title': 'PIENSE Mini-Examenes'
       },
       body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct:free',
+        model: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free',
         messages: [{ role: 'user', content: prompt }]
       })
     });
