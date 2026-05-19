@@ -1,12 +1,13 @@
 exports.handler = async (event) => {
   try {
     const { prompt } = JSON.parse(event.body);
+    const key = process.env.OPENROUTER_KEY;
 
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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',
+        'Authorization': `Bearer ${key}`,
         'HTTP-Referer': 'https://college-board.netlify.app',
         'X-Title': 'PIENSE Mini-Examenes'
       },
@@ -17,7 +18,7 @@ exports.handler = async (event) => {
     });
 
     const data = await res.json();
-    const text = JSON.stringify(data);
+    const text = data?.choices?.[0]?.message?.content || JSON.stringify(data);
 
     return {
       statusCode: 200,
