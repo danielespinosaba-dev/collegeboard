@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIENSE II · Alumno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cb-navy: #003865;
+  --cb-blue: #0077c8;
+  --cb-blue-light: #e5f1fb;
+  --cb-gold: #f5a800;
+  --cb-gray: #f4f4f4;
+  --cb-gray-2: #e8e8e8;
+  --cb-gray-3: #999;
+  --cb-text: #1a1a1a;
+  --cb-text-2: #444;
+  --cb-border: #d0d0d0;
+  --cb-correct: #2e7d32;
+  --cb-correct-bg: #e8f5e9;
+  --cb-wrong: #c62828;
+  --cb-wrong-bg: #ffebee;
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-sans: 'Source Sans 3', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #fff;
+  color: var(--cb-text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.cb-header {
+  background: var(--cb-navy);
+  padding: 0;
+  border-bottom: 4px solid var(--cb-gold);
+}
+
+.cb-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cb-logo { display: flex; align-items: center; gap: 16px; }
+
+.cb-logo-mark {
+  width: 44px; height: 44px;
+  background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--cb-navy);
+  text-align: center; line-height: 1.2; font-family: var(--font-sans);
+}
+
+.cb-logo-text { color: #fff; }
+.cb-logo-title { font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
+.cb-logo-sub { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.cb-header-right { display: flex; align-items: center; gap: 12px; }
+
+.cb-timer-wrap { text-align: right; }
+.cb-timer-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.cb-timer { font-size: 28px; font-weight: 300; color: #fff; font-family: var(--font-sans); letter-spacing: 0.05em; }
+.cb-timer.urgent { color: #ff6b6b; }
+
+/* Avatar mini en header */
+.header-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--cb-gold);
+  object-fit: cover;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+}
+
+.cb-progress-bar { height: 4px; background: rgba(255,255,255,0.15); }
+.cb-progress-fill { height: 4px; background: var(--cb-gold); transition: width 0.4s ease; }
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ENTRY / WAITING */
+.entry-wrap {
+  min-height: calc(100vh - 68px);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cb-gray); padding: 24px;
+}
+
+.entry-box {
+  background: #fff;
+  border: 1px solid var(--cb-border);
+  border-top: 4px solid var(--cb-navy);
+  padding: 40px 44px;
+  width: 100%; max-width: 440px;
+}
+
+.entry-eyebrow { font-size: 11px; font-weight: 600; color: var(--cb-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.entry-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--cb-navy); margin-bottom: 6px; line-height: 1.3; }
+.entry-sub { font-size: 14px; color: var(--cb-gray-3); margin-bottom: 28px; border-bottom: 1px solid var(--cb-gray-2); padding-bottom: 20px; }
+
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 13px; font-weight: 600; color: var(--cb-text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.field input {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--cb-border);
+  font-family: var(--font-sans); font-size: 15px;
+  color: var(--cb-text); background: #fff; transition: border-color 0.15s;
+}
+.field input:focus { outline: none; border-color: var(--cb-blue); }
+.field input.code-input { font-size: 22px; font-weight: 600; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
+
+.cb-btn {
+  display: block; width: 100%; padding: 12px 20px;
+  background: var(--cb-navy); color: #fff;
+  font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  border: none; cursor: pointer; transition: background 0.15s; text-align: center;
+}
+.cb-btn:hover { background: var(--cb-blue); }
+.cb-btn:disabled { background: var(--cb-gray-3); cursor: not-allowed; }
+
+.cb-btn-google {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 12px 20px;
+  background: #fff; color: var(--cb-text);
+  font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+  border: 1.5px solid var(--cb-border);
+  cursor: pointer; transition: all 0.15s; text-align: center;
+  margin-bottom: 12px;
+}
+.cb-btn-google:hover { border-color: var(--cb-blue); background: var(--cb-blue-light); }
+
+.cb-btn-outline {
+  display: block; width: 100%; padding: 10px 20px;
+  background: transparent; color: var(--cb-navy);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  border: 1.5px solid var(--cb-navy); cursor: pointer; transition: all 0.15s; margin-top: 10px; text-align: center;
+}
+.cb-btn-outline:hover { background: var(--cb-navy); color: #fff; }
+
+.login-divider { text-align: center; font-size: 13px; color: var(--cb-gray-3); margin: 16px 0; }
+
+/* WAITING */
+.waiting-status {
+  background: var(--cb-gray); border-left: 4px solid var(--cb-gold);
+  padding: 16px 20px; margin: 20px 0;
+}
+.waiting-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cb-gold); display: inline-block; margin-right: 8px; animation: blink 1.2s infinite; }
+.waiting-dot.ready { background: var(--cb-correct); animation: none; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* EXAM */
+#screenExam { min-height: calc(100vh - 68px); display: none; }
+#screenExam.active { display: block; }
+
+.exam-subheader {
+  background: var(--cb-gray); border-bottom: 1px solid var(--cb-border);
+  padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+}
+.exam-section-label { font-size: 12px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.08em; }
+.exam-progress-text { font-size: 12px; color: var(--cb-gray-3); }
+
+.q-dots { display: flex; gap: 4px; flex-wrap: wrap; padding: 8px 24px; background: #fff; border-bottom: 1px solid var(--cb-border); justify-content: center; }
+.q-dot { width: 26px; height: 26px; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--cb-gray-3); transition: all 0.1s; font-family: var(--font-sans); }
+.q-dot:hover { border-color: var(--cb-blue); color: var(--cb-blue); }
+.q-dot.answered { background: var(--cb-blue-light); border-color: var(--cb-blue); color: var(--cb-navy); }
+.q-dot.current { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
+
+.exam-body { display: flex; min-height: calc(100vh - 160px); }
+
+.passage-col { width: 50%; border-right: 2px solid var(--cb-border); overflow-y: auto; max-height: calc(100vh - 160px); position: sticky; top: 0; }
+.passage-col.hidden { display: none; }
+.passage-inner { padding: 28px 32px; }
+.passage-eyebrow { font-size: 11px; font-weight: 600; color: var(--cb-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 2px solid var(--cb-gold); }
+.passage-title { font-family: var(--font-serif); font-size: 13px; font-weight: 700; color: var(--cb-navy); margin-bottom: 16px; font-style: italic; }
+.passage-text { font-family: var(--font-serif); font-size: 13px; line-height: 1.9; color: var(--cb-text); white-space: pre-wrap; }
+
+.question-col { flex: 1; overflow-y: auto; max-height: calc(100vh - 160px); }
+.question-col.full-width { width: 100%; max-width: 760px; margin: 0 auto; }
+.question-inner { padding: 28px 36px; max-width: 640px; }
+
+.q-instructions { background: var(--cb-gray); border-left: 3px solid var(--cb-navy); padding: 10px 14px; font-size: 13px; color: var(--cb-text-2); margin-bottom: 20px; font-style: italic; }
+.q-number-label { font-size: 12px; font-weight: 600; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.q-stem { font-family: var(--font-serif); font-size: 15px; color: var(--cb-text); line-height: 1.7; margin-bottom: 22px; }
+
+.options { margin-bottom: 28px; }
+.option { display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px; border: 1.5px solid var(--cb-border); margin-bottom: 8px; cursor: pointer; transition: all 0.1s; background: #fff; }
+.option:hover { border-color: var(--cb-blue); background: var(--cb-blue-light); }
+.option.selected { border-color: var(--cb-navy); background: var(--cb-blue-light); }
+.option.correct { border-color: var(--cb-correct); background: var(--cb-correct-bg); }
+.option.wrong { border-color: var(--cb-wrong); background: var(--cb-wrong-bg); }
+
+.option-bubble { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--cb-gray-3); flex-shrink: 0; margin-top: 1px; font-family: var(--font-sans); transition: all 0.1s; }
+.option.selected .option-bubble { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
+.option.correct .option-bubble { background: var(--cb-correct); border-color: var(--cb-correct); color: #fff; }
+.option.wrong .option-bubble { background: var(--cb-wrong); border-color: var(--cb-wrong); color: #fff; }
+.option-text { font-size: 14px; color: var(--cb-text); line-height: 1.5; font-family: var(--font-sans); }
+
+.exam-nav { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--cb-gray-2); }
+.nav-btn { padding: 9px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; border: 1.5px solid var(--cb-navy); transition: all 0.15s; }
+.nav-btn-prev { background: #fff; color: var(--cb-navy); }
+.nav-btn-prev:hover { background: var(--cb-navy); color: #fff; }
+.nav-btn-prev:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn-next { background: var(--cb-navy); color: #fff; border-color: var(--cb-navy); }
+.nav-btn-next:hover { background: var(--cb-blue); border-color: var(--cb-blue); }
+.nav-btn-submit { background: var(--cb-gold); color: var(--cb-navy); border-color: var(--cb-gold); }
+.nav-btn-submit:hover { background: #e09600; border-color: #e09600; }
+
+/* RESULT */
+.result-header { background: var(--cb-navy); color: #fff; padding: 28px 36px; }
+.result-header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cb-gold); margin-bottom: 6px; }
+.result-header-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.result-header-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+.result-score-band { background: var(--cb-gold); padding: 20px 36px; display: flex; align-items: center; gap: 32px; margin-bottom: 24px; }
+.result-score-number { font-size: 56px; font-weight: 700; color: var(--cb-navy); line-height: 1; font-family: var(--font-sans); }
+.result-score-label { font-size: 13px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.result-stats { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--cb-border); margin-bottom: 24px; }
+.result-stat { padding: 16px 20px; border-right: 1px solid var(--cb-border); text-align: center; }
+.result-stat:last-child { border-right: none; }
+.result-stat-value { font-size: 28px; font-weight: 600; color: var(--cb-navy); line-height: 1; margin-bottom: 4px; }
+.result-stat-label { font-size: 12px; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* PUNTOS Y AVATAR */
+.points-banner {
+  background: linear-gradient(135deg, var(--cb-navy) 0%, #1a3a6b 100%);
+  color: #fff;
+  padding: 20px 36px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.points-earned {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--cb-gold);
+  font-family: var(--font-sans);
+}
+
+.points-label { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.points-total { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+/* SHOP / AVATAR */
+.shop-section { border: 1px solid var(--cb-border); margin-bottom: 24px; }
+.shop-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; justify-content: space-between; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0; }
+.jersey-card { padding: 16px 12px; text-align: center; border-right: 1px solid var(--cb-border); border-bottom: 1px solid var(--cb-border); cursor: pointer; transition: all 0.15s; position: relative; }
+.jersey-card:hover { background: var(--cb-blue-light); }
+.jersey-card.owned { background: #f0fdf4; }
+.jersey-card.active-jersey { background: var(--cb-blue-light); border: 2px solid var(--cb-blue); }
+.jersey-emoji { font-size: 40px; margin-bottom: 6px; display: block; }
+.jersey-name { font-size: 12px; font-weight: 600; color: var(--cb-navy); margin-bottom: 2px; }
+.jersey-cost { font-size: 12px; color: var(--cb-gray-3); }
+.jersey-owned-badge { position: absolute; top: 6px; right: 6px; background: #22c55e; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
+.jersey-active-badge { position: absolute; top: 6px; left: 6px; background: var(--cb-blue); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
+
+/* REVIEW */
+.review-section { border: 1px solid var(--cb-border); margin-bottom: 20px; }
+.review-section-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.review-item { padding: 16px 20px; border-bottom: 1px solid var(--cb-gray-2); }
+.review-item:last-child { border-bottom: none; }
+.review-q-text { font-family: var(--font-serif); font-size: 13px; color: var(--cb-text); margin-bottom: 10px; line-height: 1.6; }
+.review-q-num { font-size: 11px; font-weight: 600; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.review-answer-row { display: flex; gap: 12px; font-size: 13px; flex-wrap: wrap; }
+.review-tag { padding: 3px 12px; font-size: 12px; font-weight: 600; }
+.review-tag-correct { background: var(--cb-correct-bg); color: var(--cb-correct); }
+.review-tag-wrong { background: var(--cb-wrong-bg); color: var(--cb-wrong); }
+.review-tag-skipped { background: var(--cb-gray); color: var(--cb-gray-3); }
+
+.spinner-wrap { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--cb-gray-3); gap: 12px; font-size: 14px; }
+.spinner { width: 20px; height: 20px; border: 2px solid var(--cb-gray-2); border-top-color: var(--cb-blue); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 700px) {
+  .exam-body { flex-direction: column; }
+  .passage-col { width: 100%; max-height: 280px; border-right: none; border-bottom: 2px solid var(--cb-border); position: relative; }
+  .question-col { max-height: none; }
+  .result-stats { grid-template-columns: 1fr; }
+  .result-stat { border-right: none; border-bottom: 1px solid var(--cb-border); }
+  .entry-box { padding: 28px 24px; }
+  .points-banner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header class="cb-header" id="mainHeader">
+  <div class="cb-header-inner">
+    <div class="cb-logo">
+      <div class="cb-logo-mark">College Board</div>
+      <div class="cb-logo-text">
+        <div class="cb-logo-title">PIENSE II</div>
+        <div class="cb-logo-sub">Prueba de Práctica · 9no grado</div>
+      </div>
+    </div>
+    <div class="cb-header-right">
+      <div class="cb-timer-wrap" id="timerWrap" style="display:none;">
+        <div class="cb-timer-label">Tiempo restante</div>
+        <div class="cb-timer" id="timerDisplay">10:00</div>
+      </div>
+      <div class="header-avatar" id="headerAvatar" style="display:none;" title="Mi avatar"></div>
+    </div>
+  </div>
+  <div class="cb-progress-bar">
+    <div class="cb-progress-fill" id="progressFill" style="width:0%;"></div>
+  </div>
+</header>
+
+<!-- ================================================================
+     SCREEN 1: LOGIN CON GOOGLE
+     ================================================================ -->
+<div class="screen active" id="screenLogin">
+  <div class="entry-wrap">
+    <div class="entry-box">
+      <div class="entry-eyebrow">College Board · Puerto Rico y América Latina</div>
+      <div class="entry-title">PIENSE II<br>9no grado</div>
+      <div class="entry-sub">Inicia sesión con tu cuenta Google para continuar</div>
+
+      <button class="cb-btn-google" onclick="loginWithGoogle()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+        Continuar con Google
+      </button>
+
+      <div class="login-divider">— o —</div>
+      <div style="font-size:13px;color:var(--cb-gray-3);text-align:center;">
+        Pide a tu docente que te comparta el código del examen
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 2: CÓDIGO DEL EXAMEN
+     ================================================================ -->
+<div class="screen" id="screenEntry">
+  <div class="entry-wrap">
+    <div class="entry-box">
+      <div class="entry-eyebrow">College Board · PIENSE II</div>
+      <div class="entry-title">Ingresa el código<br>de tu examen</div>
+      <div class="entry-sub" id="entryStudentName">Alumno registrado</div>
+      <div class="field">
+        <label>Código del examen</label>
+        <input type="text" id="examCode" class="code-input" placeholder="XXXXXXXX" maxlength="8"
+          oninput="this.value=this.value.toUpperCase()" onkeyup="if(event.key==='Enter') goToWaiting()">
+      </div>
+      <button class="cb-btn" onclick="goToWaiting()" id="btnSearchExam">Buscar examen</button>
+      <button class="cb-btn-outline" onclick="goToShop()">Ver mi avatar y tienda 🏆</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 3: SALA DE ESPERA
+     ================================================================ -->
+<div class="screen" id="screenWaiting">
+  <div class="entry-wrap">
+    <div class="entry-box">
+      <div class="entry-eyebrow">Sala de espera</div>
+      <div class="entry-title" id="waitExamName">Esperando instrucciones</div>
+      <div class="entry-sub">Alumno: <strong id="waitStudentName"></strong></div>
+      <div class="waiting-status">
+        <span class="waiting-dot" id="statusDot"></span>
+        <span id="statusMsg">Esperando al docente</span>
+        <div style="margin-top:8px;font-size:13px;color:var(--cb-gray-3);" id="statusSub">
+          El examen comenzará cuando el docente lo active. No cierres esta página.
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--cb-gray-3);text-align:center;">
+        Prepárate. Tendrás 10 minutos para contestar.
+      </div>
+      <button class="cb-btn-outline" onclick="goToEntry()">Cambiar código</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 4: EXAMEN
+     ================================================================ -->
+<div class="screen" id="screenExam">
+  <div class="exam-subheader">
+    <div class="exam-section-label" id="examSectionLabel">Sección</div>
+    <div class="exam-progress-text" id="examProgressText">Pregunta 1 de 10</div>
+  </div>
+  <div class="q-dots" id="qDots"></div>
+  <div class="exam-body">
+    <div class="passage-col hidden" id="passageCol">
+      <div class="passage-inner">
+        <div class="passage-eyebrow">Lectura</div>
+        <div class="passage-title" id="passageTitle"></div>
+        <div class="passage-text" id="passageText"></div>
+      </div>
+    </div>
+    <div class="question-col" id="questionCol">
+      <div class="question-inner">
+        <div class="q-instructions" id="qInstructions" style="display:none;"></div>
+        <div class="q-number-label" id="qNumberLabel">Pregunta 1</div>
+        <div class="q-stem" id="qStem">Cargando...</div>
+        <div class="options" id="optionsContainer"></div>
+        <div class="exam-nav">
+          <button class="nav-btn nav-btn-prev" id="btnPrev" onclick="prevQuestion()">← Anterior</button>
+          <button class="nav-btn nav-btn-next" id="btnNext" onclick="nextQuestion()">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 5: RESULTADOS + PUNTOS + AVATAR
+     ================================================================ -->
+<div class="screen" id="screenResult">
+  <div style="max-width:760px;margin:0 auto;">
+    <div class="result-header">
+      <div class="result-header-eyebrow">College Board · PIENSE II</div>
+      <div class="result-header-title">Resultados de la Prueba</div>
+      <div class="result-header-sub" id="resultStudentName">Estudiante</div>
+    </div>
+
+    <div class="result-score-band">
+      <div>
+        <div class="result-score-number" id="scoreBig">-</div>
+      </div>
+      <div>
+        <div class="result-score-label">Reactivos correctos</div>
+        <div style="font-size:13px;color:var(--cb-navy);margin-top:4px;" id="scoreOutOf"></div>
+      </div>
+    </div>
+
+    <div class="result-stats" id="resultStats"></div>
+
+    <!-- Puntos ganados -->
+    <div class="points-banner" id="pointsBanner" style="display:none;">
+      <div>
+        <div class="points-earned" id="pointsEarned">+0 pts</div>
+        <div class="points-label">Puntos ganados en este examen</div>
+        <div class="points-total" id="pointsTotal">Total acumulado: 0 pts</div>
+      </div>
+      <div style="font-size:48px;" id="bannerJersey">🇲🇽</div>
+    </div>
+
+    <!-- Tienda de playeras -->
+    <div class="shop-section" id="shopSection">
+      <div class="shop-header">
+        🏆 Mi Avatar · Tienda de Playeras
+        <span id="shopPoints" style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6);"></span>
+      </div>
+      <div class="shop-grid" id="shopGrid"></div>
+    </div>
+
+    <!-- Revisión -->
+    <div class="review-section">
+      <div class="review-section-header">Revisión de respuestas</div>
+      <div id="reviewList"></div>
+    </div>
+
+    <div style="padding:20px 0;">
+      <button class="cb-btn" style="max-width:260px;" onclick="goToEntry()">Nueva prueba</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCREEN 6: AVATAR / TIENDA (sin examen activo)
+     ================================================================ -->
+<div class="screen" id="screenShop">
+  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+    <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;margin-bottom:0;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--cb-gold);margin-bottom:4px;">Mi perfil</div>
+      <div style="font-size:20px;font-weight:700;" id="shopStudentName">Alumno</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:2px;" id="shopStudentPoints">0 puntos acumulados</div>
+    </div>
+    <div style="background:var(--cb-gold);padding:16px 28px;display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="font-size:48px;" id="shopActiveJersey">🇲🇽</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--cb-navy);text-transform:uppercase;letter-spacing:0.06em;">Playera activa</div>
+        <div style="font-size:12px;color:var(--cb-navy);" id="shopActiveJerseyName">Selección México</div>
+      </div>
+    </div>
+    <div class="shop-section">
+      <div class="shop-header">Tienda de Playeras</div>
+      <div class="shop-grid" id="shopGridFull"></div>
+    </div>
+    <button class="cb-btn" onclick="goToEntry()">← Volver al examen</button>
+  </div>
+</div>
+
+<!-- ================================================================
+     SUPABASE + SCRIPTS
+     ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// STATE
+let currentUser = null;       // Supabase Auth user
+let currentStudent = null;    // row en tabla students
+let currentExam = null;
+let currentQuestions = [];
+let currentQIndex = 0;
+let userAnswers = {};
+let timerInterval = null;
+let waitInterval = null;
+let startTime = null;
+let elapsedSeconds = 0;
+let secondsRemaining = 600;
+let allShopItems = [];
+
+const pruebaLabels = {
+  habilidad_cognoscitiva: 'Parte 1 — Habilidad Cognoscitiva',
+  espanol: 'Parte 2 — Español',
+  matematicas: 'Parte 3 — Matemáticas',
+  ingles: 'Parte 4 — Inglés',
+  mixto: 'PIENSE II'
+};
+
+const jerseyEmojis = {
+  mexico: '🇲🇽',
+  argentina: '🇦🇷',
+  brasil: '🇧🇷',
+  francia: '🇫🇷',
+  portugal: '🇵🇹',
+  inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+  alemania: '🇩🇪',
+  espana: '🇪🇸'
+};
+
+// ================================================================
+// INIT
+// ================================================================
+window.onload = async () => {
+  // Escuchar cambios de sesión (callback de Google OAuth)
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      currentUser = session.user;
+      await loadOrCreateStudent();
+      showScreen('screenEntry');
+    } else {
+      currentUser = null;
+      currentStudent = null;
+      showScreen('screenLogin');
+    }
+  });
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    currentUser = session.user;
+    await loadOrCreateStudent();
+    showScreen('screenEntry');
+  } else {
+    showScreen('screenLogin');
+  }
+};
+
+async function loginWithGoogle() {
+  await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.href
+    }
+  });
+}
+
+async function loadOrCreateStudent() {
+  // Buscar perfil existente
+  const { data } = await sb.from('students')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .single();
+
+  if (data) {
+    currentStudent = data;
+  } else {
+    // Crear perfil nuevo
+    const nombre = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Alumno';
+    const { data: newStudent } = await sb.from('students').insert({
+      user_id: currentUser.id,
+      nombre,
+      grado: '9',
+      puntos_totales: 0,
+      playera_activa: 'mexico',
+      playeras_desbloqueadas: ['mexico']
+    }).select().single();
+    currentStudent = newStudent;
+  }
+
+  if (currentStudent) {
+    updateHeaderAvatar();
+    document.getElementById('entryStudentName').textContent =
+      `Bienvenido, ${currentStudent.nombre}`;
+  }
+}
+
+function updateHeaderAvatar() {
+  if (!currentStudent) return;
+  const el = document.getElementById('headerAvatar');
+  el.style.display = 'flex';
+  el.textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
+}
+
+// ================================================================
+// SCREENS
+// ================================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goToEntry() {
+  clearInterval(waitInterval);
+  clearInterval(timerInterval);
+  currentExam = null;
+  currentQuestions = [];
+  userAnswers = {};
+  currentQIndex = 0;
+  document.getElementById('examCode').value = '';
+  document.getElementById('timerWrap').style.display = 'none';
+  document.getElementById('progressFill').style.width = '0%';
+  showScreen('screenEntry');
+}
+
+function goToShop() {
+  loadShopScreen();
+  showScreen('screenShop');
+}
+
+// ================================================================
+// BUSCAR EXAMEN
+// ================================================================
+async function goToWaiting() {
+  if (!currentStudent) return alert('Debes iniciar sesión primero');
+  const code = document.getElementById('examCode').value.trim().toUpperCase();
+  if (code.length < 4) return alert('Ingresa el código del examen');
+
+  const btn = document.getElementById('btnSearchExam');
+  btn.disabled = true;
+  btn.textContent = 'Buscando...';
+
+  const { data, error } = await sb.from('exam_sessions_p2')
+    .select('*')
+    .eq('codigo', code)
+    .single();
+
+  btn.disabled = false;
+  btn.textContent = 'Buscar examen';
+
+  if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
+
+  currentExam = data;
+  document.getElementById('waitStudentName').textContent = currentStudent.nombre;
+  document.getElementById('waitExamName').textContent = data.nombre || 'Examen PIENSE II';
+  showScreen('screenWaiting');
+  startWaiting();
+}
+
+// ================================================================
+// SALA DE ESPERA
+// ================================================================
+function startWaiting() {
+  checkExamStatus();
+  waitInterval = setInterval(checkExamStatus, 3000);
+}
+
+async function checkExamStatus() {
+  const { data } = await sb.from('exam_sessions_p2')
+    .select('activa')
+    .eq('id', currentExam.id)
+    .single();
+  if (!data) return;
+
+  const dot = document.getElementById('statusDot');
+  const msg = document.getElementById('statusMsg');
+  const sub = document.getElementById('statusSub');
+
+  if (data.activa) {
+    dot.classList.add('ready');
+    msg.textContent = 'El examen está listo. Comenzando...';
+    sub.textContent = '';
+    clearInterval(waitInterval);
+    setTimeout(() => startExam(), 1500);
+  }
+}
+
+// ================================================================
+// EXAMEN
+// ================================================================
+async function startExam() {
+  const { data } = await sb.from('piense2_questions')
+    .select('*')
+    .in('id', currentExam.question_ids);
+
+  if (!data || !data.length) return alert('Error al cargar preguntas.');
+
+  currentQuestions = currentExam.question_ids
+    .map(id => data.find(q => q.id === id))
+    .filter(Boolean);
+
+  showScreen('screenExam');
+  document.getElementById('timerWrap').style.display = 'block';
+  secondsRemaining = currentExam.duracion_segundos || 600;
+  startTime = Date.now();
+  renderTimer();
+  timerInterval = setInterval(() => {
+    secondsRemaining--;
+    if (secondsRemaining <= 0) { secondsRemaining = 0; submitExam(true); }
+    renderTimer();
+  }, 1000);
+  renderQuestion();
+  renderDots();
+}
+
+function renderTimer() {
+  const mins = Math.floor(secondsRemaining / 60);
+  const secs = String(secondsRemaining % 60).padStart(2, '0');
+  const el = document.getElementById('timerDisplay');
+  el.textContent = `${mins}:${secs}`;
+  el.classList.toggle('urgent', secondsRemaining <= 60);
+}
+
+function renderQuestion() {
+  const q = currentQuestions[currentQIndex];
+  const total = currentQuestions.length;
+  const pct = ((currentQIndex + 1) / total) * 100;
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
+  document.getElementById('examSectionLabel').textContent = pruebaLabels[q.prueba] || q.prueba;
+  document.getElementById('qNumberLabel').textContent = `${currentQIndex + 1}.`;
+  document.getElementById('qStem').textContent = q.enunciado;
+
+  // Instrucciones por subtipo
+  const instrEl = document.getElementById('qInstructions');
+  const instrMap = {
+    transformacion_logica: 'Selecciona la opción que indica la relación de orden que se establece entre las letras o los números.',
+    metafora: 'Selecciona la opción que mejor representa el significado de la frase que se ofrece.',
+    analogia: 'Selecciona la opción que se relaciona con el término subrayado de la misma forma que se relacionan los primeros dos términos.',
+    secuencia: 'Selecciona la opción que mejor completa la secuencia de números o letras que se presenta.',
+    matriz: 'Selecciona la opción que mejor completa la estructura del cuadro.',
+    diagrama: 'Selecciona la opción que representa el sector apropiado en el diagrama de círculos.',
+    razonamiento_condicional: 'Selecciona la conclusión que debe obtenerse a partir de las premisas dadas.',
+    razonamiento_practico: 'Después de examinar las diferentes posibilidades, selecciona la opción más probable.'
+  };
+
+  if (instrMap[q.subtipo]) {
+    instrEl.style.display = 'block';
+    instrEl.textContent = instrMap[q.subtipo];
+  } else {
+    instrEl.style.display = 'none';
+  }
+
+  // Contexto (lectura)
+  const passageCol = document.getElementById('passageCol');
+  const questionCol = document.getElementById('questionCol');
+  if (q.contexto) {
+    passageCol.classList.remove('hidden');
+    questionCol.classList.remove('full-width');
+    document.getElementById('passageTitle').textContent = 'Lectura de referencia';
+    document.getElementById('passageText').textContent = q.contexto;
+  } else {
+    passageCol.classList.add('hidden');
+    questionCol.classList.add('full-width');
+  }
+
+  // Opciones
+  const letters = ['A', 'B', 'C', 'D'];
+  const opciones = q.opciones || {};
+  const selected = userAnswers[q.id];
+  document.getElementById('optionsContainer').innerHTML = letters.map(l => `
+    <div class="option ${selected === l ? 'selected' : ''}" onclick="selectAnswer('${q.id}','${l}')">
+      <div class="option-bubble">${l}</div>
+      <div class="option-text">${opciones[l] || ''}</div>
+    </div>
+  `).join('');
+
+  // Nav
+  document.getElementById('btnPrev').disabled = currentQIndex === 0;
+  const isLast = currentQIndex === total - 1;
+  const btnNext = document.getElementById('btnNext');
+  if (isLast) {
+    btnNext.textContent = 'Entregar prueba';
+    btnNext.className = 'nav-btn nav-btn-submit';
+    btnNext.onclick = confirmSubmit;
+  } else {
+    btnNext.textContent = 'Siguiente →';
+    btnNext.className = 'nav-btn nav-btn-next';
+    btnNext.onclick = nextQuestion;
+  }
+
+  renderDots();
+}
+
+function renderDots() {
+  document.getElementById('qDots').innerHTML = currentQuestions.map((q, i) => `
+    <div class="q-dot ${i === currentQIndex ? 'current' : userAnswers[q.id] ? 'answered' : ''}"
+         onclick="goToQuestion(${i})">${i + 1}</div>
+  `).join('');
+}
+
+function selectAnswer(qId, letter) {
+  userAnswers[qId] = letter;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; renderQuestion(); }
+}
+
+function prevQuestion() {
+  if (currentQIndex > 0) { currentQIndex--; renderQuestion(); }
+}
+
+function goToQuestion(i) { currentQIndex = i; renderQuestion(); }
+
+function confirmSubmit() {
+  const answered = Object.keys(userAnswers).length;
+  const total = currentQuestions.length;
+  if (answered < total) {
+    if (!confirm(`Tienes ${total - answered} pregunta(s) sin contestar. ¿Deseas entregar de todas formas?`)) return;
+  }
+  submitExam(false);
+}
+
+async function submitExam(timeUp) {
+  clearInterval(timerInterval);
+  elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
+
+  let aciertos = 0;
+  currentQuestions.forEach(q => {
+    if (userAnswers[q.id] === q.respuesta_correcta) aciertos++;
+  });
+
+  const total = currentQuestions.length;
+  const calificacion = Math.round((aciertos / total) * 100);
+
+  // Puntos: calificacion / 10 redondeado
+  const puntosGanados = Math.round(calificacion / 10);
+
+  // Guardar resultado
+  await sb.from('student_results_p2').insert({
+    session_id: currentExam.id,
+    student_id: currentStudent.id,
+    respuestas: userAnswers,
+    calificacion,
+    aciertos,
+    total_preguntas: total,
+    tiempo_segundos: elapsedSeconds,
+    puntos_ganados: puntosGanados
+  });
+
+  // Actualizar puntos del alumno
+  const newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
+  await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
+  currentStudent.puntos_totales = newTotal;
+
+  showResults(aciertos, calificacion, puntosGanados, newTotal);
+}
+
+// ================================================================
+// RESULTADOS
+// ================================================================
+async function showResults(aciertos, calificacion, puntosGanados, totalPuntos) {
+  const total = currentQuestions.length;
+  const mins = Math.floor(elapsedSeconds / 60);
+  const secs = String(elapsedSeconds % 60).padStart(2, '0');
+  const wrong = Object.keys(userAnswers).length - aciertos;
+  const skipped = total - Object.keys(userAnswers).length;
+
+  document.getElementById('resultStudentName').textContent = currentStudent.nombre;
+  document.getElementById('scoreBig').textContent = aciertos;
+  document.getElementById('scoreOutOf').textContent = `de ${total} reactivos · ${calificacion}/100`;
+
+  document.getElementById('resultStats').innerHTML = `
+    <div class="result-stat">
+      <div class="result-stat-value">${aciertos}</div>
+      <div class="result-stat-label">Correctas</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div>
+      <div class="result-stat-label">Incorrectas</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-value">${mins}:${secs}</div>
+      <div class="result-stat-label">Tiempo</div>
+    </div>
+  `;
+
+  // Puntos banner
+  const bannerEl = document.getElementById('pointsBanner');
+  bannerEl.style.display = 'flex';
+  document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
+  document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
+  document.getElementById('bannerJersey').textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
+
+  // Tienda
+  await loadShopInResults();
+
+  // Revisión
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {
+    const userAns = userAnswers[q.id];
+    const correct = userAns === q.respuesta_correcta;
+    const sk = !userAns;
+    const opciones = q.opciones || {};
+    return `
+      <div class="review-item">
+        <div class="review-q-num">Reactivo ${i + 1} · ${q.subtipo ? q.subtipo.replace(/_/g,' ') : ''}</div>
+        <div class="review-q-text">${q.enunciado.substring(0, 200)}</div>
+        <div class="review-answer-row">
+          ${sk
+            ? '<span class="review-tag review-tag-skipped">Sin contestar</span>'
+            : correct
+              ? `<span class="review-tag review-tag-correct">Correcta: ${userAns}. ${opciones[userAns] || ''}</span>`
+              : `<span class="review-tag review-tag-wrong">Tu respuesta: ${userAns}. ${opciones[userAns] || ''}</span>
+                 <span class="review-tag review-tag-correct">Correcta: ${q.respuesta_correcta}. ${opciones[q.respuesta_correcta] || ''}</span>`
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('timerWrap').style.display = 'none';
+  showScreen('screenResult');
+}
+
+// ================================================================
+// SHOP / AVATAR
+// ================================================================
+async function loadShopItems() {
+  if (allShopItems.length > 0) return;
+  const { data } = await sb.from('shop_items').select('*').eq('disponible', true).order('costo_puntos');
+  allShopItems = data || [];
+}
+
+async function loadShopInResults() {
+  await loadShopItems();
+  const owned = currentStudent.playeras_desbloqueadas || ['mexico'];
+  const pts = currentStudent.puntos_totales || 0;
+
+  document.getElementById('shopPoints').textContent = `${pts} pts disponibles`;
+  document.getElementById('shopGrid').innerHTML = allShopItems.map(item => {
+    const isOwned = owned.includes(item.slug);
+    const isActive = currentStudent.playera_activa === item.slug;
+    const canBuy = !isOwned && pts >= item.costo_puntos;
+    return `
+      <div class="jersey-card ${isOwned ? 'owned' : ''} ${isActive ? 'active-jersey' : ''}"
+           onclick="${isOwned ? `equipJersey('${item.slug}')` : canBuy ? `buyJersey('${item.slug}', ${item.costo_puntos})` : ''}">
+        ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
+        ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
+        <span class="jersey-emoji">${item.emoji_bandera || jerseyEmojis[item.slug] || '🏳️'}</span>
+        <div class="jersey-name">${item.nombre}</div>
+        <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Toca para equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function loadShopScreen() {
+  await loadShopItems();
+  if (!currentStudent) return;
+  const owned = currentStudent.playeras_desbloqueadas || ['mexico'];
+  const pts = currentStudent.puntos_totales || 0;
+
+  document.getElementById('shopStudentName').textContent = currentStudent.nombre;
+  document.getElementById('shopStudentPoints').textContent = `${pts} puntos acumulados`;
+  document.getElementById('shopActiveJersey').textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
+
+  const activeItem = allShopItems.find(i => i.slug === currentStudent.playera_activa);
+  document.getElementById('shopActiveJerseyName').textContent = activeItem?.nombre || 'Selección México';
+
+  document.getElementById('shopGridFull').innerHTML = allShopItems.map(item => {
+    const isOwned = owned.includes(item.slug);
+    const isActive = currentStudent.playera_activa === item.slug;
+    const canBuy = !isOwned && pts >= item.costo_puntos;
+    return `
+      <div class="jersey-card ${isOwned ? 'owned' : ''} ${isActive ? 'active-jersey' : ''}"
+           onclick="${isOwned ? `equipJerseyShop('${item.slug}')` : canBuy ? `buyJerseyShop('${item.slug}', ${item.costo_puntos})` : ''}">
+        ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
+        ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
+        <span class="jersey-emoji">${item.emoji_bandera || jerseyEmojis[item.slug] || '🏳️'}</span>
+        <div class="jersey-name">${item.nombre}</div>
+        <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Toca para equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function buyJersey(slug, cost) {
+  if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
+  const newPts = (currentStudent.puntos_totales || 0) - cost;
+  if (newPts < 0) return alert('No tienes suficientes puntos');
+
+  const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
+
+  // Guardar en inventario
+  await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
+
+  // Actualizar student
+  await sb.from('students').update({
+    puntos_totales: newPts,
+    playeras_desbloqueadas: newUnlocked,
+    playera_activa: slug
+  }).eq('id', currentStudent.id);
+
+  currentStudent.puntos_totales = newPts;
+  currentStudent.playeras_desbloqueadas = newUnlocked;
+  currentStudent.playera_activa = slug;
+
+  updateHeaderAvatar();
+  document.getElementById('shopPoints').textContent = `${newPts} pts disponibles`;
+  document.getElementById('pointsTotal').textContent = `Total acumulado: ${newPts} pts`;
+  document.getElementById('bannerJersey').textContent = jerseyEmojis[slug] || '🏳️';
+  await loadShopInResults();
+}
+
+async function equipJersey(slug) {
+  await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
+  currentStudent.playera_activa = slug;
+  updateHeaderAvatar();
+  document.getElementById('bannerJersey').textContent = jerseyEmojis[slug] || '🏳️';
+  await loadShopInResults();
+}
+
+async function buyJerseyShop(slug, cost) {
+  if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
+  const newPts = (currentStudent.puntos_totales || 0) - cost;
+  if (newPts < 0) return alert('No tienes suficientes puntos');
+
+  const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
+  await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
+  await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
+
+  currentStudent.puntos_totales = newPts;
+  currentStudent.playeras_desbloqueadas = newUnlocked;
+  currentStudent.playera_activa = slug;
+  updateHeaderAvatar();
+  loadShopScreen();
+}
+
+async function equipJerseyShop(slug) {
+  await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
+  currentStudent.playera_activa = slug;
+  updateHeaderAvatar();
+  loadShopScreen();
+}
+
+async function getItemId(slug) {
+  const item = allShopItems.find(i => i.slug === slug);
+  return item?.id || null;
+}
+</script>
+</body>
+</html>
