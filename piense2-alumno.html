@@ -551,19 +551,25 @@ const jerseyEmojis = {
 // INIT
 // ================================================================
 window.onload = async () => {
-  // Escuchar cambios de sesión (callback de Google OAuth)
+  // Limpiar hash de URL después del callback de OAuth
+  if (window.location.hash && window.location.hash.includes('access_token')) {
+    history.replaceState(null, '', window.location.pathname);
+  }
+
+  // Escuchar cambios de sesión
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) {
+    if (event === 'SIGNED_IN' && session?.user) {
       currentUser = session.user;
       await loadOrCreateStudent();
       showScreen('screenEntry');
-    } else {
+    } else if (event === 'SIGNED_OUT') {
       currentUser = null;
       currentStudent = null;
       showScreen('screenLogin');
     }
   });
 
+  // Verificar sesión activa
   const { data: { session } } = await sb.auth.getSession();
   if (session?.user) {
     currentUser = session.user;
