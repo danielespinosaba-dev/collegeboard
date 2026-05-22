@@ -333,16 +333,39 @@ body {
     <div class="entry-box">
       <div class="entry-eyebrow">College Board · Puerto Rico y América Latina</div>
       <div class="entry-title">PIENSE II<br>9no grado</div>
-      <div class="entry-sub">Inicia sesión con tu cuenta Google para continuar</div>
+      <div class="entry-sub">Inicia sesion o crea tu cuenta para continuar</div>
 
-      <button class="cb-btn-google" onclick="loginWithGoogle()">
-        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
-        Continuar con Google
-      </button>
-
-      <div class="login-divider">— o —</div>
-      <div style="font-size:13px;color:var(--cb-gray-3);text-align:center;">
-        Pide a tu docente que te comparta el código del examen
+            <div id="loginForm">
+        <div class="field">
+          <label>Correo electronico</label>
+          <input type="email" id="loginEmail" placeholder="tucorreo@escuela.edu.mx" autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Contrasena</label>
+          <input type="password" id="loginPassword" placeholder="Contrasena" autocomplete="current-password" onkeyup="if(event.key==='Enter') doLoginAlumno()">
+        </div>
+        <button class="cb-btn" onclick="doLoginAlumno()">Iniciar sesion</button>
+        <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
+          Primera vez? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Crear cuenta</a>
+        </div>
+      </div>
+      <div id="registerForm" style="display:none;">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="regNombre" placeholder="Apellido(s), Nombre(s)">
+        </div>
+        <div class="field">
+          <label>Correo electronico</label>
+          <input type="email" id="regEmail" placeholder="tucorreo@escuela.edu.mx">
+        </div>
+        <div class="field">
+          <label>Contrasena</label>
+          <input type="password" id="regPassword" placeholder="Minimo 6 caracteres">
+        </div>
+        <button class="cb-btn" onclick="doRegisterAlumno()">Crear cuenta</button>
+        <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
+          Ya tienes cuenta? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Iniciar sesion</a>
+        </div>
       </div>
     </div>
   </div>
@@ -357,6 +380,9 @@ body {
       <div class="entry-eyebrow">College Board · PIENSE II</div>
       <div class="entry-title">Ingresa el código<br>de tu examen</div>
       <div class="entry-sub" id="entryStudentName">Alumno registrado</div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:8px;">
+        <a onclick="cerrarSesionAlumno()" style="font-size:12px;color:var(--cb-gray-3);cursor:pointer;">Cerrar sesion</a>
+      </div>
       <div class="field">
         <label>Código del examen</label>
         <input type="text" id="examCode" class="code-input" placeholder="XXXXXXXX" maxlength="8"
@@ -551,9 +577,73 @@ const jerseyEmojis = {
 // INIT
 // ================================================================
 window.onload = async () => {
-  // Limpiar hash de URL después del callback de OAuth
-  if (window.location.hash && window.location.hash.includes('access_token')) {
-    history.replaceState(null, '', window.location.pathname);
+  const saved = localStorage.getItem('piense2_alumno');
+  if (saved) {
+    currentStudent = JSON.parse(saved);
+    showScreen('screenEntry');
+    document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
+    updateHeaderAvatar();
+  } else {
+    showScreen('screenLogin');
+  }
+};
+
+function toggleLoginRegister() {
+  const lf = document.getElementById('loginForm');
+  const rf = document.getElementById('registerForm');
+  lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
+  rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+}
+
+async function doLoginAlumno() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return alert('Completa todos los campos');
+  const { data, error } = await sb.from('students').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  if (error || !data) return alert('Credenciales incorrectas');
+  currentStudent = data;
+  localStorage.setItem('piense2_alumno', JSON.stringify(data));
+  document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
+  updateHeaderAvatar();
+  showScreen('screenEntry');
+}
+
+async function doRegisterAlumno() {
+  const nombre = document.getElementById('regNombre').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  if (!nombre || !email || !password) return alert('Completa todos los campos');
+  if (password.length < 6) return alert('La contrasena debe tener al menos 6 caracteres');
+  const { data, error } = await sb.from('students').insert({
+    nombre,
+    email,
+    password_hash: btoa(password),
+    grado: '9',
+    puntos_totales: 0,
+    playera_activa: 'mexico',
+    playeras_desbloqueadas: ['mexico']
+  }).select().single();
+  if (error) return alert(error.code === '23505' ? 'Este correo ya esta registrado' : 'Error: ' + error.message);
+  currentStudent = data;
+  localStorage.setItem('piense2_alumno', JSON.stringify(data));
+  document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
+  updateHeaderAvatar();
+  showScreen('screenEntry');
+}
+
+function DISABLED_onload() {
+  // Manejar el callback de OAuth (cuando Google redirige de vuelta)
+  const hash = window.location.hash;
+  if (hash && (hash.includes('access_token') || hash.includes('error'))) {
+    // Dejar que Supabase procese el hash
+    const { data, error } = await sb.auth.getSession();
+    if (data?.session?.user) {
+      currentUser = data.session.user;
+      history.replaceState(null, '', window.location.pathname);
+      await loadOrCreateStudent();
+      showScreen('screenEntry');
+      return;
+    }
   }
 
   // Escuchar cambios de sesión
@@ -569,7 +659,7 @@ window.onload = async () => {
     }
   });
 
-  // Verificar sesión activa
+  // Verificar sesión activa existente
   const { data: { session } } = await sb.auth.getSession();
   if (session?.user) {
     currentUser = session.user;
@@ -579,15 +669,6 @@ window.onload = async () => {
     showScreen('screenLogin');
   }
 };
-
-async function loginWithGoogle() {
-  await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: window.location.href
-    }
-  });
-}
 
 async function loadOrCreateStudent() {
   // Buscar perfil existente
@@ -617,6 +698,12 @@ async function loadOrCreateStudent() {
     document.getElementById('entryStudentName').textContent =
       `Bienvenido, ${currentStudent.nombre}`;
   }
+}
+
+function cerrarSesionAlumno() {
+  localStorage.removeItem('piense2_alumno');
+  currentStudent = null;
+  showScreen('screenLogin');
 }
 
 function updateHeaderAvatar() {
