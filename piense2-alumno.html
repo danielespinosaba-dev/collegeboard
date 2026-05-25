@@ -631,45 +631,6 @@ async function doRegisterAlumno() {
   showScreen('screenEntry');
 }
 
-function DISABLED_onload() {
-  // Manejar el callback de OAuth (cuando Google redirige de vuelta)
-  const hash = window.location.hash;
-  if (hash && (hash.includes('access_token') || hash.includes('error'))) {
-    // Dejar que Supabase procese el hash
-    const { data, error } = await sb.auth.getSession();
-    if (data?.session?.user) {
-      currentUser = data.session.user;
-      history.replaceState(null, '', window.location.pathname);
-      await loadOrCreateStudent();
-      showScreen('screenEntry');
-      return;
-    }
-  }
-
-  // Escuchar cambios de sesión
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session?.user) {
-      currentUser = session.user;
-      await loadOrCreateStudent();
-      showScreen('screenEntry');
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      currentStudent = null;
-      showScreen('screenLogin');
-    }
-  });
-
-  // Verificar sesión activa existente
-  const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) {
-    currentUser = session.user;
-    await loadOrCreateStudent();
-    showScreen('screenEntry');
-  } else {
-    showScreen('screenLogin');
-  }
-};
-
 async function loadOrCreateStudent() {
   // Buscar perfil existente
   const { data } = await sb.from('students')
