@@ -37,141 +37,51 @@ body {
   line-height: 1.6;
 }
 
-/* HEADER */
-.cb-header {
-  background: var(--cb-navy);
-  padding: 0;
-  border-bottom: 4px solid var(--cb-gold);
-}
-
-.cb-header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
+.cb-header { background: var(--cb-navy); padding: 0; border-bottom: 4px solid var(--cb-gold); }
+.cb-header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
 .cb-logo { display: flex; align-items: center; gap: 16px; }
-
-.cb-logo-mark {
-  width: 44px; height: 44px;
-  background: #fff; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700; color: var(--cb-navy);
-  text-align: center; line-height: 1.2; font-family: var(--font-sans);
-}
-
+.cb-logo-mark { width: 44px; height: 44px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--cb-navy); text-align: center; line-height: 1.2; font-family: var(--font-sans); }
 .cb-logo-text { color: #fff; }
 .cb-logo-title { font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
 .cb-logo-sub { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; }
-
 .cb-header-right { display: flex; align-items: center; gap: 12px; }
-
 .cb-timer-wrap { text-align: right; }
 .cb-timer-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
 .cb-timer { font-size: 28px; font-weight: 300; color: #fff; font-family: var(--font-sans); letter-spacing: 0.05em; }
 .cb-timer.urgent { color: #ff6b6b; }
-
-/* Avatar mini en header */
-.header-avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--cb-gold);
-  object-fit: cover;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex; align-items: center; justify-content: center;
-  background: #fff;
-}
-
+.header-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cb-gold); overflow: hidden; cursor: pointer; display: none; align-items: center; justify-content: center; background: #fff; }
 .cb-progress-bar { height: 4px; background: rgba(255,255,255,0.15); }
 .cb-progress-fill { height: 4px; background: var(--cb-gold); transition: width 0.4s ease; }
 
-/* SCREENS */
 .screen { display: none; }
 .screen.active { display: block; }
 
-/* ENTRY / WAITING */
-.entry-wrap {
-  min-height: calc(100vh - 68px);
-  display: flex; align-items: center; justify-content: center;
-  background: var(--cb-gray); padding: 24px;
-}
-
-.entry-box {
-  background: #fff;
-  border: 1px solid var(--cb-border);
-  border-top: 4px solid var(--cb-navy);
-  padding: 40px 44px;
-  width: 100%; max-width: 440px;
-}
-
+.entry-wrap { min-height: calc(100vh - 68px); display: flex; align-items: center; justify-content: center; background: var(--cb-gray); padding: 24px; }
+.entry-box { background: #fff; border: 1px solid var(--cb-border); border-top: 4px solid var(--cb-navy); padding: 40px 44px; width: 100%; max-width: 440px; }
 .entry-eyebrow { font-size: 11px; font-weight: 600; color: var(--cb-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
 .entry-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--cb-navy); margin-bottom: 6px; line-height: 1.3; }
 .entry-sub { font-size: 14px; color: var(--cb-gray-3); margin-bottom: 28px; border-bottom: 1px solid var(--cb-gray-2); padding-bottom: 20px; }
 
 .field { margin-bottom: 18px; }
 .field label { display: block; font-size: 13px; font-weight: 600; color: var(--cb-text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-.field input {
-  width: 100%; padding: 10px 14px;
-  border: 1.5px solid var(--cb-border);
-  font-family: var(--font-sans); font-size: 15px;
-  color: var(--cb-text); background: #fff; transition: border-color 0.15s;
-}
+.field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cb-border); font-family: var(--font-sans); font-size: 15px; color: var(--cb-text); background: #fff; transition: border-color 0.15s; }
 .field input:focus { outline: none; border-color: var(--cb-blue); }
 .field input.code-input { font-size: 22px; font-weight: 600; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
 
-.cb-btn {
-  display: block; width: 100%; padding: 12px 20px;
-  background: var(--cb-navy); color: #fff;
-  font-family: var(--font-sans); font-size: 14px; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  border: none; cursor: pointer; transition: background 0.15s; text-align: center;
-}
+.cb-btn { display: block; width: 100%; padding: 12px 20px; background: var(--cb-navy); color: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.15s; text-align: center; }
 .cb-btn:hover { background: var(--cb-blue); }
 .cb-btn:disabled { background: var(--cb-gray-3); cursor: not-allowed; }
-
-.cb-btn-google {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 12px 20px;
-  background: #fff; color: var(--cb-text);
-  font-family: var(--font-sans); font-size: 14px; font-weight: 600;
-  border: 1.5px solid var(--cb-border);
-  cursor: pointer; transition: all 0.15s; text-align: center;
-  margin-bottom: 12px;
-}
-.cb-btn-google:hover { border-color: var(--cb-blue); background: var(--cb-blue-light); }
-
-.cb-btn-outline {
-  display: block; width: 100%; padding: 10px 20px;
-  background: transparent; color: var(--cb-navy);
-  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  border: 1.5px solid var(--cb-navy); cursor: pointer; transition: all 0.15s; margin-top: 10px; text-align: center;
-}
+.cb-btn-outline { display: block; width: 100%; padding: 10px 20px; background: transparent; color: var(--cb-navy); font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: 1.5px solid var(--cb-navy); cursor: pointer; transition: all 0.15s; margin-top: 10px; text-align: center; }
 .cb-btn-outline:hover { background: var(--cb-navy); color: #fff; }
 
-.login-divider { text-align: center; font-size: 13px; color: var(--cb-gray-3); margin: 16px 0; }
-
-/* WAITING */
-.waiting-status {
-  background: var(--cb-gray); border-left: 4px solid var(--cb-gold);
-  padding: 16px 20px; margin: 20px 0;
-}
+.waiting-status { background: var(--cb-gray); border-left: 4px solid var(--cb-gold); padding: 16px 20px; margin: 20px 0; }
 .waiting-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cb-gold); display: inline-block; margin-right: 8px; animation: blink 1.2s infinite; }
 .waiting-dot.ready { background: var(--cb-correct); animation: none; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-/* EXAM */
 #screenExam { min-height: calc(100vh - 68px); display: none; }
 #screenExam.active { display: block; }
-
-.exam-subheader {
-  background: var(--cb-gray); border-bottom: 1px solid var(--cb-border);
-  padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
-}
+.exam-subheader { background: var(--cb-gray); border-bottom: 1px solid var(--cb-border); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; }
 .exam-section-label { font-size: 12px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.08em; }
 .exam-progress-text { font-size: 12px; color: var(--cb-gray-3); }
 
@@ -182,7 +92,6 @@ body {
 .q-dot.current { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
 
 .exam-body { display: flex; min-height: calc(100vh - 160px); }
-
 .passage-col { width: 50%; border-right: 2px solid var(--cb-border); overflow-y: auto; max-height: calc(100vh - 160px); position: sticky; top: 0; }
 .passage-col.hidden { display: none; }
 .passage-inner { padding: 28px 32px; }
@@ -193,7 +102,6 @@ body {
 .question-col { flex: 1; overflow-y: auto; max-height: calc(100vh - 160px); }
 .question-col.full-width { width: 100%; max-width: 760px; margin: 0 auto; }
 .question-inner { padding: 28px 36px; max-width: 640px; }
-
 .q-instructions { background: var(--cb-gray); border-left: 3px solid var(--cb-navy); padding: 10px 14px; font-size: 13px; color: var(--cb-text-2); margin-bottom: 20px; font-style: italic; }
 .q-number-label { font-size: 12px; font-weight: 600; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 .q-stem { font-family: var(--font-serif); font-size: 15px; color: var(--cb-text); line-height: 1.7; margin-bottom: 22px; }
@@ -204,7 +112,6 @@ body {
 .option.selected { border-color: var(--cb-navy); background: var(--cb-blue-light); }
 .option.correct { border-color: var(--cb-correct); background: var(--cb-correct-bg); }
 .option.wrong { border-color: var(--cb-wrong); background: var(--cb-wrong-bg); }
-
 .option-bubble { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--cb-gray-3); flex-shrink: 0; margin-top: 1px; font-family: var(--font-sans); transition: all 0.1s; }
 .option.selected .option-bubble { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
 .option.correct .option-bubble { background: var(--cb-correct); border-color: var(--cb-correct); color: #fff; }
@@ -221,59 +128,39 @@ body {
 .nav-btn-submit { background: var(--cb-gold); color: var(--cb-navy); border-color: var(--cb-gold); }
 .nav-btn-submit:hover { background: #e09600; border-color: #e09600; }
 
-/* RESULT */
 .result-header { background: var(--cb-navy); color: #fff; padding: 28px 36px; }
 .result-header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cb-gold); margin-bottom: 6px; }
 .result-header-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; margin-bottom: 4px; }
 .result-header-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
-
 .result-score-band { background: var(--cb-gold); padding: 20px 36px; display: flex; align-items: center; gap: 32px; margin-bottom: 24px; }
 .result-score-number { font-size: 56px; font-weight: 700; color: var(--cb-navy); line-height: 1; font-family: var(--font-sans); }
 .result-score-label { font-size: 13px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.06em; }
-
 .result-stats { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--cb-border); margin-bottom: 24px; }
 .result-stat { padding: 16px 20px; border-right: 1px solid var(--cb-border); text-align: center; }
 .result-stat:last-child { border-right: none; }
 .result-stat-value { font-size: 28px; font-weight: 600; color: var(--cb-navy); line-height: 1; margin-bottom: 4px; }
 .result-stat-label { font-size: 12px; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.06em; }
 
-/* PUNTOS Y AVATAR */
-.points-banner {
-  background: linear-gradient(135deg, var(--cb-navy) 0%, #1a3a6b 100%);
-  color: #fff;
-  padding: 20px 36px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.points-earned {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--cb-gold);
-  font-family: var(--font-sans);
-}
-
+.points-banner { background: linear-gradient(135deg, var(--cb-navy) 0%, #1a3a6b 100%); color: #fff; padding: 20px 36px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.points-earned { font-size: 32px; font-weight: 700; color: var(--cb-gold); font-family: var(--font-sans); }
 .points-label { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 .points-total { font-size: 14px; color: rgba(255,255,255,0.5); }
 
-/* SHOP / AVATAR */
 .shop-section { border: 1px solid var(--cb-border); margin-bottom: 24px; }
 .shop-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; justify-content: space-between; }
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0; }
-.jersey-card { padding: 16px 12px; text-align: center; border-right: 1px solid var(--cb-border); border-bottom: 1px solid var(--cb-border); cursor: pointer; transition: all 0.15s; position: relative; }
+
+.jersey-card { padding: 16px 12px 12px; text-align: center; border-right: 1px solid var(--cb-border); border-bottom: 1px solid var(--cb-border); cursor: pointer; transition: all 0.15s; position: relative; }
 .jersey-card:hover { background: var(--cb-blue-light); }
 .jersey-card.owned { background: #f0fdf4; }
 .jersey-card.active-jersey { background: var(--cb-blue-light); border: 2px solid var(--cb-blue); }
-.jersey-emoji { font-size: 40px; margin-bottom: 6px; display: block; }
-.jersey-name { font-size: 12px; font-weight: 600; color: var(--cb-navy); margin-bottom: 2px; }
+.jersey-card.locked { opacity: 0.8; cursor: default; }
+.jersey-svg-wrap { width: 64px; height: 64px; margin: 0 auto 8px; display: block; }
+.jersey-name { font-size: 12px; font-weight: 600; color: var(--cb-navy); margin-bottom: 2px; line-height: 1.3; }
 .jersey-cost { font-size: 12px; color: var(--cb-gray-3); }
 .jersey-owned-badge { position: absolute; top: 6px; right: 6px; background: #22c55e; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
 .jersey-active-badge { position: absolute; top: 6px; left: 6px; background: var(--cb-blue); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
 
-/* REVIEW */
 .review-section { border: 1px solid var(--cb-border); margin-bottom: 20px; }
 .review-section-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 .review-item { padding: 16px 20px; border-bottom: 1px solid var(--cb-gray-2); }
@@ -298,6 +185,7 @@ body {
   .result-stat { border-right: none; border-bottom: 1px solid var(--cb-border); }
   .entry-box { padding: 28px 24px; }
   .points-banner { flex-direction: column; text-align: center; }
+  .shop-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
 }
 </style>
 </head>
@@ -317,7 +205,7 @@ body {
         <div class="cb-timer-label">Tiempo restante</div>
         <div class="cb-timer" id="timerDisplay">10:00</div>
       </div>
-      <div class="header-avatar" id="headerAvatar" style="display:none;" title="Mi avatar"></div>
+      <div class="header-avatar" id="headerAvatar" title="Mi avatar"></div>
     </div>
   </div>
   <div class="cb-progress-bar">
@@ -325,28 +213,25 @@ body {
   </div>
 </header>
 
-<!-- ================================================================
-     SCREEN 1: LOGIN CON GOOGLE
-     ================================================================ -->
+<!-- SCREEN 1: LOGIN -->
 <div class="screen active" id="screenLogin">
   <div class="entry-wrap">
     <div class="entry-box">
       <div class="entry-eyebrow">College Board · Puerto Rico y América Latina</div>
       <div class="entry-title">PIENSE II<br>9no grado</div>
-      <div class="entry-sub">Inicia sesion o crea tu cuenta para continuar</div>
-
-            <div id="loginForm">
+      <div class="entry-sub">Inicia sesión o crea tu cuenta para continuar</div>
+      <div id="loginForm">
         <div class="field">
-          <label>Correo electronico</label>
+          <label>Correo electrónico</label>
           <input type="email" id="loginEmail" placeholder="tucorreo@escuela.edu.mx" autocomplete="email">
         </div>
         <div class="field">
-          <label>Contrasena</label>
-          <input type="password" id="loginPassword" placeholder="Contrasena" autocomplete="current-password" onkeyup="if(event.key==='Enter') doLoginAlumno()">
+          <label>Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="Contraseña" autocomplete="current-password" onkeyup="if(event.key==='Enter') doLoginAlumno()">
         </div>
-        <button class="cb-btn" onclick="doLoginAlumno()">Iniciar sesion</button>
+        <button class="cb-btn" onclick="doLoginAlumno()">Iniciar sesión</button>
         <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
-          Primera vez? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Crear cuenta</a>
+          ¿Primera vez? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Crear cuenta</a>
         </div>
       </div>
       <div id="registerForm" style="display:none;">
@@ -355,25 +240,23 @@ body {
           <input type="text" id="regNombre" placeholder="Apellido(s), Nombre(s)">
         </div>
         <div class="field">
-          <label>Correo electronico</label>
+          <label>Correo electrónico</label>
           <input type="email" id="regEmail" placeholder="tucorreo@escuela.edu.mx">
         </div>
         <div class="field">
-          <label>Contrasena</label>
-          <input type="password" id="regPassword" placeholder="Minimo 6 caracteres">
+          <label>Contraseña</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
         </div>
         <button class="cb-btn" onclick="doRegisterAlumno()">Crear cuenta</button>
         <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
-          Ya tienes cuenta? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Iniciar sesion</a>
+          ¿Ya tienes cuenta? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Iniciar sesión</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ================================================================
-     SCREEN 2: CÓDIGO DEL EXAMEN
-     ================================================================ -->
+<!-- SCREEN 2: CÓDIGO DEL EXAMEN -->
 <div class="screen" id="screenEntry">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -381,7 +264,7 @@ body {
       <div class="entry-title">Ingresa el código<br>de tu examen</div>
       <div class="entry-sub" id="entryStudentName">Alumno registrado</div>
       <div style="text-align:right;margin-top:-8px;margin-bottom:8px;">
-        <a onclick="cerrarSesionAlumno()" style="font-size:12px;color:var(--cb-gray-3);cursor:pointer;">Cerrar sesion</a>
+        <a onclick="cerrarSesionAlumno()" style="font-size:12px;color:var(--cb-gray-3);cursor:pointer;">Cerrar sesión</a>
       </div>
       <div class="field">
         <label>Código del examen</label>
@@ -389,14 +272,12 @@ body {
           oninput="this.value=this.value.toUpperCase()" onkeyup="if(event.key==='Enter') goToWaiting()">
       </div>
       <button class="cb-btn" onclick="goToWaiting()" id="btnSearchExam">Buscar examen</button>
-      <button class="cb-btn-outline" onclick="goToShop()">Ver mi avatar y tienda 🏆</button>
+      <button class="cb-btn-outline" onclick="goToShop()">Ver mi avatar y tienda</button>
     </div>
   </div>
 </div>
 
-<!-- ================================================================
-     SCREEN 3: SALA DE ESPERA
-     ================================================================ -->
+<!-- SCREEN 3: SALA DE ESPERA -->
 <div class="screen" id="screenWaiting">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -411,16 +292,14 @@ body {
         </div>
       </div>
       <div style="font-size:12px;color:var(--cb-gray-3);text-align:center;">
-        Prepárate. Tendrás 10 minutos para contestar.
+        Prepárate. Tendrás tiempo limitado para contestar.
       </div>
       <button class="cb-btn-outline" onclick="goToEntry()">Cambiar código</button>
     </div>
   </div>
 </div>
 
-<!-- ================================================================
-     SCREEN 4: EXAMEN
-     ================================================================ -->
+<!-- SCREEN 4: EXAMEN -->
 <div class="screen" id="screenExam">
   <div class="exam-subheader">
     <div class="exam-section-label" id="examSectionLabel">Sección</div>
@@ -450,9 +329,7 @@ body {
   </div>
 </div>
 
-<!-- ================================================================
-     SCREEN 5: RESULTADOS + PUNTOS + AVATAR
-     ================================================================ -->
+<!-- SCREEN 5: RESULTADOS -->
 <div class="screen" id="screenResult">
   <div style="max-width:760px;margin:0 auto;">
     <div class="result-header">
@@ -460,7 +337,6 @@ body {
       <div class="result-header-title">Resultados de la Prueba</div>
       <div class="result-header-sub" id="resultStudentName">Estudiante</div>
     </div>
-
     <div class="result-score-band">
       <div>
         <div class="result-score-number" id="scoreBig">-</div>
@@ -470,43 +346,33 @@ body {
         <div style="font-size:13px;color:var(--cb-navy);margin-top:4px;" id="scoreOutOf"></div>
       </div>
     </div>
-
     <div class="result-stats" id="resultStats"></div>
-
-    <!-- Puntos ganados -->
     <div class="points-banner" id="pointsBanner" style="display:none;">
       <div>
         <div class="points-earned" id="pointsEarned">+0 pts</div>
         <div class="points-label">Puntos ganados en este examen</div>
         <div class="points-total" id="pointsTotal">Total acumulado: 0 pts</div>
       </div>
-      <div style="font-size:48px;" id="bannerJersey">🇲🇽</div>
+      <div id="bannerJersey" style="width:64px;height:64px;flex-shrink:0;"></div>
     </div>
-
-    <!-- Tienda de playeras -->
     <div class="shop-section" id="shopSection">
       <div class="shop-header">
-        🏆 Mi Avatar · Tienda de Playeras
+        Tienda de Playeras
         <span id="shopPoints" style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6);"></span>
       </div>
       <div class="shop-grid" id="shopGrid"></div>
     </div>
-
-    <!-- Revisión -->
     <div class="review-section">
       <div class="review-section-header">Revisión de respuestas</div>
       <div id="reviewList"></div>
     </div>
-
     <div style="padding:20px 0;">
       <button class="cb-btn" style="max-width:260px;" onclick="goToEntry()">Nueva prueba</button>
     </div>
   </div>
 </div>
 
-<!-- ================================================================
-     SCREEN 6: AVATAR / TIENDA (sin examen activo)
-     ================================================================ -->
+<!-- SCREEN 6: TIENDA / AVATAR -->
 <div class="screen" id="screenShop">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
     <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;margin-bottom:0;">
@@ -515,10 +381,10 @@ body {
       <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:2px;" id="shopStudentPoints">0 puntos acumulados</div>
     </div>
     <div style="background:var(--cb-gold);padding:16px 28px;display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-      <div style="font-size:48px;" id="shopActiveJersey">🇲🇽</div>
+      <div id="shopActiveJersey" style="width:64px;height:64px;flex-shrink:0;"></div>
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--cb-navy);text-transform:uppercase;letter-spacing:0.06em;">Playera activa</div>
-        <div style="font-size:12px;color:var(--cb-navy);" id="shopActiveJerseyName">Selección México</div>
+        <div style="font-size:12px;color:var(--cb-navy);" id="shopActiveJerseyName">México</div>
       </div>
     </div>
     <div class="shop-section">
@@ -529,20 +395,15 @@ body {
   </div>
 </div>
 
-<!-- ================================================================
-     SUPABASE + SCRIPTS
-     ================================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
-
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // STATE
-let currentUser = null;       // Supabase Auth user
-let currentStudent = null;    // row en tabla students
+let currentStudent = null;
 let currentExam = null;
 let currentQuestions = [];
 let currentQIndex = 0;
@@ -562,20 +423,35 @@ const pruebaLabels = {
   mixto: 'PIENSE II'
 };
 
-const jerseyEmojis = {
-  mexico: '🇲🇽',
-  argentina: '🇦🇷',
-  brasil: '🇧🇷',
-  francia: '🇫🇷',
-  portugal: '🇵🇹',
-  inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-  alemania: '🇩🇪',
-  espana: '🇪🇸'
+// ── JERSEYS SVG ──────────────────────────────────────────────────
+const jerseysSVG = {
+  mexico: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#006847"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><path d="M28 10 L44 10 L50 14 L22 14 Z" fill="#CE1126"/><text x="36" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">MX</text></svg>`,
+  argentina: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#74ACDF"/><rect x="10" y="26" width="52" height="10" fill="#fff"/><rect x="10" y="36" width="52" height="10" fill="#74ACDF"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><circle cx="36" cy="31" r="4" fill="#F6B40E"/></svg>`,
+  brasil: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#009C3B"/><polygon points="36,16 52,35 36,54 20,35" fill="#FEDF00"/><circle cx="36" cy="35" r="7" fill="#002776"/><text x="36" y="38" text-anchor="middle" font-size="6" font-weight="700" fill="#fff" font-family="sans-serif">BR</text><rect x="28" y="8" width="16" height="6" fill="#FEDF00"/></svg>`,
+  francia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#002395"/><rect x="28" y="8" width="16" height="6" fill="#002395"/><text x="36" y="38" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">FRA</text></svg>`,
+  portugal: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CC0000"/><path d="M22 14 L10 42 L18 44 L18 62 L33 62 L33 8 L28 10 Z" fill="#006600"/><rect x="28" y="8" width="5" height="6" fill="#006600"/><circle cx="30" cy="36" r="5" fill="#FFD700"/><text x="30" y="39" text-anchor="middle" font-size="6" font-weight="700" fill="#CC0000" font-family="sans-serif">PT</text></svg>`,
+  espana: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#AA151B"/><rect x="10" y="26" width="52" height="14" fill="#F1BF00"/><rect x="28" y="8" width="16" height="6" fill="#AA151B"/></svg>`,
+  alemania: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#000"/><rect x="10" y="30" width="52" height="10" fill="#DD0000"/><rect x="10" y="40" width="52" height="14" fill="#FFCE00"/><rect x="18" y="44" width="36" height="10" fill="#FFCE00"/><rect x="28" y="8" width="16" height="6" fill="#000"/></svg>`,
+  italia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003399"/><rect x="28" y="8" width="16" height="6" fill="#003399"/><text x="36" y="39" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">ITA</text></svg>`,
+  inglaterra: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M34 8 L34 62 L38 62 L38 8 Z" fill="#CC0000"/><path d="M10 33 L62 33 L62 37 L10 37 Z" fill="#CC0000"/><rect x="28" y="8" width="16" height="6" fill="#fff" stroke="#CC0000" stroke-width="0.5"/></svg>`,
+  uruguay: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#5EB6E4"/><rect x="10" y="24" width="52" height="5" fill="#fff"/><rect x="10" y="34" width="52" height="5" fill="#fff"/><rect x="28" y="8" width="16" height="6" fill="#5EB6E4"/><circle cx="36" cy="36" r="4" fill="#F5D218"/></svg>`,
+  colombia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FCD116"/><rect x="10" y="37" width="52" height="8" fill="#003893"/><rect x="10" y="45" width="52" height="9" fill="#CE1126"/><rect x="18" y="53" width="36" height="9" fill="#CE1126"/><rect x="28" y="8" width="16" height="6" fill="#FCD116"/></svg>`,
+  chile: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#D52B1E"/><path d="M22 14 L10 42 L18 44 L18 62 L36 62 L36 8 L28 10 Z" fill="#fff"/><path d="M10 23 L22 33 L10 33 Z" fill="#0032A0"/><rect x="28" y="8" width="8" height="6" fill="#fff"/><rect x="36" y="8" width="8" height="6" fill="#D52B1E"/><text x="17" y="28" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">★</text></svg>`,
+  japon: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003594"/><circle cx="36" cy="36" r="8" fill="#BC002D"/><rect x="28" y="8" width="16" height="6" fill="#003594"/></svg>`,
+  corea: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CE1126"/><circle cx="36" cy="36" r="7" fill="#fff"/><circle cx="36" cy="36" r="4" fill="#003478"/><rect x="28" y="8" width="16" height="6" fill="#CE1126"/></svg>`,
+  marruecos: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#C1272D"/><polygon points="36,28 38,34 44,34 39,38 41,44 36,40 31,44 33,38 28,34 34,34" fill="none" stroke="#006233" stroke-width="1.5"/><rect x="28" y="8" width="16" height="6" fill="#C1272D"/></svg>`,
+  senegal: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L28 62 L28 8 L22 14 Z" fill="#00853F"/><path d="M50 14 L62 42 L54 44 L54 62 L44 62 L44 8 L50 14 Z" fill="#E31B23"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><polygon points="36,28 37,32 41,32 38,35 39,39 36,36 33,39 34,35 31,32 35,32" fill="#00853F"/></svg>`,
+  holanda: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FF6600"/><rect x="28" y="8" width="16" height="6" fill="#FF6600"/><text x="36" y="40" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">NED</text></svg>`,
+  australia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FFD700"/><rect x="28" y="8" width="16" height="6" fill="#FFD700"/><text x="36" y="42" text-anchor="middle" font-size="7" font-weight="700" fill="#00843D" font-family="sans-serif">AUS</text></svg>`,
+  canada: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L24 62 L24 8 L22 14 Z" fill="#FF0000"/><path d="M50 14 L62 42 L54 44 L54 62 L48 62 L48 8 L50 14 Z" fill="#FF0000"/><rect x="24" y="8" width="24" height="6" fill="#fff"/><polygon points="36,26 37.5,31 42,31 38.5,33.5 40,38.5 36,36 32,38.5 33.5,33.5 30,31 34.5,31" fill="#FF0000"/></svg>`,
+  eeuu: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#B22234"/><rect x="10" y="24" width="52" height="4" fill="#fff"/><rect x="10" y="32" width="52" height="4" fill="#fff"/><rect x="10" y="40" width="52" height="4" fill="#fff"/><rect x="10" y="14" width="26" height="18" fill="#3C3B6E"/><rect x="28" y="8" width="16" height="6" fill="#B22234"/></svg>`,
 };
 
-// ================================================================
-// INIT
-// ================================================================
+function getJerseySVG(slug) {
+  return jerseysSVG[slug] || jerseysSVG['mexico'];
+}
+
+// ── INIT ────────────────────────────────────────────────────────
 window.onload = async () => {
   const saved = localStorage.getItem('piense2_alumno');
   if (saved) {
@@ -595,6 +471,7 @@ function toggleLoginRegister() {
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
 }
 
+// ── AUTH ────────────────────────────────────────────────────────
 async function doLoginAlumno() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
@@ -613,52 +490,21 @@ async function doRegisterAlumno() {
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   if (!nombre || !email || !password) return alert('Completa todos los campos');
-  if (password.length < 6) return alert('La contrasena debe tener al menos 6 caracteres');
+  if (password.length < 6) return alert('La contraseña debe tener al menos 6 caracteres');
   const { data, error } = await sb.from('students').insert({
-    nombre,
-    email,
+    nombre, email,
     password_hash: btoa(password),
     grado: '9',
     puntos_totales: 0,
     playera_activa: 'mexico',
     playeras_desbloqueadas: ['mexico']
   }).select().single();
-  if (error) return alert(error.code === '23505' ? 'Este correo ya esta registrado' : 'Error: ' + error.message);
+  if (error) return alert(error.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + error.message);
   currentStudent = data;
   localStorage.setItem('piense2_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
   updateHeaderAvatar();
   showScreen('screenEntry');
-}
-
-async function loadOrCreateStudent() {
-  // Buscar perfil existente
-  const { data } = await sb.from('students')
-    .select('*')
-    .eq('user_id', currentUser.id)
-    .single();
-
-  if (data) {
-    currentStudent = data;
-  } else {
-    // Crear perfil nuevo
-    const nombre = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Alumno';
-    const { data: newStudent } = await sb.from('students').insert({
-      user_id: currentUser.id,
-      nombre,
-      grado: '9',
-      puntos_totales: 0,
-      playera_activa: 'mexico',
-      playeras_desbloqueadas: ['mexico']
-    }).select().single();
-    currentStudent = newStudent;
-  }
-
-  if (currentStudent) {
-    updateHeaderAvatar();
-    document.getElementById('entryStudentName').textContent =
-      `Bienvenido, ${currentStudent.nombre}`;
-  }
 }
 
 function cerrarSesionAlumno() {
@@ -671,12 +517,10 @@ function updateHeaderAvatar() {
   if (!currentStudent) return;
   const el = document.getElementById('headerAvatar');
   el.style.display = 'flex';
-  el.textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
+  el.innerHTML = `<div style="width:32px;height:32px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
 }
 
-// ================================================================
-// SCREENS
-// ================================================================
+// ── SCREENS ──────────────────────────────────────────────────────
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -700,28 +544,18 @@ function goToShop() {
   showScreen('screenShop');
 }
 
-// ================================================================
-// BUSCAR EXAMEN
-// ================================================================
+// ── BUSCAR EXAMEN ────────────────────────────────────────────────
 async function goToWaiting() {
   if (!currentStudent) return alert('Debes iniciar sesión primero');
   const code = document.getElementById('examCode').value.trim().toUpperCase();
   if (code.length < 4) return alert('Ingresa el código del examen');
-
   const btn = document.getElementById('btnSearchExam');
   btn.disabled = true;
   btn.textContent = 'Buscando...';
-
-  const { data, error } = await sb.from('exam_sessions_p2')
-    .select('*')
-    .eq('codigo', code)
-    .single();
-
+  const { data, error } = await sb.from('exam_sessions_p2').select('*').eq('codigo', code).single();
   btn.disabled = false;
   btn.textContent = 'Buscar examen';
-
   if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
-
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
   document.getElementById('waitExamName').textContent = data.nombre || 'Examen PIENSE II';
@@ -729,25 +563,18 @@ async function goToWaiting() {
   startWaiting();
 }
 
-// ================================================================
-// SALA DE ESPERA
-// ================================================================
+// ── SALA DE ESPERA ───────────────────────────────────────────────
 function startWaiting() {
   checkExamStatus();
   waitInterval = setInterval(checkExamStatus, 3000);
 }
 
 async function checkExamStatus() {
-  const { data } = await sb.from('exam_sessions_p2')
-    .select('activa')
-    .eq('id', currentExam.id)
-    .single();
+  const { data } = await sb.from('exam_sessions_p2').select('activa').eq('id', currentExam.id).single();
   if (!data) return;
-
   const dot = document.getElementById('statusDot');
   const msg = document.getElementById('statusMsg');
   const sub = document.getElementById('statusSub');
-
   if (data.activa) {
     dot.classList.add('ready');
     msg.textContent = 'El examen está listo. Comenzando...';
@@ -757,20 +584,11 @@ async function checkExamStatus() {
   }
 }
 
-// ================================================================
-// EXAMEN
-// ================================================================
+// ── EXAMEN ───────────────────────────────────────────────────────
 async function startExam() {
-  const { data } = await sb.from('piense2_questions')
-    .select('*')
-    .in('id', currentExam.question_ids);
-
+  const { data } = await sb.from('piense2_questions').select('*').in('id', currentExam.question_ids);
   if (!data || !data.length) return alert('Error al cargar preguntas.');
-
-  currentQuestions = currentExam.question_ids
-    .map(id => data.find(q => q.id === id))
-    .filter(Boolean);
-
+  currentQuestions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
   secondsRemaining = currentExam.duracion_segundos || 600;
@@ -797,14 +615,12 @@ function renderQuestion() {
   const q = currentQuestions[currentQIndex];
   const total = currentQuestions.length;
   const pct = ((currentQIndex + 1) / total) * 100;
-
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
   document.getElementById('examSectionLabel').textContent = pruebaLabels[q.prueba] || q.prueba;
   document.getElementById('qNumberLabel').textContent = `${currentQIndex + 1}.`;
   document.getElementById('qStem').textContent = q.enunciado;
 
-  // Instrucciones por subtipo
   const instrEl = document.getElementById('qInstructions');
   const instrMap = {
     transformacion_logica: 'Selecciona la opción que indica la relación de orden que se establece entre las letras o los números.',
@@ -816,15 +632,9 @@ function renderQuestion() {
     razonamiento_condicional: 'Selecciona la conclusión que debe obtenerse a partir de las premisas dadas.',
     razonamiento_practico: 'Después de examinar las diferentes posibilidades, selecciona la opción más probable.'
   };
+  if (instrMap[q.subtipo]) { instrEl.style.display = 'block'; instrEl.textContent = instrMap[q.subtipo]; }
+  else { instrEl.style.display = 'none'; }
 
-  if (instrMap[q.subtipo]) {
-    instrEl.style.display = 'block';
-    instrEl.textContent = instrMap[q.subtipo];
-  } else {
-    instrEl.style.display = 'none';
-  }
-
-  // Contexto (lectura)
   const passageCol = document.getElementById('passageCol');
   const questionCol = document.getElementById('questionCol');
   if (q.contexto) {
@@ -837,7 +647,6 @@ function renderQuestion() {
     questionCol.classList.add('full-width');
   }
 
-  // Opciones
   const letters = ['A', 'B', 'C', 'D'];
   const opciones = q.opciones || {};
   const selected = userAnswers[q.id];
@@ -848,7 +657,6 @@ function renderQuestion() {
     </div>
   `).join('');
 
-  // Nav
   document.getElementById('btnPrev').disabled = currentQIndex === 0;
   const isLast = currentQIndex === total - 1;
   const btnNext = document.getElementById('btnNext');
@@ -861,7 +669,6 @@ function renderQuestion() {
     btnNext.className = 'nav-btn nav-btn-next';
     btnNext.onclick = nextQuestion;
   }
-
   renderDots();
 }
 
@@ -872,19 +679,9 @@ function renderDots() {
   `).join('');
 }
 
-function selectAnswer(qId, letter) {
-  userAnswers[qId] = letter;
-  renderQuestion();
-}
-
-function nextQuestion() {
-  if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; renderQuestion(); }
-}
-
-function prevQuestion() {
-  if (currentQIndex > 0) { currentQIndex--; renderQuestion(); }
-}
-
+function selectAnswer(qId, letter) { userAnswers[qId] = letter; renderQuestion(); }
+function nextQuestion() { if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
+function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
 function goToQuestion(i) { currentQIndex = i; renderQuestion(); }
 
 function confirmSubmit() {
@@ -899,19 +696,11 @@ function confirmSubmit() {
 async function submitExam(timeUp) {
   clearInterval(timerInterval);
   elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
-
   let aciertos = 0;
-  currentQuestions.forEach(q => {
-    if (userAnswers[q.id] === q.respuesta_correcta) aciertos++;
-  });
-
+  currentQuestions.forEach(q => { if (userAnswers[q.id] === q.respuesta_correcta) aciertos++; });
   const total = currentQuestions.length;
   const calificacion = Math.round((aciertos / total) * 100);
-
-  // Puntos: calificacion / 10 redondeado
   const puntosGanados = Math.round(calificacion / 10);
-
-  // Guardar resultado
   await sb.from('student_results_p2').insert({
     session_id: currentExam.id,
     student_id: currentStudent.id,
@@ -922,55 +711,37 @@ async function submitExam(timeUp) {
     tiempo_segundos: elapsedSeconds,
     puntos_ganados: puntosGanados
   });
-
-  // Actualizar puntos del alumno
   const newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
   await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
   currentStudent.puntos_totales = newTotal;
-
+  localStorage.setItem('piense2_alumno', JSON.stringify(currentStudent));
   showResults(aciertos, calificacion, puntosGanados, newTotal);
 }
 
-// ================================================================
-// RESULTADOS
-// ================================================================
+// ── RESULTADOS ───────────────────────────────────────────────────
 async function showResults(aciertos, calificacion, puntosGanados, totalPuntos) {
   const total = currentQuestions.length;
   const mins = Math.floor(elapsedSeconds / 60);
   const secs = String(elapsedSeconds % 60).padStart(2, '0');
   const wrong = Object.keys(userAnswers).length - aciertos;
-  const skipped = total - Object.keys(userAnswers).length;
 
   document.getElementById('resultStudentName').textContent = currentStudent.nombre;
   document.getElementById('scoreBig').textContent = aciertos;
   document.getElementById('scoreOutOf').textContent = `de ${total} reactivos · ${calificacion}/100`;
-
   document.getElementById('resultStats').innerHTML = `
-    <div class="result-stat">
-      <div class="result-stat-value">${aciertos}</div>
-      <div class="result-stat-label">Correctas</div>
-    </div>
-    <div class="result-stat">
-      <div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div>
-      <div class="result-stat-label">Incorrectas</div>
-    </div>
-    <div class="result-stat">
-      <div class="result-stat-value">${mins}:${secs}</div>
-      <div class="result-stat-label">Tiempo</div>
-    </div>
+    <div class="result-stat"><div class="result-stat-value">${aciertos}</div><div class="result-stat-label">Correctas</div></div>
+    <div class="result-stat"><div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div><div class="result-stat-label">Incorrectas</div></div>
+    <div class="result-stat"><div class="result-stat-value">${mins}:${secs}</div><div class="result-stat-label">Tiempo</div></div>
   `;
 
-  // Puntos banner
   const bannerEl = document.getElementById('pointsBanner');
   bannerEl.style.display = 'flex';
   document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
   document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
-  document.getElementById('bannerJersey').textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
+  document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
 
-  // Tienda
   await loadShopInResults();
 
-  // Revisión
   const letters = ['A', 'B', 'C', 'D'];
   document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {
     const userAns = userAnswers[q.id];
@@ -998,36 +769,39 @@ async function showResults(aciertos, calificacion, puntosGanados, totalPuntos) {
   showScreen('screenResult');
 }
 
-// ================================================================
-// SHOP / AVATAR
-// ================================================================
+// ── TIENDA ───────────────────────────────────────────────────────
 async function loadShopItems() {
   if (allShopItems.length > 0) return;
   const { data } = await sb.from('shop_items').select('*').eq('disponible', true).order('costo_puntos');
   allShopItems = data || [];
 }
 
+function renderJerseyCard(item, isOwned, isActive, pts, context) {
+  const canBuy = !isOwned && pts >= item.costo_puntos;
+  const onclickAttr = isOwned
+    ? `onclick="${context === 'results' ? `equipJersey('${item.slug}')` : `equipJerseyShop('${item.slug}')`}"`
+    : canBuy
+      ? `onclick="${context === 'results' ? `buyJersey('${item.slug}', ${item.costo_puntos})` : `buyJerseyShop('${item.slug}', ${item.costo_puntos})`}"`
+      : '';
+  return `
+    <div class="jersey-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-jersey' : ''}" ${onclickAttr}>
+      ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
+      ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
+      <div class="jersey-svg-wrap">${getJerseySVG(item.slug)}</div>
+      <div class="jersey-name">${item.nombre}</div>
+      <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
+    </div>
+  `;
+}
+
 async function loadShopInResults() {
   await loadShopItems();
   const owned = currentStudent.playeras_desbloqueadas || ['mexico'];
   const pts = currentStudent.puntos_totales || 0;
-
   document.getElementById('shopPoints').textContent = `${pts} pts disponibles`;
-  document.getElementById('shopGrid').innerHTML = allShopItems.map(item => {
-    const isOwned = owned.includes(item.slug);
-    const isActive = currentStudent.playera_activa === item.slug;
-    const canBuy = !isOwned && pts >= item.costo_puntos;
-    return `
-      <div class="jersey-card ${isOwned ? 'owned' : ''} ${isActive ? 'active-jersey' : ''}"
-           onclick="${isOwned ? `equipJersey('${item.slug}')` : canBuy ? `buyJersey('${item.slug}', ${item.costo_puntos})` : ''}">
-        ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
-        ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
-        <span class="jersey-emoji">${item.emoji_bandera || jerseyEmojis[item.slug] || '🏳️'}</span>
-        <div class="jersey-name">${item.nombre}</div>
-        <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Toca para equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
-      </div>
-    `;
-  }).join('');
+  document.getElementById('shopGrid').innerHTML = allShopItems.map(item =>
+    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'results')
+  ).join('');
 }
 
 async function loadShopScreen() {
@@ -1035,64 +809,40 @@ async function loadShopScreen() {
   if (!currentStudent) return;
   const owned = currentStudent.playeras_desbloqueadas || ['mexico'];
   const pts = currentStudent.puntos_totales || 0;
-
   document.getElementById('shopStudentName').textContent = currentStudent.nombre;
   document.getElementById('shopStudentPoints').textContent = `${pts} puntos acumulados`;
-  document.getElementById('shopActiveJersey').textContent = jerseyEmojis[currentStudent.playera_activa] || '🇲🇽';
-
+  document.getElementById('shopActiveJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
   const activeItem = allShopItems.find(i => i.slug === currentStudent.playera_activa);
-  document.getElementById('shopActiveJerseyName').textContent = activeItem?.nombre || 'Selección México';
-
-  document.getElementById('shopGridFull').innerHTML = allShopItems.map(item => {
-    const isOwned = owned.includes(item.slug);
-    const isActive = currentStudent.playera_activa === item.slug;
-    const canBuy = !isOwned && pts >= item.costo_puntos;
-    return `
-      <div class="jersey-card ${isOwned ? 'owned' : ''} ${isActive ? 'active-jersey' : ''}"
-           onclick="${isOwned ? `equipJerseyShop('${item.slug}')` : canBuy ? `buyJerseyShop('${item.slug}', ${item.costo_puntos})` : ''}">
-        ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
-        ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
-        <span class="jersey-emoji">${item.emoji_bandera || jerseyEmojis[item.slug] || '🏳️'}</span>
-        <div class="jersey-name">${item.nombre}</div>
-        <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Toca para equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
-      </div>
-    `;
-  }).join('');
+  document.getElementById('shopActiveJerseyName').textContent = activeItem?.nombre || 'México';
+  document.getElementById('shopGridFull').innerHTML = allShopItems.map(item =>
+    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'shop')
+  ).join('');
 }
 
 async function buyJersey(slug, cost) {
   if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
   const newPts = (currentStudent.puntos_totales || 0) - cost;
   if (newPts < 0) return alert('No tienes suficientes puntos');
-
   const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
-
-  // Guardar en inventario
   await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
-
-  // Actualizar student
-  await sb.from('students').update({
-    puntos_totales: newPts,
-    playeras_desbloqueadas: newUnlocked,
-    playera_activa: slug
-  }).eq('id', currentStudent.id);
-
+  await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
   currentStudent.puntos_totales = newPts;
   currentStudent.playeras_desbloqueadas = newUnlocked;
   currentStudent.playera_activa = slug;
-
+  localStorage.setItem('piense2_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
   document.getElementById('shopPoints').textContent = `${newPts} pts disponibles`;
   document.getElementById('pointsTotal').textContent = `Total acumulado: ${newPts} pts`;
-  document.getElementById('bannerJersey').textContent = jerseyEmojis[slug] || '🏳️';
+  document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(slug)}</div>`;
   await loadShopInResults();
 }
 
 async function equipJersey(slug) {
   await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
   currentStudent.playera_activa = slug;
+  localStorage.setItem('piense2_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
-  document.getElementById('bannerJersey').textContent = jerseyEmojis[slug] || '🏳️';
+  document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(slug)}</div>`;
   await loadShopInResults();
 }
 
@@ -1100,14 +850,13 @@ async function buyJerseyShop(slug, cost) {
   if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
   const newPts = (currentStudent.puntos_totales || 0) - cost;
   if (newPts < 0) return alert('No tienes suficientes puntos');
-
   const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
   await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
   await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
-
   currentStudent.puntos_totales = newPts;
   currentStudent.playeras_desbloqueadas = newUnlocked;
   currentStudent.playera_activa = slug;
+  localStorage.setItem('piense2_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
   loadShopScreen();
 }
@@ -1115,6 +864,7 @@ async function buyJerseyShop(slug, cost) {
 async function equipJerseyShop(slug) {
   await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
   currentStudent.playera_activa = slug;
+  localStorage.setItem('piense2_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
   loadShopScreen();
 }
