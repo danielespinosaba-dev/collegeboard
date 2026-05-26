@@ -8,182 +8,52 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --navy: #1a1a2e;
-    --sky: #5b9bd8;
-    --sky-light: #e8f2fc;
-    --sky-dark: #2d6ea8;
-    --text: #1a1a2e;
-    --text-2: #4a5568;
-    --text-3: #8896a6;
-    --bg: #f7f9fc;
-    --surface: #ffffff;
-    --border: #e2e8f0;
-    --success: #22c55e;
-    --success-bg: #f0fdf4;
-    --warning: #f59e0b;
-    --warning-bg: #fffbeb;
-    --danger: #ef4444;
-    --danger-bg: #fef2f2;
-    --radius: 10px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --navy: #1a1a2e; --sky: #5b9bd8; --sky-light: #e8f2fc; --sky-dark: #2d6ea8;
+    --text: #1a1a2e; --text-2: #4a5568; --text-3: #8896a6;
+    --bg: #f7f9fc; --surface: #ffffff; --border: #e2e8f0;
+    --success: #22c55e; --success-bg: #f0fdf4;
+    --warning: #f59e0b; --warning-bg: #fffbeb;
+    --danger: #ef4444; --danger-bg: #fef2f2;
+    --radius: 10px; --shadow: 0 1px 3px rgba(0,0,0,0.08);
     --gold: #f5a800;
   }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
   .app { display: flex; min-height: 100vh; }
-
-  .sidebar {
-    width: 220px;
-    background: var(--navy);
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    flex-shrink: 0;
-    position: fixed;
-    height: 100vh;
-    left: 0; top: 0;
-    z-index: 100;
-  }
-
-  .sidebar-logo {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .logo-badge {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--navy);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 4px;
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-  }
-
+  .sidebar { width: 220px; background: var(--navy); display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; }
+  .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .logo-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 6px; }
   .logo-mark { font-size: 18px; font-weight: 600; color: #fff; letter-spacing: -0.02em; }
   .logo-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
-
-  .sidebar-nav {
-    flex: 1;
-    padding: 12px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    overflow-y: auto;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
-    transition: all 0.15s;
-    text-decoration: none;
-  }
-
+  .sidebar-nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.55); transition: all 0.15s; text-decoration: none; }
   .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
   .nav-item.active { background: rgba(91,155,216,0.2); color: #5b9bd8; }
   .nav-icon { font-size: 16px; width: 20px; text-align: center; }
-
-  .sidebar-footer {
-    padding: 12px 10px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .teacher-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
-
-  .teacher-avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--sky);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0;
-  }
-
+  .sidebar-footer { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .teacher-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; }
+  .teacher-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sky); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
   .teacher-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
   .teacher-role { font-size: 11px; color: rgba(255,255,255,0.3); }
-
-  .btn-logout {
-    display: block; margin-top: 6px; padding: 6px 12px;
-    font-size: 12px; color: rgba(255,255,255,0.4);
-    cursor: pointer; border: none; background: none;
-    border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s;
-  }
+  .btn-logout { display: block; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; }
   .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
-
   .main { margin-left: 220px; flex: 1; }
-
-  .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 28px;
-    height: 56px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 50;
-  }
-
-  .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .topbar-back { cursor: pointer; color: var(--sky); font-size: 14px; }
   .content { padding: 28px; max-width: 1100px; }
+  .view { display: none; } .view.active { display: block; }
 
-  .view { display: none; }
-  .view.active { display: block; }
-
-  /* LOGIN */
-  .login-wrap {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--navy); padding: 20px;
-  }
-
-  .login-box {
-    background: var(--surface);
-    border-radius: 16px;
-    padding: 40px; width: 100%; max-width: 400px;
-  }
-
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); padding: 20px; }
+  .login-box { background: var(--surface); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; }
   .login-logo { font-size: 24px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
-  .login-badge {
-    display: inline-block;
-    background: var(--gold); color: var(--navy);
-    font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 4px;
-    letter-spacing: 0.06em; margin-bottom: 12px;
-  }
+  .login-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.06em; margin-bottom: 12px; }
   .login-sub { font-size: 13px; color: var(--text-3); margin-bottom: 28px; }
-
   .field { margin-bottom: 16px; }
   .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
-  .field input {
-    width: 100%; padding: 10px 14px;
-    border: 1.5px solid var(--border); border-radius: var(--radius);
-    font-family: inherit; font-size: 14px; color: var(--text);
-    background: var(--surface); transition: border-color 0.15s;
-  }
+  .field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s; }
   .field input:focus { outline: none; border-color: var(--sky); }
-
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 7px; padding: 10px 18px; border-radius: var(--radius);
-    font-family: inherit; font-size: 14px; font-weight: 500;
-    cursor: pointer; border: none; transition: all 0.15s; text-decoration: none;
-  }
-
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 18px; border-radius: var(--radius); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
   .btn-primary { background: var(--sky); color: #fff; }
   .btn-primary:hover { background: var(--sky-dark); }
   .btn-secondary { background: var(--sky-light); color: var(--sky-dark); border: 1px solid var(--sky); }
@@ -194,86 +64,53 @@
   .btn-sm { padding: 6px 12px; font-size: 13px; }
   .btn-full { width: 100%; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
   .login-toggle { margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-3); }
   .login-toggle a { color: var(--sky); cursor: pointer; }
 
-  /* CARDS */
   .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 24px; box-shadow: var(--shadow); }
   .card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
   .grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-
   .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
   .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
   .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
   .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
 
-  /* BANK FILTER */
+  .group-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.15s; }
+  .group-card:hover { border-color: var(--sky); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .group-name { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .group-meta { font-size: 13px; color: var(--text-3); margin-bottom: 10px; }
+  .group-code { display: inline-block; background: var(--sky-light); color: var(--sky-dark); border-radius: 6px; padding: 3px 10px; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; }
+  .group-stats { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .group-stat { font-size: 12px; color: var(--text-3); }
+  .group-stat span { font-weight: 600; color: var(--text); }
+
   .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
-  .filter-bar select, .filter-bar input {
-    padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px;
-    font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface); cursor: pointer;
-  }
+  .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface); cursor: pointer; }
   .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--sky); }
-
   .questions-list { display: flex; flex-direction: column; gap: 8px; }
-
-  .question-item {
-    background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: var(--radius); padding: 14px 16px;
-    display: flex; gap: 12px; align-items: flex-start;
-    cursor: pointer; transition: all 0.15s;
-  }
+  .question-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; transition: all 0.15s; }
   .question-item.selected { border-color: var(--sky); background: var(--sky-light); }
   .question-item:hover:not(.selected) { border-color: #c0d5ea; }
-
-  .q-check {
-    width: 20px; height: 20px; border-radius: 5px;
-    border: 1.5px solid var(--border); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; transition: all 0.15s; margin-top: 1px;
-  }
+  .q-check { width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; margin-top: 1px; }
   .question-item.selected .q-check { background: var(--sky); border-color: var(--sky); color: #fff; }
-
   .q-body { flex: 1; min-width: 0; }
   .q-stem { font-size: 14px; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
   .q-meta { font-size: 12px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; }
   .q-topic { color: var(--sky-dark); font-weight: 500; }
+  .selected-counter { background: var(--navy); color: #fff; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 14px; }
 
-  .selected-counter {
-    background: var(--navy); color: #fff; border-radius: 8px;
-    padding: 12px 16px; display: flex; align-items: center;
-    justify-content: space-between; margin-bottom: 16px; font-size: 14px;
-  }
-
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-    z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px;
-  }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface); border-radius: 14px;
-    width: 100%; max-width: 480px; max-height: 90vh;
-    overflow-y: auto; padding: 28px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  }
+  .modal { background: var(--surface); border-radius: 14px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
   .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
   .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
 
-  /* TABLES */
   .data-table { width: 100%; border-collapse: collapse; }
-  .data-table th {
-    text-align: left; font-size: 12px; font-weight: 500; color: var(--text-3);
-    padding: 8px 12px; border-bottom: 1px solid var(--border);
-    background: var(--bg); text-transform: uppercase; letter-spacing: 0.04em;
-  }
+  .data-table th { text-align: left; font-size: 12px; font-weight: 500; color: var(--text-3); padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--bg); text-transform: uppercase; letter-spacing: 0.04em; }
   .data-table td { padding: 12px 12px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
   .data-table tr:last-child td { border-bottom: none; }
   .data-table tr:hover td { background: var(--bg); }
-
   .progress-wrap { background: #e2e8f0; border-radius: 99px; height: 6px; }
   .progress-bar { height: 6px; border-radius: 99px; background: var(--sky); transition: width 0.3s; }
 
@@ -284,8 +121,6 @@
 
   .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
   .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
-  .alert-success { background: var(--success-bg); color: #15803d; border: 1px solid #bbf7d0; }
-  .alert-warning { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
 
   .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
@@ -296,85 +131,57 @@
   .exam-code-big { font-family: 'DM Mono', monospace; font-size: 40px; font-weight: 500; letter-spacing: 0.12em; color: var(--sky); line-height: 1; margin: 8px 0; }
   .exam-code-label { font-size: 13px; color: rgba(255,255,255,0.5); }
 
-  .flex { display: flex; }
-  .flex-between { display: flex; justify-content: space-between; align-items: center; }
-  .flex-gap { display: flex; gap: 8px; align-items: center; }
-  .mb-4 { margin-bottom: 4px; }
-  .mb-8 { margin-bottom: 8px; }
-  .mb-12 { margin-bottom: 12px; }
-  .mb-16 { margin-bottom: 16px; }
-  .mb-20 { margin-bottom: 20px; }
-  .mb-24 { margin-bottom: 24px; }
-  .text-sm { font-size: 13px; }
-  .text-xs { font-size: 12px; }
-  .text-muted { color: var(--text-3); }
-  .text-sky { color: var(--sky); }
-  .fw-600 { font-weight: 600; }
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .group-header-card { background: var(--navy); color: #fff; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+  .group-header-name { font-size: 22px; font-weight: 600; }
+  .group-header-code { font-family: 'DM Mono', monospace; font-size: 16px; color: var(--sky); margin-top: 4px; }
+  .exam-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px; }
+  .exam-row-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .exam-row-name { font-size: 15px; font-weight: 600; }
+  .exam-row-meta { font-size: 12px; color: var(--text-3); margin-bottom: 8px; }
+  .exam-row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .results-inline { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: none; }
+  .results-inline.open { display: block; }
 
-  .spinner { width: 20px; height: 20px; border: 2px solid rgba(91,155,216,0.2); border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-  .toast { background: var(--navy); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 14px; animation: slideIn 0.2s ease; max-width: 320px; }
-  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-  @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
-
-  /* PIENSE II badge en prueba selector */
-  .prueba-pill {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-  }
+  .prueba-pill { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
   .prueba-hc { background: #ede9fe; color: #6d28d9; }
   .prueba-esp { background: #fce7f3; color: #be185d; }
   .prueba-mat { background: #dcfce7; color: #15803d; }
   .prueba-ing { background: #fff7ed; color: #c2410c; }
   .prueba-mix { background: var(--sky-light); color: var(--sky-dark); }
+
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .flex-gap { display: flex; gap: 8px; align-items: center; }
+  .mb-16 { margin-bottom: 16px; } .mb-20 { margin-bottom: 20px; } .mb-24 { margin-bottom: 24px; }
+  .text-sm { font-size: 13px; } .text-xs { font-size: 12px; } .text-muted { color: var(--text-3); }
+  .fw-600 { font-weight: 600; } .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .spinner { width: 20px; height: 20px; border: 2px solid rgba(91,155,216,0.2); border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+  .toast { background: var(--navy); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 14px; animation: slideIn 0.2s ease; max-width: 320px; }
+  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
 </style>
 </head>
 <body>
 
-<!-- ================================================================
-     LOGIN
-     ================================================================ -->
+<!-- LOGIN -->
 <div id="authSection" style="display:none;">
   <div class="login-wrap">
     <div class="login-box">
       <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
       <div class="login-badge">PIENSE II · 9no grado</div>
       <div class="login-sub">Plataforma docente</div>
-
       <div id="loginForm">
-        <div class="field">
-          <label>Correo electrónico</label>
-          <input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email">
-        </div>
-        <div class="field">
-          <label>Contraseña</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
-        </div>
+        <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email"></div>
+        <div class="field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
         <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
         <div class="login-toggle">¿No tienes cuenta? <a onclick="toggleAuth()">Crear cuenta</a></div>
       </div>
-
       <div id="registerForm" style="display:none;">
-        <div class="field">
-          <label>Nombre completo</label>
-          <input type="text" id="regName" placeholder="Ej. Mtra. Lucía Ramírez">
-        </div>
-        <div class="field">
-          <label>Correo electrónico</label>
-          <input type="email" id="regEmail" placeholder="tu@escuela.edu.mx">
-        </div>
-        <div class="field">
-          <label>Contraseña</label>
-          <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
-        </div>
+        <div class="field"><label>Nombre completo</label><input type="text" id="regName" placeholder="Ej. Mtra. Lucía Ramírez"></div>
+        <div class="field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@escuela.edu.mx"></div>
+        <div class="field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
         <button class="btn btn-primary btn-full" onclick="doRegister()">Crear cuenta</button>
         <div class="login-toggle">¿Ya tienes cuenta? <a onclick="toggleAuth()">Iniciar sesión</a></div>
       </div>
@@ -382,12 +189,9 @@
   </div>
 </div>
 
-<!-- ================================================================
-     DASHBOARD
-     ================================================================ -->
+<!-- DASHBOARD -->
 <div id="appSection" style="display:none;">
   <div class="app">
-
     <aside class="sidebar">
       <div class="sidebar-logo">
         <div class="logo-badge">PIENSE II</div>
@@ -395,25 +199,12 @@
         <div class="logo-sub">9no grado · Docente</div>
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-item active" data-view="banco" onclick="showView('banco')">
-          <span class="nav-icon">📋</span> Banco de reactivos
-        </a>
-        <a class="nav-item" data-view="examenes" onclick="showView('examenes')">
-          <span class="nav-icon">📝</span> Exámenes
-        </a>
-        <a class="nav-item" data-view="resultados" onclick="showView('resultados')">
-          <span class="nav-icon">📊</span> Resultados
-        </a>
-        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')">
-          <span class="nav-icon">🤖</span> Recomendaciones IA
-        </a>
+        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">👥</span> Mis grupos</a>
+        <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">📋</span> Banco de reactivos</a>
+        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">🤖</span> Recomendaciones IA</a>
         <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-          <a class="nav-item" onclick="window.open('piense2-alumno.html','_blank')">
-            <span class="nav-icon">🔗</span> Vista alumno ↗
-          </a>
-          <a class="nav-item" onclick="window.open('index.html','_blank')">
-            <span class="nav-icon">🔙</span> PIENSE I ↗
-          </a>
+          <a class="nav-item" onclick="window.open('piense2-alumno.html','_blank')"><span class="nav-icon">🔗</span> Vista alumno ↗</a>
+          <a class="nav-item" onclick="window.open('index.html','_blank')"><span class="nav-icon">🔙</span> PIENSE I ↗</a>
         </div>
       </nav>
       <div class="sidebar-footer">
@@ -430,16 +221,36 @@
 
     <main class="main">
       <div class="topbar">
-        <div class="topbar-title" id="topbarTitle">Banco de reactivos</div>
+        <div class="topbar-title">
+          <span id="topbarBack" style="display:none;" onclick="backToGroups()" class="topbar-back">← </span>
+          <span id="topbarTitleText">Mis grupos</span>
+        </div>
         <div class="flex-gap">
-          <button class="btn btn-primary btn-sm" id="topbarAction" onclick="loadQuestions()">Actualizar</button>
+          <button class="btn btn-primary btn-sm" id="topbarAction" onclick="openCreateGroupModal()">+ Nuevo grupo</button>
         </div>
       </div>
 
       <div class="content">
 
-        <!-- VIEW: BANCO -->
-        <div class="view active" id="view-banco">
+        <!-- GRUPOS -->
+        <div class="view active" id="view-grupos">
+          <div class="grid-2" id="groupsGrid">
+            <div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>
+          </div>
+        </div>
+
+        <!-- DETALLE GRUPO -->
+        <div class="view" id="view-grupo-detalle">
+          <div class="group-header-card" id="groupDetailHeader"></div>
+          <div class="flex-between mb-16">
+            <div style="font-size:15px;font-weight:600;">Exámenes del grupo</div>
+            <button class="btn btn-secondary btn-sm" onclick="showView('banco')">+ Crear examen →</button>
+          </div>
+          <div id="groupExamsList"></div>
+        </div>
+
+        <!-- BANCO -->
+        <div class="view" id="view-banco">
           <div class="card mb-16">
             <div class="card-title">
               Banco PIENSE II
@@ -453,9 +264,7 @@
                 <option value="matematicas">Matemáticas</option>
                 <option value="ingles">Inglés</option>
               </select>
-              <select id="filterSubtipo" onchange="filterQuestions()">
-                <option value="">Todos los subtipos</option>
-              </select>
+              <select id="filterSubtipo" onchange="filterQuestions()"><option value="">Todos los subtipos</option></select>
               <select id="filterDificultad" onchange="filterQuestions()">
                 <option value="">Cualquier dificultad</option>
                 <option value="1">Fácil</option>
@@ -465,51 +274,14 @@
               <input type="text" id="searchQ" placeholder="Buscar..." style="flex:1;min-width:160px;" oninput="filterQuestions()">
             </div>
           </div>
-
           <div class="selected-counter" id="selectedCounter" style="display:none;">
             <span>✅ <span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
             <button class="btn btn-primary btn-sm" onclick="openCreateExamModal()">Crear examen con estos reactivos →</button>
           </div>
-
-          <div class="questions-list" id="questionsList">
-            <div class="empty"><span class="spinner"></span></div>
-          </div>
+          <div class="questions-list" id="questionsList"><div class="empty"><span class="spinner"></span></div></div>
         </div>
 
-        <!-- VIEW: EXAMENES -->
-        <div class="view" id="view-examenes">
-          <div class="card">
-            <div class="card-title">
-              Exámenes PIENSE II
-              <button class="btn btn-secondary btn-sm" onclick="showView('banco')">+ Crear desde banco →</button>
-            </div>
-            <div id="examsList">
-              <div class="empty">
-                <div class="empty-icon">📝</div>
-                <div class="empty-title">Sin exámenes todavía</div>
-                <div class="empty-text">Ve al banco de reactivos para crear uno</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIEW: RESULTADOS -->
-        <div class="view" id="view-resultados">
-          <div class="mb-16">
-            <select id="resultExamSelect" style="display:block;max-width:400px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);" onchange="loadResults()">
-              <option value="">Selecciona un examen para ver resultados</option>
-            </select>
-          </div>
-          <div id="resultsPanel">
-            <div class="empty">
-              <div class="empty-icon">📊</div>
-              <div class="empty-title">Selecciona un examen</div>
-              <div class="empty-text">Los resultados aparecerán aquí</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIEW: RECOMENDACIONES -->
+        <!-- RECOMENDACIONES -->
         <div class="view" id="view-recomendaciones">
           <div class="card mb-16">
             <div class="card-title">Recomendaciones con Inteligencia Artificial</div>
@@ -522,11 +294,7 @@
             </div>
           </div>
           <div id="recPanel">
-            <div class="empty">
-              <div class="empty-icon">🤖</div>
-              <div class="empty-title">Selecciona un examen para analizar</div>
-              <div class="empty-text">La IA identificará los temas con más errores y sugerirá estrategias de repaso</div>
-            </div>
+            <div class="empty"><div class="empty-icon">🤖</div><div class="empty-title">Selecciona un examen para analizar</div></div>
           </div>
         </div>
 
@@ -535,26 +303,33 @@
   </div>
 </div>
 
-<!-- ================================================================
-     MODALES
-     ================================================================ -->
+<!-- MODAL: Crear grupo -->
+<div class="modal-overlay" id="modalCreateGroup">
+  <div class="modal">
+    <div class="modal-title">Crear nuevo grupo</div>
+    <div class="field"><label>Nombre del grupo</label><input type="text" id="newGroupName" placeholder="Ej. 9A Mañana"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalCreateGroup')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createGroup()">Crear grupo</button>
+    </div>
+  </div>
+</div>
 
-<!-- Modal: Crear examen -->
+<!-- MODAL: Crear examen -->
 <div class="modal-overlay" id="modalCreateExam">
   <div class="modal">
     <div class="modal-title">Crear examen PIENSE II</div>
+    <div class="field"><label>Nombre del examen</label><input type="text" id="newExamName" placeholder="Ej. Habilidad Cognoscitiva - Semana 3"></div>
     <div class="field">
-      <label>Nombre del examen</label>
-      <input type="text" id="newExamName" placeholder="Ej. Habilidad Cognoscitiva - Semana 3">
-    </div>
-    <div class="field">
-      <label>Nombre del grupo</label>
-      <input type="text" id="newExamGroup" placeholder="Ej. 9A Matutino">
+      <label>Grupo destino</label>
+      <select id="newExamGroup" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
+        <option value="">Selecciona un grupo...</option>
+      </select>
     </div>
     <div class="field">
       <label>Duración</label>
       <select id="newExamDuration" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
-        <option value="600">10 minutos (estándar)</option>
+        <option value="600">10 minutos</option>
         <option value="900">15 minutos</option>
         <option value="1200">20 minutos</option>
       </select>
@@ -567,7 +342,7 @@
   </div>
 </div>
 
-<!-- Modal: Código del examen -->
+<!-- MODAL: Código examen -->
 <div class="modal-overlay" id="modalExamCode">
   <div class="modal">
     <div class="modal-title">Examen creado</div>
@@ -576,13 +351,9 @@
       <div class="exam-code-big" id="examCodeDisplay">------</div>
       <div class="exam-code-label">Comparte este código con tus alumnos de 9no</div>
     </div>
-    <div class="alert alert-info">
-      Los alumnos deben entrar a <strong>piense2-alumno.html</strong> e ingresar el código + su cuenta Google.
-    </div>
-    <div class="flex-gap mb-12" style="justify-content:center;gap:12px;">
-      <button class="btn btn-outline" onclick="toggleExamStatus()">
-        <span id="statusBtnText">▶ Activar examen</span>
-      </button>
+    <div class="alert alert-info">Los alumnos deben entrar a <strong>piense2-alumno.html</strong> e ingresar este código.</div>
+    <div class="flex-gap mb-16" style="justify-content:center;gap:12px;">
+      <button class="btn btn-outline" onclick="toggleExamStatus()"><span id="statusBtnText">▶ Activar examen</span></button>
       <button class="btn btn-danger btn-sm" onclick="closeExamStatus()">⬛ Cerrar examen</button>
     </div>
     <div class="modal-footer">
@@ -593,34 +364,37 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ================================================================
-     SCRIPTS
-     ================================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
-
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// STATE
 let currentTeacher = null;
 let allQuestions = [];
 let selectedQuestionIds = new Set();
 let currentExamForCode = null;
+let currentGroupId = null;
 
-// ================================================================
-// INIT
-// ================================================================
+const pruebaLabels = {
+  habilidad_cognoscitiva: '🧠 Habilidad Cognoscitiva',
+  espanol: '📖 Español',
+  matematicas: '📐 Matemáticas',
+  ingles: '🌐 Inglés'
+};
+const pruebaClasses = {
+  habilidad_cognoscitiva: 'prueba-hc', espanol: 'prueba-esp',
+  matematicas: 'prueba-mat', ingles: 'prueba-ing'
+};
+const diffLabels = { 1: 'Fácil', 2: 'Medio', 3: 'Difícil' };
+const diffColors = { 1: '#16a34a', 2: '#d97706', 3: '#dc2626' };
+
+// ── INIT ────────────────────────────────────────────────────────
 window.onload = async () => {
   const saved = localStorage.getItem('piense2_teacher');
-  if (saved) {
-    currentTeacher = JSON.parse(saved);
-    showApp();
-  } else {
-    document.getElementById('authSection').style.display = 'block';
-  }
+  if (saved) { currentTeacher = JSON.parse(saved); showApp(); }
+  else { document.getElementById('authSection').style.display = 'block'; }
 };
 
 function showApp() {
@@ -629,14 +403,12 @@ function showApp() {
   const initials = currentTeacher.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
   document.getElementById('sidebarInitials').textContent = initials;
   document.getElementById('sidebarName').textContent = currentTeacher.name.split(' ').slice(0,2).join(' ');
+  loadGroups();
   loadQuestions();
-  loadExams();
   loadRecExamSelect();
 }
 
-// ================================================================
-// AUTH
-// ================================================================
+// ── AUTH ────────────────────────────────────────────────────────
 function toggleAuth() {
   const lf = document.getElementById('loginForm');
   const rf = document.getElementById('registerForm');
@@ -674,59 +446,210 @@ function doLogout() {
   location.reload();
 }
 
-// ================================================================
-// NAVIGATION
-// ================================================================
-const viewTitles = {
-  banco: 'Banco de reactivos',
-  examenes: 'Exámenes',
-  resultados: 'Resultados',
-  recomendaciones: 'Recomendaciones IA'
-};
-
-const viewActions = {
-  banco: { text: 'Actualizar', fn: 'loadQuestions()' },
-  examenes: { text: '+ Crear examen', fn: "showView('banco')" },
-  resultados: { text: 'Actualizar', fn: 'loadResultsExamSelect()' },
-  recomendaciones: { text: 'Actualizar', fn: 'loadRecExamSelect()' },
-};
-
+// ── NAVIGATION ──────────────────────────────────────────────────
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
   const navEl = document.querySelector(`[data-view="${name}"]`);
   if (navEl) navEl.classList.add('active');
-  document.getElementById('topbarTitle').textContent = viewTitles[name] || name;
-  const action = viewActions[name];
+  const titles = { grupos: 'Mis grupos', banco: 'Banco de reactivos', recomendaciones: 'Recomendaciones IA' };
+  document.getElementById('topbarTitleText').textContent = titles[name] || '';
+  document.getElementById('topbarBack').style.display = 'none';
+  const actions = {
+    grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
+    banco: { text: 'Actualizar', fn: 'loadQuestions()' },
+    recomendaciones: { text: 'Actualizar', fn: 'loadRecExamSelect()' },
+  };
+  const action = actions[name];
   if (action) {
     document.getElementById('topbarAction').textContent = action.text;
     document.getElementById('topbarAction').setAttribute('onclick', action.fn);
+    document.getElementById('topbarAction').style.display = '';
+  } else {
+    document.getElementById('topbarAction').style.display = 'none';
   }
-  if (name === 'resultados') loadResultsExamSelect();
   if (name === 'recomendaciones') loadRecExamSelect();
 }
 
-// ================================================================
-// QUESTIONS
-// ================================================================
-const pruebaLabels = {
-  habilidad_cognoscitiva: '🧠 Habilidad Cognoscitiva',
-  espanol: '📖 Español',
-  matematicas: '📐 Matemáticas',
-  ingles: '🌐 Inglés'
-};
+function openGroupDetail(groupId, groupName, groupCode) {
+  currentGroupId = groupId;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-grupo-detalle').classList.add('active');
+  document.getElementById('topbarTitleText').textContent = groupName;
+  document.getElementById('topbarBack').style.display = 'inline';
+  document.getElementById('topbarAction').textContent = '+ Crear examen';
+  document.getElementById('topbarAction').setAttribute('onclick', 'openCreateExamModalForGroup()');
+  document.getElementById('topbarAction').style.display = '';
+  document.getElementById('groupDetailHeader').innerHTML = `
+    <div>
+      <div class="group-header-name">${groupName}</div>
+      <div class="group-header-code">${groupCode}</div>
+    </div>
+    <button class="btn btn-danger btn-sm" onclick="deleteGroup('${groupId}')">Eliminar grupo</button>
+  `;
+  loadGroupExams(groupId);
+}
 
-const pruebaClasses = {
-  habilidad_cognoscitiva: 'prueba-hc',
-  espanol: 'prueba-esp',
-  matematicas: 'prueba-mat',
-  ingles: 'prueba-ing'
-};
+function backToGroups() {
+  currentGroupId = null;
+  showView('grupos');
+  loadGroups();
+}
 
-const diffLabels = { 1: 'Fácil', 2: 'Medio', 3: 'Difícil' };
-const diffColors = { 1: '#16a34a', 2: '#d97706', 3: '#dc2626' };
+// ── GROUPS ──────────────────────────────────────────────────────
+async function loadGroups() {
+  const { data } = await sb.from('groups')
+    .select('id, name, access_code, created_at')
+    .eq('teacher_id', currentTeacher.id)
+    .order('created_at');
 
+  const grid = document.getElementById('groupsGrid');
+  const sel = document.getElementById('newExamGroup');
+
+  if (!data || data.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>`;
+    sel.innerHTML = '<option value="">Sin grupos disponibles</option>';
+    return;
+  }
+
+  const { data: exams } = await sb.from('exam_sessions_p2').select('id, group_id, activa').eq('docente_id', currentTeacher.id);
+  const examsByGroup = {};
+  (exams || []).forEach(e => {
+    if (!examsByGroup[e.group_id]) examsByGroup[e.group_id] = { total: 0, active: 0 };
+    examsByGroup[e.group_id].total++;
+    if (e.activa) examsByGroup[e.group_id].active++;
+  });
+
+  grid.innerHTML = `<div class="grid-2">${data.map(g => {
+    const stats = examsByGroup[g.id] || { total: 0, active: 0 };
+    return `<div class="group-card" onclick="openGroupDetail('${g.id}','${g.name.replace(/'/g,"\\'")}','${g.access_code}')">
+      <div class="group-name">${g.name}</div>
+      <div class="group-meta">9no grado</div>
+      <div class="group-code">${g.access_code}</div>
+      <div class="group-stats">
+        <div class="group-stat"><span>${stats.total}</span> exámenes</div>
+        ${stats.active > 0 ? `<div class="group-stat" style="color:#16a34a"><span>${stats.active}</span> activo(s)</div>` : ''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+
+  sel.innerHTML = '<option value="">Selecciona un grupo...</option>' +
+    data.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+}
+
+function openCreateGroupModal() { openModal('modalCreateGroup'); }
+
+async function createGroup() {
+  const name = document.getElementById('newGroupName').value.trim();
+  if (!name) return toast('Escribe el nombre del grupo');
+  const code = genCode(6);
+  const { error } = await sb.from('groups').insert({ teacher_id: currentTeacher.id, name, access_code: code });
+  if (error) return toast('Error al crear grupo: ' + error.message);
+  closeModal('modalCreateGroup');
+  document.getElementById('newGroupName').value = '';
+  toast('Grupo creado ✅');
+  loadGroups();
+}
+
+async function deleteGroup(id) {
+  if (!confirm('¿Eliminar este grupo? Los exámenes asociados no se borrarán.')) return;
+  const { error } = await sb.from('groups').delete().eq('id', id);
+  if (error) return toast('Error al eliminar: ' + error.message);
+  toast('Grupo eliminado');
+  backToGroups();
+}
+
+// ── GROUP EXAMS ──────────────────────────────────────────────────
+async function loadGroupExams(groupId) {
+  const el = document.getElementById('groupExamsList');
+  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+
+  const { data: exams } = await sb.from('exam_sessions_p2')
+    .select('*')
+    .eq('group_id', groupId)
+    .eq('docente_id', currentTeacher.id)
+    .order('created_at', { ascending: false });
+
+  if (!exams || exams.length === 0) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div><div class="empty-text">Crea el primer examen para este grupo</div></div>`;
+    return;
+  }
+
+  el.innerHTML = exams.map(e => `
+    <div class="exam-row" id="exam-row-${e.id}">
+      <div class="exam-row-header">
+        <div>
+          <div class="exam-row-name">${e.nombre || 'Examen sin nombre'}</div>
+          <div class="exam-row-meta">
+            Código: <strong style="font-family:'DM Mono',monospace;color:var(--sky-dark)">${e.codigo}</strong>
+            · ${e.question_ids?.length || 0} reactivos
+            · <span class="badge ${e.activa ? 'badge-active' : 'badge-draft'}">${e.activa ? '🟢 Activo' : '⚪ Inactivo'}</span>
+          </div>
+        </div>
+        <div class="exam-row-actions">
+          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.codigo}',${e.activa})">⚙ Gestionar</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
+        </div>
+      </div>
+      <div class="results-inline" id="results-${e.id}">
+        <div style="color:var(--text-3);font-size:13px;">Cargando resultados...</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function toggleResults(examId) {
+  const panel = document.getElementById(`results-${examId}`);
+  if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
+  panel.classList.add('open');
+  panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;"><span class="spinner"></span> Cargando...</div>';
+
+  const [{ data: results }, { data: examData }] = await Promise.all([
+    sb.from('student_results_p2').select('*, students(nombre)').eq('session_id', examId).order('completed_at'),
+    sb.from('exam_sessions_p2').select('*').eq('id', examId).single()
+  ]);
+
+  if (!results || results.length === 0) {
+    panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;">Sin respuestas todavía.</div>';
+    return;
+  }
+
+  const total = results.length;
+  const avg = (results.reduce((s, r) => s + r.calificacion, 0) / total).toFixed(1);
+
+  panel.innerHTML = `
+    <div class="grid-stats mb-16" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+      <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}</div><div class="stat-sub">de 100</div></div>
+      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${Math.max(...results.map(r => r.calificacion))}</div></div>
+      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${Math.min(...results.map(r => r.calificacion))}</div></div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Puntos</th></tr></thead>
+      <tbody>${results.map(r => {
+        const pct = r.calificacion;
+        const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+        const mins = Math.floor((r.tiempo_segundos || 0) / 60);
+        const secs = String((r.tiempo_segundos || 0) % 60).padStart(2, '0');
+        return `<tr>
+          <td><span class="fw-600">${r.students?.nombre || 'Alumno'}</span></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-weight:600;color:${color};">${pct}</span>
+              <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
+            </div>
+          </td>
+          <td class="text-muted">${r.aciertos}/${r.total_preguntas}</td>
+          <td class="text-muted">${mins}:${secs}</td>
+          <td style="color:var(--gold);font-weight:600;">+${r.puntos_ganados || 0} pts</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  `;
+}
+
+// ── QUESTIONS ────────────────────────────────────────────────────
 async function loadQuestions() {
   document.getElementById('questionsList').innerHTML = '<div class="empty"><span class="spinner"></span></div>';
   const { data } = await sb.from('piense2_questions').select('*').eq('activo', true).order('prueba').order('subtipo');
@@ -740,7 +663,7 @@ function populateSubtipoFilter() {
   const prueba = document.getElementById('filterPrueba').value;
   const subtipos = [...new Set(allQuestions.filter(q => !prueba || q.prueba === prueba).map(q => q.subtipo).filter(Boolean))].sort();
   const sel = document.getElementById('filterSubtipo');
-  sel.innerHTML = '<option value="">Todos los subtipos</option>' + subtipos.map(s => `<option value="${s}">${s.replace(/_/g, ' ')}</option>`).join('');
+  sel.innerHTML = '<option value="">Todos los subtipos</option>' + subtipos.map(s => `<option value="${s}">${s.replace(/_/g,' ')}</option>`).join('');
 }
 
 function filterQuestions() {
@@ -749,7 +672,6 @@ function filterQuestions() {
   const dificultad = document.getElementById('filterDificultad').value;
   const search = document.getElementById('searchQ').value.toLowerCase();
   populateSubtipoFilter();
-
   let filtered = allQuestions.filter(q => {
     if (prueba && q.prueba !== prueba) return false;
     if (subtipo && q.subtipo !== subtipo) return false;
@@ -757,17 +679,13 @@ function filterQuestions() {
     if (search && !q.enunciado.toLowerCase().includes(search)) return false;
     return true;
   });
-
   renderQuestions(filtered);
   updateSelectedCounter();
 }
 
 function renderQuestions(list) {
   const el = document.getElementById('questionsList');
-  if (!list.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div><div class="empty-text">Prueba con otros filtros</div></div>';
-    return;
-  }
+  if (!list.length) { el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div></div>'; return; }
   el.innerHTML = list.map(q => `
     <div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''}" onclick="toggleQuestion('${q.id}')">
       <div class="q-check">${selectedQuestionIds.has(q.id) ? '✓' : ''}</div>
@@ -775,18 +693,16 @@ function renderQuestions(list) {
         <div class="q-stem">${q.enunciado.substring(0, 160)}${q.enunciado.length > 160 ? '...' : ''}</div>
         <div class="q-meta">
           <span class="prueba-pill ${pruebaClasses[q.prueba] || ''}">${pruebaLabels[q.prueba] || q.prueba}</span>
-          <span class="q-topic">📌 ${q.subtipo ? q.subtipo.replace(/_/g, ' ') : '—'}</span>
+          <span class="q-topic">📌 ${q.subtipo ? q.subtipo.replace(/_/g,' ') : '—'}</span>
           <span style="color:${diffColors[q.dificultad]}">● ${diffLabels[q.dificultad] || q.dificultad}</span>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function toggleQuestion(id) {
-  if (selectedQuestionIds.has(id)) {
-    selectedQuestionIds.delete(id);
-  } else {
+  if (selectedQuestionIds.has(id)) { selectedQuestionIds.delete(id); }
+  else {
     if (selectedQuestionIds.size >= 10) return toast('Máximo 10 reactivos por examen');
     selectedQuestionIds.add(id);
   }
@@ -800,81 +716,46 @@ function updateSelectedCounter() {
   document.getElementById('selectedCounter').style.display = n > 0 ? 'flex' : 'none';
 }
 
-// ================================================================
-// EXAMS
-// ================================================================
-async function loadExams() {
-  const { data } = await sb.from('exam_sessions_p2')
-    .select('*')
-    .eq('docente_id', currentTeacher.id)
-    .order('created_at', { ascending: false });
-
-  const el = document.getElementById('examsList');
-  if (!data || data.length === 0) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`;
-    return;
-  }
-
-  el.innerHTML = `<table class="data-table">
-    <thead><tr><th>Nombre</th><th>Grupo</th><th>Prueba</th><th>Código</th><th>Estado</th><th>Reactivos</th><th>Acciones</th></tr></thead>
-    <tbody>${data.map(e => `
-      <tr>
-        <td><span class="fw-600">${e.nombre || 'Sin nombre'}</span></td>
-        <td class="text-muted">${e.grupo || '—'}</td>
-        <td><span class="prueba-pill ${pruebaClasses[e.prueba] || 'prueba-mix'}">${pruebaLabels[e.prueba] || e.prueba}</span></td>
-        <td><span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--sky-dark);font-weight:500;">${e.codigo}</span></td>
-        <td><span class="badge badge-${e.activa ? 'active' : 'closed'}">${e.activa ? '🟢 Activo' : '⬛ Cerrado'}</span></td>
-        <td class="text-muted">${e.question_ids?.length || 0} reactivos</td>
-        <td>
-          <div class="flex-gap">
-            <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.codigo}',${e.activa})">⚙ Gestionar</button>
-            <button class="btn btn-outline btn-sm" onclick="showView('resultados');setTimeout(()=>{document.getElementById('resultExamSelect').value='${e.id}';loadResults();},200)">📊</button>
-          </div>
-        </td>
-      </tr>
-    `).join('')}</tbody>
-  </table>`;
-}
-
+// ── EXAMS ────────────────────────────────────────────────────────
 function openCreateExamModal() {
   if (selectedQuestionIds.size < 1) return toast('Selecciona al menos 1 reactivo');
+  loadGroups();
   document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
+  openModal('modalCreateExam');
+}
+
+function openCreateExamModalForGroup() {
+  if (selectedQuestionIds.size < 1) { showView('banco'); toast('Selecciona reactivos del banco primero'); return; }
+  document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
+  if (currentGroupId) document.getElementById('newExamGroup').value = currentGroupId;
   openModal('modalCreateExam');
 }
 
 async function createExam() {
   const nombre = document.getElementById('newExamName').value.trim();
-  const grupo = document.getElementById('newExamGroup').value.trim();
+  const groupId = document.getElementById('newExamGroup').value;
   const duracion = parseInt(document.getElementById('newExamDuration').value);
   if (!nombre) return toast('Escribe el nombre del examen');
-  if (!grupo) return toast('Escribe el nombre del grupo');
-
+  if (!groupId) return toast('Selecciona un grupo');
   const codigo = genCode(8);
   const { data, error } = await sb.from('exam_sessions_p2').insert({
-    codigo,
-    docente_id: currentTeacher.id,
-    nombre,
-    grupo,
-    prueba: detectPrueba(),
+    codigo, docente_id: currentTeacher.id, group_id: groupId,
+    nombre, prueba: detectPrueba(),
     question_ids: [...selectedQuestionIds],
-    duracion_segundos: duracion,
-    activa: false
+    duracion_segundos: duracion, activa: false
   }).select().single();
-
   if (error) return toast('Error al crear examen: ' + error.message);
   closeModal('modalCreateExam');
   document.getElementById('newExamName').value = '';
-  document.getElementById('newExamGroup').value = '';
   selectedQuestionIds.clear();
   updateSelectedCounter();
   filterQuestions();
   toast('Examen creado ✅');
-  loadExams();
+  if (currentGroupId === groupId) loadGroupExams(groupId);
   openExamCodeModal(data.id, codigo, false);
 }
 
 function detectPrueba() {
-  // Detecta la prueba predominante entre los reactivos seleccionados
   const counts = {};
   for (const id of selectedQuestionIds) {
     const q = allQuestions.find(q => q.id === id);
@@ -899,98 +780,20 @@ async function toggleExamStatus() {
   if (error) return toast('Error al actualizar');
   currentExamForCode.activa = newActiva;
   document.getElementById('statusBtnText').textContent = newActiva ? '⏸ Pausar examen' : '▶ Activar examen';
-  toast(newActiva ? '🟢 Examen activado — los alumnos ya pueden entrar' : '⏸ Examen pausado');
-  loadExams();
+  toast(newActiva ? '🟢 Examen activado' : '⏸ Examen pausado');
+  if (currentGroupId) loadGroupExams(currentGroupId);
 }
 
 async function closeExamStatus() {
   if (!currentExamForCode) return;
-  const { error } = await sb.from('exam_sessions_p2').update({ activa: false, expires_at: new Date().toISOString() }).eq('id', currentExamForCode.id);
+  const { error } = await sb.from('exam_sessions_p2').update({ activa: false }).eq('id', currentExamForCode.id);
   if (error) return toast('Error al cerrar');
   toast('⬛ Examen cerrado');
   closeModal('modalExamCode');
-  loadExams();
+  if (currentGroupId) loadGroupExams(currentGroupId);
 }
 
-// ================================================================
-// RESULTS
-// ================================================================
-async function loadResultsExamSelect() {
-  const { data } = await sb.from('exam_sessions_p2')
-    .select('id, nombre, grupo, prueba')
-    .eq('docente_id', currentTeacher.id)
-    .order('created_at', { ascending: false });
-  const sel = document.getElementById('resultExamSelect');
-  if (!data) return;
-  sel.innerHTML = '<option value="">Selecciona un examen...</option>' +
-    data.map(e => `<option value="${e.id}">${e.nombre} · ${e.grupo || ''}</option>`).join('');
-}
-
-async function loadResults() {
-  const examId = document.getElementById('resultExamSelect').value;
-  const panel = document.getElementById('resultsPanel');
-  if (!examId) { panel.innerHTML = `<div class="empty"><div class="empty-title">Selecciona un examen</div></div>`; return; }
-  panel.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
-
-  const [{ data: results }, { data: examData }] = await Promise.all([
-    sb.from('student_results_p2')
-      .select('*, students(nombre)')
-      .eq('session_id', examId)
-      .order('completed_at'),
-    sb.from('exam_sessions_p2').select('*').eq('id', examId).single()
-  ]);
-
-  if (!results || results.length === 0) {
-    panel.innerHTML = `<div class="empty"><div class="empty-title">Sin respuestas todavía</div><div class="empty-text">Los alumnos aún no han contestado este examen</div></div>`;
-    return;
-  }
-
-  const total = results.length;
-  const avg = (results.reduce((s, r) => s + r.calificacion, 0) / total).toFixed(1);
-  const maxScore = Math.max(...results.map(r => r.calificacion));
-  const minScore = Math.min(...results.map(r => r.calificacion));
-  const avgTime = Math.round(results.reduce((s, r) => s + (r.tiempo_segundos || 0), 0) / total);
-
-  panel.innerHTML = `
-    <div class="grid-stats mb-20">
-      <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
-      <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}</div><div class="stat-sub">de 100</div></div>
-      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}</div></div>
-      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}</div></div>
-      <div class="stat-card"><div class="stat-label">Tiempo prom.</div><div class="stat-value">${Math.floor(avgTime/60)}:${String(avgTime%60).padStart(2,'0')}</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Resultados por alumno</div>
-      <table class="data-table">
-        <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Puntos ganados</th></tr></thead>
-        <tbody>${results.map(r => {
-          const pct = r.calificacion;
-          const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
-          const mins = Math.floor((r.tiempo_segundos || 0) / 60);
-          const secs = String((r.tiempo_segundos || 0) % 60).padStart(2, '0');
-          return `<tr>
-            <td><span class="fw-600">${r.students?.nombre || 'Alumno'}</span></td>
-            <td>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-size:16px;font-weight:600;color:${color};">${pct}</span>
-                <div style="flex:1;max-width:100px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
-              </div>
-            </td>
-            <td class="text-muted">${r.aciertos}/${r.total_preguntas}</td>
-            <td class="text-muted">${mins}:${secs}</td>
-            <td><span style="color:var(--gold);font-weight:600;">+${r.puntos_ganados || 0} pts</span></td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table>
-    </div>
-  `;
-}
-
-// ================================================================
-// RECOMENDACIONES IA
-// ================================================================
-const GEMINI_KEY = 'AIzaSyBgs_CqmAeY3k81t5bOT2nONwyoNjh9zZA';
-
+// ── RECOMENDACIONES ──────────────────────────────────────────────
 async function loadRecExamSelect() {
   const { data } = await sb.from('exam_sessions_p2')
     .select('id, nombre, grupo, prueba')
@@ -1006,7 +809,7 @@ async function generateRecommendations() {
   const examId = document.getElementById('recExamSelect').value;
   const panel = document.getElementById('recPanel');
   if (!examId) return toast('Selecciona un examen primero');
-  panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando resultados con IA...</span></div>';
+  panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando con IA...</span></div>';
 
   const [{ data: results }, { data: exam }] = await Promise.all([
     sb.from('student_results_p2').select('*').eq('session_id', examId),
@@ -1024,11 +827,7 @@ async function generateRecommendations() {
   const subtipErrors = {};
   questions.forEach(q => {
     let correct = 0, wrong = 0;
-    results.forEach(r => {
-      const ans = r.respuestas ? r.respuestas[q.id] : null;
-      if (ans === q.respuesta_correcta) correct++;
-      else wrong++;
-    });
+    results.forEach(r => { if (r.respuestas && r.respuestas[q.id] === q.respuesta_correcta) correct++; else wrong++; });
     const key = `${q.prueba} — ${q.subtipo || 'general'}`;
     if (!subtipErrors[key]) subtipErrors[key] = { correct: 0, wrong: 0 };
     subtipErrors[key].correct += correct;
@@ -1042,9 +841,7 @@ async function generateRecommendations() {
 
   const prompt = `Eres un experto en educación secundaria y en la prueba PIENSE II de College Board Puerto Rico. Analiza los siguientes resultados de un examen de 9no grado y genera recomendaciones pedagógicas específicas para el docente.
 
-GRUPO: ${exam.grupo || '9no grado'}
 EXAMEN: ${exam.nombre}
-PRUEBA: ${pruebaLabels[exam.prueba] || exam.prueba}
 TOTAL DE ALUMNOS: ${results.length}
 PROMEDIO GENERAL: ${(results.reduce((s,r) => s + r.calificacion, 0) / results.length).toFixed(1)} de 100
 
@@ -1060,21 +857,15 @@ Por favor:
 Responde en español, de forma clara y práctica. Usa encabezados para organizar tu respuesta.`;
 
   try {
-    const res = await fetch('/api/gemini', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    });
+    const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();
     const text = data.text || 'No se pudo generar el análisis.';
-
     const formatted = text
       .replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+)/g, '<li style="margin-bottom:6px;">$1</li>')
       .replace(/\n\n/g, '</p><p style="margin-bottom:10px;">')
       .replace(/\n/g, '<br>');
-
     panel.innerHTML = `
       <div class="card mb-16">
         <div class="card-title">Análisis — ${exam.nombre}</div>
@@ -1082,47 +873,34 @@ Responde en español, de forma clara y práctica. Usa encabezados para organizar
           ${Object.entries(subtipErrors).sort((a,b) => (b[1].wrong/(b[1].correct+b[1].wrong)) - (a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([key, stats]) => {
             const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
             const color = pct >= 60 ? 'var(--danger)' : pct >= 40 ? 'var(--warning)' : 'var(--success)';
-            return `<div class="stat-card">
-              <div class="stat-label">${key}</div>
-              <div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div>
-              <div class="stat-sub">de errores</div>
-            </div>`;
+            return `<div class="stat-card"><div class="stat-label">${key}</div><div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div><div class="stat-sub">de errores</div></div>`;
           }).join('')}
         </div>
       </div>
       <div class="card">
         <div class="card-title">Recomendaciones de la IA</div>
-        <div style="font-size:14px;line-height:1.7;color:var(--text);">
-          <p style="margin-bottom:10px;">${formatted}</p>
-        </div>
+        <div style="font-size:14px;line-height:1.7;"><p style="margin-bottom:10px;">${formatted}</p></div>
         <div class="divider"></div>
-        <div class="text-xs text-muted">Análisis generado con Google Gemini · ${new Date().toLocaleDateString('es-MX')}</div>
-      </div>
-    `;
+        <div class="text-xs text-muted">Análisis generado con IA · ${new Date().toLocaleDateString('es-MX')}</div>
+      </div>`;
   } catch(e) {
     panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>';
   }
 }
 
-// ================================================================
-// UTILS
-// ================================================================
+// ── UTILS ────────────────────────────────────────────────────────
 function genCode(len) {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
-
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-
 function toast(msg, duration = 3000) {
   const el = document.createElement('div');
-  el.className = 'toast';
-  el.textContent = msg;
+  el.className = 'toast'; el.textContent = msg;
   document.getElementById('toastContainer').appendChild(el);
   setTimeout(() => el.remove(), duration);
 }
