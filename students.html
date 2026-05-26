@@ -8,82 +8,61 @@
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
- 
 :root {
-  --cb-navy: #003865;
-  --cb-blue: #0077c8;
-  --cb-blue-light: #e5f1fb;
-  --cb-gold: #f5a800;
-  --cb-gray: #f4f4f4;
-  --cb-gray-2: #e8e8e8;
-  --cb-gray-3: #999;
-  --cb-text: #1a1a1a;
-  --cb-text-2: #444;
-  --cb-border: #d0d0d0;
-  --cb-correct: #2e7d32;
-  --cb-correct-bg: #e8f5e9;
-  --cb-wrong: #c62828;
-  --cb-wrong-bg: #ffebee;
+  --cb-navy: #003865; --cb-blue: #0077c8; --cb-blue-light: #e5f1fb;
+  --cb-gold: #f5a800; --cb-gray: #f4f4f4; --cb-gray-2: #e8e8e8;
+  --cb-gray-3: #999; --cb-text: #1a1a1a; --cb-text-2: #444;
+  --cb-border: #d0d0d0; --cb-correct: #2e7d32; --cb-correct-bg: #e8f5e9;
+  --cb-wrong: #c62828; --cb-wrong-bg: #ffebee;
   --font-serif: 'Merriweather', Georgia, serif;
   --font-sans: 'Source Sans 3', Arial, sans-serif;
 }
- 
 body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
- 
 .cb-header { background: var(--cb-navy); padding: 0; border-bottom: 4px solid var(--cb-gold); }
 .cb-header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
 .cb-logo { display: flex; align-items: center; gap: 16px; }
-.cb-logo-mark { width: 44px; height: 44px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--cb-navy); text-align: center; line-height: 1.2; font-family: var(--font-sans); }
+.cb-logo-mark { width: 44px; height: 44px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--cb-navy); text-align: center; line-height: 1.2; }
 .cb-logo-text { color: #fff; }
 .cb-logo-title { font-size: 16px; font-weight: 600; letter-spacing: 0.04em; }
 .cb-logo-sub { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; }
 .cb-header-right { display: flex; align-items: center; gap: 12px; }
 .cb-timer-wrap { text-align: right; }
 .cb-timer-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
-.cb-timer { font-size: 28px; font-weight: 300; color: #fff; font-family: var(--font-sans); letter-spacing: 0.05em; }
+.cb-timer { font-size: 28px; font-weight: 300; color: #fff; letter-spacing: 0.05em; }
 .cb-timer.urgent { color: #ff6b6b; }
 .header-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cb-gold); overflow: hidden; cursor: pointer; display: none; align-items: center; justify-content: center; background: #fff; }
 .cb-progress-bar { height: 4px; background: rgba(255,255,255,0.15); }
 .cb-progress-fill { height: 4px; background: var(--cb-gold); transition: width 0.4s ease; }
- 
-.screen { display: none; }
-.screen.active { display: block; }
- 
+.screen { display: none; } .screen.active { display: block; }
 .entry-wrap { min-height: calc(100vh - 68px); display: flex; align-items: center; justify-content: center; background: var(--cb-gray); padding: 24px; }
 .entry-box { background: #fff; border: 1px solid var(--cb-border); border-top: 4px solid var(--cb-navy); padding: 40px 44px; width: 100%; max-width: 440px; }
 .entry-eyebrow { font-size: 11px; font-weight: 600; color: var(--cb-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
 .entry-title { font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--cb-navy); margin-bottom: 6px; line-height: 1.3; }
 .entry-sub { font-size: 14px; color: var(--cb-gray-3); margin-bottom: 28px; border-bottom: 1px solid var(--cb-gray-2); padding-bottom: 20px; }
- 
 .field { margin-bottom: 18px; }
 .field label { display: block; font-size: 13px; font-weight: 600; color: var(--cb-text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
 .field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cb-border); font-family: var(--font-sans); font-size: 15px; color: var(--cb-text); background: #fff; transition: border-color 0.15s; }
 .field input:focus { outline: none; border-color: var(--cb-blue); }
 .field input.code-input { font-size: 22px; font-weight: 600; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
- 
 .cb-btn { display: block; width: 100%; padding: 12px 20px; background: var(--cb-navy); color: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.15s; text-align: center; }
 .cb-btn:hover { background: var(--cb-blue); }
 .cb-btn:disabled { background: var(--cb-gray-3); cursor: not-allowed; }
 .cb-btn-outline { display: block; width: 100%; padding: 10px 20px; background: transparent; color: var(--cb-navy); font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: 1.5px solid var(--cb-navy); cursor: pointer; transition: all 0.15s; margin-top: 10px; text-align: center; }
 .cb-btn-outline:hover { background: var(--cb-navy); color: #fff; }
- 
 .waiting-status { background: var(--cb-gray); border-left: 4px solid var(--cb-gold); padding: 16px 20px; margin: 20px 0; }
 .waiting-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cb-gold); display: inline-block; margin-right: 8px; animation: blink 1.2s infinite; }
 .waiting-dot.ready { background: var(--cb-correct); animation: none; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
- 
 #screenExam { min-height: calc(100vh - 68px); display: none; }
 #screenExam.active { display: block; }
 .exam-subheader { background: var(--cb-gray); border-bottom: 1px solid var(--cb-border); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; }
 .exam-section-label { font-size: 12px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.08em; }
 .exam-progress-text { font-size: 12px; color: var(--cb-gray-3); }
- 
 .q-dots { display: flex; gap: 4px; flex-wrap: wrap; padding: 8px 24px; background: #fff; border-bottom: 1px solid var(--cb-border); justify-content: center; }
-.q-dot { width: 26px; height: 26px; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--cb-gray-3); transition: all 0.1s; font-family: var(--font-sans); }
+.q-dot { width: 26px; height: 26px; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--cb-gray-3); transition: all 0.1s; }
 .q-dot:hover { border-color: var(--cb-blue); color: var(--cb-blue); }
 .q-dot.answered { background: var(--cb-blue-light); border-color: var(--cb-blue); color: var(--cb-navy); }
 .q-dot.current { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
- 
 .exam-body { display: flex; min-height: calc(100vh - 160px); }
 .passage-col { width: 50%; border-right: 2px solid var(--cb-border); overflow-y: auto; max-height: calc(100vh - 160px); position: sticky; top: 0; }
 .passage-col.hidden { display: none; }
@@ -91,28 +70,21 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .passage-eyebrow { font-size: 11px; font-weight: 600; color: var(--cb-blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 2px solid var(--cb-gold); }
 .passage-title { font-family: var(--font-serif); font-size: 13px; font-weight: 700; color: var(--cb-navy); margin-bottom: 16px; font-style: italic; }
 .passage-line-numbers { display: flex; gap: 16px; }
-.line-numbers { color: var(--cb-gray-3); font-size: 11px; font-family: var(--font-sans); line-height: 1.9; text-align: right; min-width: 24px; padding-top: 2px; user-select: none; }
+.line-numbers { color: var(--cb-gray-3); font-size: 11px; line-height: 1.9; text-align: right; min-width: 24px; padding-top: 2px; user-select: none; }
 .passage-text { font-family: var(--font-serif); font-size: 13px; line-height: 1.9; color: var(--cb-text); white-space: pre-wrap; }
- 
 .question-col { flex: 1; overflow-y: auto; max-height: calc(100vh - 160px); }
 .question-col.full-width { width: 100%; max-width: 760px; margin: 0 auto; }
 .question-inner { padding: 28px 36px; max-width: 640px; }
 .q-instructions { background: var(--cb-gray); border-left: 3px solid var(--cb-navy); padding: 10px 14px; font-size: 13px; color: var(--cb-text-2); margin-bottom: 20px; font-style: italic; }
 .q-number-label { font-size: 12px; font-weight: 600; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
 .q-stem { font-family: var(--font-serif); font-size: 15px; color: var(--cb-text); line-height: 1.7; margin-bottom: 22px; }
- 
 .options { margin-bottom: 28px; }
 .option { display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px; border: 1.5px solid var(--cb-border); margin-bottom: 8px; cursor: pointer; transition: all 0.1s; background: #fff; }
 .option:hover { border-color: var(--cb-blue); background: var(--cb-blue-light); }
 .option.selected { border-color: var(--cb-navy); background: var(--cb-blue-light); }
-.option.correct { border-color: var(--cb-correct); background: var(--cb-correct-bg); }
-.option.wrong { border-color: var(--cb-wrong); background: var(--cb-wrong-bg); }
-.option-bubble { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--cb-gray-3); flex-shrink: 0; margin-top: 1px; font-family: var(--font-sans); transition: all 0.1s; }
+.option-bubble { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--cb-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--cb-gray-3); flex-shrink: 0; margin-top: 1px; transition: all 0.1s; }
 .option.selected .option-bubble { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
-.option.correct .option-bubble { background: var(--cb-correct); border-color: var(--cb-correct); color: #fff; }
-.option.wrong .option-bubble { background: var(--cb-wrong); border-color: var(--cb-wrong); color: #fff; }
-.option-text { font-size: 14px; color: var(--cb-text); line-height: 1.5; font-family: var(--font-sans); }
- 
+.option-text { font-size: 14px; color: var(--cb-text); line-height: 1.5; }
 .exam-nav { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--cb-gray-2); }
 .nav-btn { padding: 9px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; border: 1.5px solid var(--cb-navy); transition: all 0.15s; }
 .nav-btn-prev { background: #fff; color: var(--cb-navy); }
@@ -122,30 +94,25 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .nav-btn-next:hover { background: var(--cb-blue); border-color: var(--cb-blue); }
 .nav-btn-submit { background: var(--cb-gold); color: var(--cb-navy); border-color: var(--cb-gold); }
 .nav-btn-submit:hover { background: #e09600; border-color: #e09600; }
- 
 .result-header { background: var(--cb-navy); color: #fff; padding: 28px 36px; }
 .result-header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cb-gold); margin-bottom: 6px; }
 .result-header-title { font-family: var(--font-serif); font-size: 24px; font-weight: 700; margin-bottom: 4px; }
 .result-header-sub { font-size: 14px; color: rgba(255,255,255,0.6); }
 .result-score-band { background: var(--cb-gold); padding: 20px 36px; display: flex; align-items: center; gap: 32px; margin-bottom: 24px; }
-.result-score-number { font-size: 56px; font-weight: 700; color: var(--cb-navy); line-height: 1; font-family: var(--font-sans); }
-.result-score-denom { font-size: 24px; color: var(--cb-navy); opacity: 0.6; }
+.result-score-number { font-size: 56px; font-weight: 700; color: var(--cb-navy); line-height: 1; }
 .result-score-label { font-size: 13px; font-weight: 600; color: var(--cb-navy); text-transform: uppercase; letter-spacing: 0.06em; }
 .result-stats { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--cb-border); margin-bottom: 24px; }
 .result-stat { padding: 16px 20px; border-right: 1px solid var(--cb-border); text-align: center; }
 .result-stat:last-child { border-right: none; }
 .result-stat-value { font-size: 28px; font-weight: 600; color: var(--cb-navy); line-height: 1; margin-bottom: 4px; }
 .result-stat-label { font-size: 12px; color: var(--cb-gray-3); text-transform: uppercase; letter-spacing: 0.06em; }
- 
 .points-banner { background: linear-gradient(135deg, var(--cb-navy) 0%, #1a3a6b 100%); color: #fff; padding: 20px 36px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.points-earned { font-size: 32px; font-weight: 700; color: var(--cb-gold); font-family: var(--font-sans); }
+.points-earned { font-size: 32px; font-weight: 700; color: var(--cb-gold); }
 .points-label { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 .points-total { font-size: 14px; color: rgba(255,255,255,0.5); }
- 
 .shop-section { border: 1px solid var(--cb-border); margin-bottom: 24px; }
 .shop-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; justify-content: space-between; }
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0; }
- 
 .jersey-card { padding: 16px 12px 12px; text-align: center; border-right: 1px solid var(--cb-border); border-bottom: 1px solid var(--cb-border); cursor: pointer; transition: all 0.15s; position: relative; }
 .jersey-card:hover { background: var(--cb-blue-light); }
 .jersey-card.owned { background: #f0fdf4; }
@@ -156,7 +123,6 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .jersey-cost { font-size: 12px; color: var(--cb-gray-3); }
 .jersey-owned-badge { position: absolute; top: 6px; right: 6px; background: #22c55e; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
 .jersey-active-badge { position: absolute; top: 6px; left: 6px; background: var(--cb-blue); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
- 
 .review-section { border: 1px solid var(--cb-border); margin-bottom: 20px; }
 .review-section-header { background: var(--cb-navy); color: #fff; padding: 12px 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 .review-item { padding: 16px 20px; border-bottom: 1px solid var(--cb-gray-2); }
@@ -168,11 +134,8 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .review-tag-correct { background: var(--cb-correct-bg); color: var(--cb-correct); }
 .review-tag-wrong { background: var(--cb-wrong-bg); color: var(--cb-wrong); }
 .review-tag-skipped { background: var(--cb-gray); color: var(--cb-gray-3); }
- 
-.spinner-wrap { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--cb-gray-3); gap: 12px; font-size: 14px; }
 .spinner { width: 20px; height: 20px; border: 2px solid var(--cb-gray-2); border-top-color: var(--cb-blue); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
- 
 @media (max-width: 700px) {
   .exam-body { flex-direction: column; }
   .passage-col { width: 100%; max-height: 280px; border-right: none; border-bottom: 2px solid var(--cb-border); position: relative; }
@@ -186,8 +149,8 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 </style>
 </head>
 <body>
- 
-<header class="cb-header" id="mainHeader">
+
+<header class="cb-header">
   <div class="cb-header-inner">
     <div class="cb-logo">
       <div class="cb-logo-mark">College Board</div>
@@ -208,8 +171,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     <div class="cb-progress-fill" id="progressFill" style="width:0%;"></div>
   </div>
 </header>
- 
-<!-- SCREEN 1: LOGIN -->
+
 <div class="screen active" id="screenLogin">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -251,8 +213,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     </div>
   </div>
 </div>
- 
-<!-- SCREEN 2: CÓDIGO DEL EXAMEN -->
+
 <div class="screen" id="screenEntry">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -272,8 +233,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     </div>
   </div>
 </div>
- 
-<!-- SCREEN 3: SALA DE ESPERA -->
+
 <div class="screen" id="screenWaiting">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -294,8 +254,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     </div>
   </div>
 </div>
- 
-<!-- SCREEN 4: EXAMEN -->
+
 <div class="screen" id="screenExam">
   <div class="exam-subheader">
     <div class="exam-section-label" id="examSectionLabel">Sección</div>
@@ -327,8 +286,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     </div>
   </div>
 </div>
- 
-<!-- SCREEN 5: RESULTADOS -->
+
 <div class="screen" id="screenResult">
   <div style="max-width:760px;margin:0 auto;">
     <div class="result-header">
@@ -337,9 +295,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
       <div class="result-header-sub" id="resultStudentName">Estudiante</div>
     </div>
     <div class="result-score-band">
-      <div>
-        <div class="result-score-number" id="scoreBig">-</div>
-      </div>
+      <div><div class="result-score-number" id="scoreBig">-</div></div>
       <div>
         <div class="result-score-label">Reactivos correctos</div>
         <div style="font-size:13px;color:var(--cb-navy);margin-top:4px;" id="scoreOutOf"></div>
@@ -354,7 +310,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
       </div>
       <div id="bannerJersey" style="width:64px;height:64px;flex-shrink:0;"></div>
     </div>
-    <div class="shop-section" id="shopSection">
+    <div class="shop-section">
       <div class="shop-header">
         Tienda de Playeras
         <span id="shopPoints" style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6);"></span>
@@ -370,8 +326,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     </div>
   </div>
 </div>
- 
-<!-- SCREEN 6: TIENDA / AVATAR -->
+
 <div class="screen" id="screenShop">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
     <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;margin-bottom:0;">
@@ -393,15 +348,14 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     <button class="cb-btn" onclick="goToEntry()">← Volver al examen</button>
   </div>
 </div>
- 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
- 
-// STATE
+
 let currentStudent = null;
 let currentExam = null;
 let currentQuestions = [];
@@ -413,43 +367,43 @@ let startTime = null;
 let elapsedSeconds = 0;
 let secondsRemaining = 600;
 let allShopItems = [];
- 
+let examSubmitted = false;
+
 const subjectLabels = {
-  matematicas: 'Parte 3 — Matemáticas',
-  espanol: 'Parte 2 — Español',
-  ingles: 'Parte 4 — Inglés',
-  habilidad: 'Parte 1 — Habilidad Cognoscitiva'
+  matematicas: 'Parte 3 — Matemáticas', espanol: 'Parte 2 — Español',
+  ingles: 'Parte 4 — Inglés', habilidad: 'Parte 1 — Habilidad Cognoscitiva'
 };
- 
-// ── JERSEYS SVG ──────────────────────────────────────────────────
+
 const jerseysSVG = {
-  mexico: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#006847"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><path d="M28 10 L44 10 L50 14 L22 14 Z" fill="#CE1126"/><text x="36" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">MX</text></svg>`,
-  argentina: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#74ACDF"/><rect x="10" y="26" width="52" height="10" fill="#fff"/><rect x="10" y="36" width="52" height="10" fill="#74ACDF"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><circle cx="36" cy="31" r="4" fill="#F6B40E"/></svg>`,
-  brasil: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#009C3B"/><polygon points="36,16 52,35 36,54 20,35" fill="#FEDF00"/><circle cx="36" cy="35" r="7" fill="#002776"/><text x="36" y="38" text-anchor="middle" font-size="6" font-weight="700" fill="#fff" font-family="sans-serif">BR</text><rect x="28" y="8" width="16" height="6" fill="#FEDF00"/></svg>`,
-  francia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#002395"/><rect x="28" y="8" width="16" height="6" fill="#002395"/><text x="36" y="38" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">FRA</text></svg>`,
-  portugal: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CC0000"/><path d="M22 14 L10 42 L18 44 L18 62 L33 62 L33 8 L28 10 Z" fill="#006600"/><rect x="28" y="8" width="5" height="6" fill="#006600"/><circle cx="30" cy="36" r="5" fill="#FFD700"/><text x="30" y="39" text-anchor="middle" font-size="6" font-weight="700" fill="#CC0000" font-family="sans-serif">PT</text></svg>`,
-  espana: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#AA151B"/><rect x="10" y="26" width="52" height="14" fill="#F1BF00"/><rect x="28" y="8" width="16" height="6" fill="#AA151B"/></svg>`,
-  alemania: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#000"/><rect x="10" y="30" width="52" height="10" fill="#DD0000"/><rect x="10" y="40" width="52" height="14" fill="#FFCE00"/><rect x="18" y="44" width="36" height="10" fill="#FFCE00"/><rect x="28" y="8" width="16" height="6" fill="#000"/></svg>`,
-  italia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003399"/><rect x="28" y="8" width="16" height="6" fill="#003399"/><text x="36" y="39" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">ITA</text></svg>`,
-  inglaterra: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M34 8 L34 62 L38 62 L38 8 Z" fill="#CC0000"/><path d="M10 33 L62 33 L62 37 L10 37 Z" fill="#CC0000"/><rect x="28" y="8" width="16" height="6" fill="#fff" stroke="#CC0000" stroke-width="0.5"/></svg>`,
-  uruguay: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#5EB6E4"/><rect x="10" y="24" width="52" height="5" fill="#fff"/><rect x="10" y="34" width="52" height="5" fill="#fff"/><rect x="28" y="8" width="16" height="6" fill="#5EB6E4"/><circle cx="36" cy="36" r="4" fill="#F5D218"/></svg>`,
-  colombia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FCD116"/><rect x="10" y="37" width="52" height="8" fill="#003893"/><rect x="10" y="45" width="52" height="9" fill="#CE1126"/><rect x="18" y="53" width="36" height="9" fill="#CE1126"/><rect x="28" y="8" width="16" height="6" fill="#FCD116"/></svg>`,
-  chile: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#D52B1E"/><path d="M22 14 L10 42 L18 44 L18 62 L36 62 L36 8 L28 10 Z" fill="#fff"/><path d="M10 23 L22 33 L10 33 Z" fill="#0032A0"/><rect x="28" y="8" width="8" height="6" fill="#fff"/><rect x="36" y="8" width="8" height="6" fill="#D52B1E"/><text x="17" y="28" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">★</text></svg>`,
-  japon: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003594"/><circle cx="36" cy="36" r="8" fill="#BC002D"/><rect x="28" y="8" width="16" height="6" fill="#003594"/></svg>`,
-  corea: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CE1126"/><circle cx="36" cy="36" r="7" fill="#fff"/><circle cx="36" cy="36" r="4" fill="#003478"/><rect x="28" y="8" width="16" height="6" fill="#CE1126"/></svg>`,
-  marruecos: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#C1272D"/><polygon points="36,28 38,34 44,34 39,38 41,44 36,40 31,44 33,38 28,34 34,34" fill="none" stroke="#006233" stroke-width="1.5"/><rect x="28" y="8" width="16" height="6" fill="#C1272D"/></svg>`,
-  senegal: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L28 62 L28 8 L22 14 Z" fill="#00853F"/><path d="M50 14 L62 42 L54 44 L54 62 L44 62 L44 8 L50 14 Z" fill="#E31B23"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><polygon points="36,28 37,32 41,32 38,35 39,39 36,36 33,39 34,35 31,32 35,32" fill="#00853F"/></svg>`,
-  holanda: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FF6600"/><rect x="28" y="8" width="16" height="6" fill="#FF6600"/><text x="36" y="40" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">NED</text></svg>`,
-  australia: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FFD700"/><rect x="28" y="8" width="16" height="6" fill="#FFD700"/><text x="36" y="42" text-anchor="middle" font-size="7" font-weight="700" fill="#00843D" font-family="sans-serif">AUS</text></svg>`,
-  canada: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L24 62 L24 8 L22 14 Z" fill="#FF0000"/><path d="M50 14 L62 42 L54 44 L54 62 L48 62 L48 8 L50 14 Z" fill="#FF0000"/><rect x="24" y="8" width="24" height="6" fill="#fff"/><polygon points="36,26 37.5,31 42,31 38.5,33.5 40,38.5 36,36 32,38.5 33.5,33.5 30,31 34.5,31" fill="#FF0000"/></svg>`,
-  eeuu: `<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#B22234"/><rect x="10" y="24" width="52" height="4" fill="#fff"/><rect x="10" y="32" width="52" height="4" fill="#fff"/><rect x="10" y="40" width="52" height="4" fill="#fff"/><rect x="10" y="14" width="26" height="18" fill="#3C3B6E"/><rect x="28" y="8" width="16" height="6" fill="#B22234"/></svg>`,
+  mexico:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#006847"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><path d="M28 10 L44 10 L50 14 L22 14 Z" fill="#CE1126"/><text x="36" y="41" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="sans-serif">MX</text></svg>`,
+  argentina:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#74ACDF"/><rect x="10" y="26" width="52" height="10" fill="#fff"/><rect x="10" y="36" width="52" height="10" fill="#74ACDF"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><circle cx="36" cy="31" r="4" fill="#F6B40E"/></svg>`,
+  brasil:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#009C3B"/><polygon points="36,16 52,35 36,54 20,35" fill="#FEDF00"/><circle cx="36" cy="35" r="7" fill="#002776"/><text x="36" y="38" text-anchor="middle" font-size="6" font-weight="700" fill="#fff" font-family="sans-serif">BR</text><rect x="28" y="8" width="16" height="6" fill="#FEDF00"/></svg>`,
+  francia:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#002395"/><rect x="28" y="8" width="16" height="6" fill="#002395"/><text x="36" y="38" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">FRA</text></svg>`,
+  portugal:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CC0000"/><path d="M22 14 L10 42 L18 44 L18 62 L33 62 L33 8 L28 10 Z" fill="#006600"/><rect x="28" y="8" width="5" height="6" fill="#006600"/><circle cx="30" cy="36" r="5" fill="#FFD700"/><text x="30" y="39" text-anchor="middle" font-size="6" font-weight="700" fill="#CC0000" font-family="sans-serif">PT</text></svg>`,
+  espana:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#AA151B"/><rect x="10" y="26" width="52" height="14" fill="#F1BF00"/><rect x="28" y="8" width="16" height="6" fill="#AA151B"/></svg>`,
+  alemania:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#000"/><rect x="10" y="30" width="52" height="10" fill="#DD0000"/><rect x="10" y="40" width="52" height="14" fill="#FFCE00"/><rect x="18" y="44" width="36" height="10" fill="#FFCE00"/><rect x="28" y="8" width="16" height="6" fill="#000"/></svg>`,
+  italia:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003399"/><rect x="28" y="8" width="16" height="6" fill="#003399"/><text x="36" y="39" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">ITA</text></svg>`,
+  inglaterra:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M34 8 L34 62 L38 62 L38 8 Z" fill="#CC0000"/><path d="M10 33 L62 33 L62 37 L10 37 Z" fill="#CC0000"/><rect x="28" y="8" width="16" height="6" fill="#fff" stroke="#CC0000" stroke-width="0.5"/></svg>`,
+  uruguay:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#5EB6E4"/><rect x="10" y="24" width="52" height="5" fill="#fff"/><rect x="10" y="34" width="52" height="5" fill="#fff"/><rect x="28" y="8" width="16" height="6" fill="#5EB6E4"/><circle cx="36" cy="36" r="4" fill="#F5D218"/></svg>`,
+  colombia:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FCD116"/><rect x="10" y="37" width="52" height="8" fill="#003893"/><rect x="10" y="45" width="52" height="9" fill="#CE1126"/><rect x="18" y="53" width="36" height="9" fill="#CE1126"/><rect x="28" y="8" width="16" height="6" fill="#FCD116"/></svg>`,
+  chile:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#D52B1E"/><path d="M22 14 L10 42 L18 44 L18 62 L36 62 L36 8 L28 10 Z" fill="#fff"/><path d="M10 23 L22 33 L10 33 Z" fill="#0032A0"/><rect x="28" y="8" width="8" height="6" fill="#fff"/><rect x="36" y="8" width="8" height="6" fill="#D52B1E"/><text x="17" y="28" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">★</text></svg>`,
+  japon:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003594"/><circle cx="36" cy="36" r="8" fill="#BC002D"/><rect x="28" y="8" width="16" height="6" fill="#003594"/></svg>`,
+  corea:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CE1126"/><circle cx="36" cy="36" r="7" fill="#fff"/><circle cx="36" cy="36" r="4" fill="#003478"/><rect x="28" y="8" width="16" height="6" fill="#CE1126"/></svg>`,
+  marruecos:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#C1272D"/><polygon points="36,28 38,34 44,34 39,38 41,44 36,40 31,44 33,38 28,34 34,34" fill="none" stroke="#006233" stroke-width="1.5"/><rect x="28" y="8" width="16" height="6" fill="#C1272D"/></svg>`,
+  senegal:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L28 62 L28 8 L22 14 Z" fill="#00853F"/><path d="M50 14 L62 42 L54 44 L54 62 L44 62 L44 8 L50 14 Z" fill="#E31B23"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><polygon points="36,28 37,32 41,32 38,35 39,39 36,36 33,39 34,35 31,32 35,32" fill="#00853F"/></svg>`,
+  holanda:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FF6600"/><rect x="28" y="8" width="16" height="6" fill="#FF6600"/><text x="36" y="40" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">NED</text></svg>`,
+  australia:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FFD700"/><rect x="28" y="8" width="16" height="6" fill="#FFD700"/><text x="36" y="42" text-anchor="middle" font-size="7" font-weight="700" fill="#00843D" font-family="sans-serif">AUS</text></svg>`,
+  canada:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L24 62 L24 8 L22 14 Z" fill="#FF0000"/><path d="M50 14 L62 42 L54 44 L54 62 L48 62 L48 8 L50 14 Z" fill="#FF0000"/><rect x="24" y="8" width="24" height="6" fill="#fff"/><polygon points="36,26 37.5,31 42,31 38.5,33.5 40,38.5 36,36 32,38.5 33.5,33.5 30,31 34.5,31" fill="#FF0000"/></svg>`,
+  eeuu:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#B22234"/><rect x="10" y="24" width="52" height="4" fill="#fff"/><rect x="10" y="32" width="52" height="4" fill="#fff"/><rect x="10" y="40" width="52" height="4" fill="#fff"/><rect x="10" y="14" width="26" height="18" fill="#3C3B6E"/><rect x="28" y="8" width="16" height="6" fill="#B22234"/></svg>`,
 };
- 
-function getJerseySVG(slug) {
-  return jerseysSVG[slug] || jerseysSVG['mexico'];
+
+function getJerseySVG(slug) { return jerseysSVG[slug] || jerseysSVG['mexico']; }
+
+function clearAllTimers() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  if (waitInterval) { clearInterval(waitInterval); waitInterval = null; }
 }
- 
-// ── INIT ────────────────────────────────────────────────────────
+
 window.onload = async () => {
   const saved = localStorage.getItem('piense1_alumno');
   if (saved) {
@@ -457,19 +411,16 @@ window.onload = async () => {
     showScreen('screenEntry');
     document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
     updateHeaderAvatar();
-  } else {
-    showScreen('screenLogin');
-  }
+  } else { showScreen('screenLogin'); }
 };
- 
+
 function toggleLoginRegister() {
   const lf = document.getElementById('loginForm');
   const rf = document.getElementById('registerForm');
   lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
 }
- 
-// ── AUTH ────────────────────────────────────────────────────────
+
 async function doLoginAlumno() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
@@ -482,7 +433,7 @@ async function doLoginAlumno() {
   updateHeaderAvatar();
   showScreen('screenEntry');
 }
- 
+
 async function doRegisterAlumno() {
   const nombre = document.getElementById('regNombre').value.trim();
   const email = document.getElementById('regEmail').value.trim();
@@ -490,12 +441,9 @@ async function doRegisterAlumno() {
   if (!nombre || !email || !password) return alert('Completa todos los campos');
   if (password.length < 6) return alert('La contraseña debe tener al menos 6 caracteres');
   const { data, error } = await sb.from('students').insert({
-    nombre, email,
-    password_hash: btoa(password),
-    grado: '6',
-    puntos_totales: 0,
-    playera_activa: 'mexico',
-    playeras_desbloqueadas: ['mexico']
+    nombre, email, password_hash: btoa(password),
+    grado: '6', puntos_totales: 0,
+    playera_activa: 'mexico', playeras_desbloqueadas: ['mexico']
   }).select().single();
   if (error) return alert(error.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + error.message);
   currentStudent = data;
@@ -504,107 +452,104 @@ async function doRegisterAlumno() {
   updateHeaderAvatar();
   showScreen('screenEntry');
 }
- 
+
 function cerrarSesionAlumno() {
+  clearAllTimers();
   localStorage.removeItem('piense1_alumno');
   currentStudent = null;
   showScreen('screenLogin');
 }
- 
+
 function updateHeaderAvatar() {
   if (!currentStudent) return;
   const el = document.getElementById('headerAvatar');
   el.style.display = 'flex';
   el.innerHTML = `<div style="width:32px;height:32px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
 }
- 
-// ── SCREENS ──────────────────────────────────────────────────────
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
- 
+
 function goToEntry() {
-  clearInterval(waitInterval);
-  clearInterval(timerInterval);
-  currentExam = null;
-  currentQuestions = [];
-  userAnswers = {};
-  currentQIndex = 0;
+  clearAllTimers();
+  examSubmitted = false;
+  currentExam = null; currentQuestions = []; userAnswers = {};
+  currentQIndex = 0; secondsRemaining = 600;
   document.getElementById('examCode').value = '';
   document.getElementById('timerWrap').style.display = 'none';
   document.getElementById('progressFill').style.width = '0%';
   showScreen('screenEntry');
 }
- 
-function goToShop() {
-  loadShopScreen();
-  showScreen('screenShop');
-}
- 
-// ── BUSCAR EXAMEN ────────────────────────────────────────────────
+
+function goToShop() { loadShopScreen(); showScreen('screenShop'); }
+
 async function goToWaiting() {
   if (!currentStudent) return alert('Debes iniciar sesión primero');
   const code = document.getElementById('examCode').value.trim().toUpperCase();
   if (code.length < 4) return alert('Ingresa el código del examen');
+  clearAllTimers();
+  examSubmitted = false;
   const btn = document.getElementById('btnSearchExam');
-  btn.disabled = true;
-  btn.textContent = 'Buscando...';
+  btn.disabled = true; btn.textContent = 'Buscando...';
   const { data, error } = await sb.from('exams').select('*, groups(name)').eq('exam_code', code).single();
-  btn.disabled = false;
-  btn.textContent = 'Buscar examen';
+  btn.disabled = false; btn.textContent = 'Buscar examen';
   if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
   if (data.status === 'closed') return alert('Este examen ya está cerrado.');
+
+  const { data: yaContesto } = await sb.from('responses')
+    .select('id').eq('exam_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
+  if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
+
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
   document.getElementById('waitExamName').textContent = data.name || 'Examen PIENSE I';
   showScreen('screenWaiting');
   startWaiting();
 }
- 
-// ── SALA DE ESPERA ───────────────────────────────────────────────
+
 function startWaiting() {
   checkExamStatus();
   waitInterval = setInterval(checkExamStatus, 3000);
 }
- 
+
 async function checkExamStatus() {
   const { data } = await sb.from('exams').select('status').eq('id', currentExam.id).single();
   if (!data) return;
-  const dot = document.getElementById('statusDot');
-  const msg = document.getElementById('statusMsg');
-  const sub = document.getElementById('statusSub');
   if (data.status === 'active') {
-    dot.classList.add('ready');
-    msg.textContent = 'El examen está listo. Comenzando...';
-    sub.textContent = '';
-    clearInterval(waitInterval);
+    document.getElementById('statusDot').classList.add('ready');
+    document.getElementById('statusMsg').textContent = 'El examen está listo. Comenzando...';
+    document.getElementById('statusSub').textContent = '';
+    clearAllTimers();
     setTimeout(() => startExam(), 1500);
   } else if (data.status === 'closed') {
-    msg.textContent = 'Este examen ha sido cerrado.';
-    clearInterval(waitInterval);
+    document.getElementById('statusMsg').textContent = 'Este examen ha sido cerrado.';
+    clearAllTimers();
   }
 }
- 
-// ── EXAMEN ───────────────────────────────────────────────────────
+
 async function startExam() {
+  clearAllTimers();
+  examSubmitted = false;
   const { data } = await sb.from('questions').select('*').in('id', currentExam.question_ids);
   if (!data || !data.length) return alert('Error al cargar preguntas.');
   currentQuestions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
+  userAnswers = {}; currentQIndex = 0;
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
   secondsRemaining = currentExam.duration_seconds || 600;
   startTime = Date.now();
   renderTimer();
   timerInterval = setInterval(() => {
+    if (examSubmitted) { clearAllTimers(); return; }
     secondsRemaining--;
-    if (secondsRemaining <= 0) { secondsRemaining = 0; submitExam(true); }
+    if (secondsRemaining <= 0) { secondsRemaining = 0; clearAllTimers(); submitExam(true); }
     renderTimer();
   }, 1000);
-  renderQuestion();
-  renderDots();
+  renderQuestion(); renderDots();
 }
- 
+
 function renderTimer() {
   const mins = Math.floor(secondsRemaining / 60);
   const secs = String(secondsRemaining % 60).padStart(2, '0');
@@ -612,43 +557,27 @@ function renderTimer() {
   el.textContent = `${mins}:${secs}`;
   el.classList.toggle('urgent', secondsRemaining <= 60);
 }
- 
+
 function renderQuestion() {
   const q = currentQuestions[currentQIndex];
   const total = currentQuestions.length;
-  const pct = ((currentQIndex + 1) / total) * 100;
-  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressFill').style.width = (((currentQIndex + 1) / total) * 100) + '%';
   document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
   document.getElementById('examSectionLabel').textContent = subjectLabels[q.subject] || q.subject;
   document.getElementById('qNumberLabel').textContent = `${currentQIndex + 1}.`;
   document.getElementById('qStem').textContent = q.stem;
- 
   const instrEl = document.getElementById('qInstructions');
-  if (q.subject === 'habilidad') {
-    instrEl.style.display = 'block';
-    instrEl.textContent = 'Selecciona la opción que mejor completa o responde cada planteamiento.';
-  } else if (q.reading_passage) {
-    instrEl.style.display = 'block';
-    instrEl.textContent = 'Los siguientes ejercicios están basados en el contenido de la lectura. Selecciona la mejor respuesta.';
-  } else {
-    instrEl.style.display = 'none';
-  }
- 
+  if (q.subject === 'habilidad') { instrEl.style.display = 'block'; instrEl.textContent = 'Selecciona la opción que mejor completa o responde cada planteamiento.'; }
+  else if (q.reading_passage) { instrEl.style.display = 'block'; instrEl.textContent = 'Los siguientes ejercicios están basados en el contenido de la lectura. Selecciona la mejor respuesta.'; }
+  else { instrEl.style.display = 'none'; }
   const passageCol = document.getElementById('passageCol');
   const questionCol = document.getElementById('questionCol');
   if (q.reading_passage) {
-    passageCol.classList.remove('hidden');
-    questionCol.classList.remove('full-width');
+    passageCol.classList.remove('hidden'); questionCol.classList.remove('full-width');
     document.getElementById('passageTitle').textContent = q.reading_title || 'Lee el siguiente texto';
-    const lines = q.reading_passage.split('\n');
     document.getElementById('passageText').textContent = q.reading_passage;
-    const lineNums = lines.map((_, i) => (i + 1) % 5 === 0 ? `(${i + 1})` : '').join('\n');
-    document.getElementById('lineNumbers').textContent = lineNums;
-  } else {
-    passageCol.classList.add('hidden');
-    questionCol.classList.add('full-width');
-  }
- 
+    document.getElementById('lineNumbers').textContent = q.reading_passage.split('\n').map((_, i) => (i + 1) % 5 === 0 ? `(${i + 1})` : '').join('\n');
+  } else { passageCol.classList.add('hidden'); questionCol.classList.add('full-width'); }
   const letters = ['A', 'B', 'C', 'D'];
   const opts = [q.option_a, q.option_b, q.option_c, q.option_d];
   const selected = userAnswers[q.id];
@@ -656,36 +585,26 @@ function renderQuestion() {
     <div class="option ${selected === letters[i] ? 'selected' : ''}" onclick="selectAnswer('${q.id}','${letters[i]}')">
       <div class="option-bubble">${letters[i]}</div>
       <div class="option-text">${opt}</div>
-    </div>
-  `).join('');
- 
+    </div>`).join('');
   document.getElementById('btnPrev').disabled = currentQIndex === 0;
   const isLast = currentQIndex === total - 1;
   const btnNext = document.getElementById('btnNext');
-  if (isLast) {
-    btnNext.textContent = 'Entregar prueba';
-    btnNext.className = 'nav-btn nav-btn-submit';
-    btnNext.onclick = confirmSubmit;
-  } else {
-    btnNext.textContent = 'Siguiente →';
-    btnNext.className = 'nav-btn nav-btn-next';
-    btnNext.onclick = nextQuestion;
-  }
+  if (isLast) { btnNext.textContent = 'Entregar prueba'; btnNext.className = 'nav-btn nav-btn-submit'; btnNext.onclick = confirmSubmit; }
+  else { btnNext.textContent = 'Siguiente →'; btnNext.className = 'nav-btn nav-btn-next'; btnNext.onclick = nextQuestion; }
   renderDots();
 }
- 
+
 function renderDots() {
   document.getElementById('qDots').innerHTML = currentQuestions.map((q, i) => `
     <div class="q-dot ${i === currentQIndex ? 'current' : userAnswers[q.id] ? 'answered' : ''}"
-         onclick="goToQuestion(${i})">${i + 1}</div>
-  `).join('');
+         onclick="goToQuestion(${i})">${i + 1}</div>`).join('');
 }
- 
+
 function selectAnswer(qId, letter) { userAnswers[qId] = letter; renderQuestion(); }
 function nextQuestion() { if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; renderQuestion(); } }
 function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; renderQuestion(); } }
 function goToQuestion(i) { currentQIndex = i; renderQuestion(); }
- 
+
 function confirmSubmit() {
   const answered = Object.keys(userAnswers).length;
   const total = currentQuestions.length;
@@ -694,118 +613,94 @@ function confirmSubmit() {
   }
   submitExam(false);
 }
- 
+
 async function submitExam(timeUp) {
-  clearInterval(timerInterval);
+  if (examSubmitted) return;
+  examSubmitted = true;
+  clearAllTimers();
+  secondsRemaining = 0;
   elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
   let score = 0;
   currentQuestions.forEach(q => { if (userAnswers[q.id] === q.correct_answer) score++; });
   const total = currentQuestions.length;
   const calificacion = Math.round((score / total) * 100);
   const puntosGanados = Math.round(calificacion / 10);
- 
   await sb.from('responses').insert({
-    exam_id: currentExam.id,
-    student_id: currentStudent.id,
-    answers: userAnswers,
-    score,
-    total_questions: total,
-    elapsed_seconds: elapsedSeconds
+    exam_id: currentExam.id, student_id: currentStudent.id,
+    answers: userAnswers, score, total_questions: total, elapsed_seconds: elapsedSeconds
   });
- 
   const newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
   await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
   currentStudent.puntos_totales = newTotal;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
   showResults(score, calificacion, puntosGanados, newTotal);
 }
- 
-// ── RESULTADOS ───────────────────────────────────────────────────
+
 async function showResults(score, calificacion, puntosGanados, totalPuntos) {
   const total = currentQuestions.length;
   const mins = Math.floor(elapsedSeconds / 60);
   const secs = String(elapsedSeconds % 60).padStart(2, '0');
   const wrong = Object.keys(userAnswers).length - score;
- 
   document.getElementById('resultStudentName').textContent = currentStudent.nombre;
   document.getElementById('scoreBig').textContent = score;
   document.getElementById('scoreOutOf').textContent = `de ${total} reactivos · ${calificacion}/100`;
   document.getElementById('resultStats').innerHTML = `
     <div class="result-stat"><div class="result-stat-value">${score}</div><div class="result-stat-label">Correctas</div></div>
     <div class="result-stat"><div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div><div class="result-stat-label">Incorrectas</div></div>
-    <div class="result-stat"><div class="result-stat-value">${mins}:${secs}</div><div class="result-stat-label">Tiempo</div></div>
-  `;
- 
-  const bannerEl = document.getElementById('pointsBanner');
-  bannerEl.style.display = 'flex';
+    <div class="result-stat"><div class="result-stat-value">${mins}:${secs}</div><div class="result-stat-label">Tiempo</div></div>`;
+  document.getElementById('pointsBanner').style.display = 'flex';
   document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
   document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
   document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
- 
   await loadShopInResults();
- 
   const letters = ['A', 'B', 'C', 'D'];
   const getOpt = (q, l) => [q.option_a, q.option_b, q.option_c, q.option_d][letters.indexOf(l)] || '—';
   document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {
     const userAns = userAnswers[q.id];
     const correct = userAns === q.correct_answer;
     const sk = !userAns;
-    return `
-      <div class="review-item">
-        <div class="review-q-num">Reactivo ${i + 1}</div>
-        <div class="review-q-text">${q.stem}</div>
-        <div class="review-answer-row">
-          ${sk
-            ? '<span class="review-tag review-tag-skipped">Sin contestar</span>'
-            : correct
-              ? `<span class="review-tag review-tag-correct">Correcta: ${userAns}. ${getOpt(q, userAns)}</span>`
-              : `<span class="review-tag review-tag-wrong">Tu respuesta: ${userAns}. ${getOpt(q, userAns)}</span>
-                 <span class="review-tag review-tag-correct">Correcta: ${q.correct_answer}. ${getOpt(q, q.correct_answer)}</span>`
-          }
-        </div>
-      </div>
-    `;
+    return `<div class="review-item">
+      <div class="review-q-num">Reactivo ${i + 1}</div>
+      <div class="review-q-text">${q.stem}</div>
+      <div class="review-answer-row">
+        ${sk ? '<span class="review-tag review-tag-skipped">Sin contestar</span>'
+          : correct ? `<span class="review-tag review-tag-correct">Correcta: ${userAns}. ${getOpt(q, userAns)}</span>`
+          : `<span class="review-tag review-tag-wrong">Tu respuesta: ${userAns}. ${getOpt(q, userAns)}</span>
+             <span class="review-tag review-tag-correct">Correcta: ${q.correct_answer}. ${getOpt(q, q.correct_answer)}</span>`}
+      </div></div>`;
   }).join('');
- 
   document.getElementById('timerWrap').style.display = 'none';
   showScreen('screenResult');
 }
- 
-// ── TIENDA ───────────────────────────────────────────────────────
+
 async function loadShopItems() {
   if (allShopItems.length > 0) return;
   const { data } = await sb.from('shop_items').select('*').eq('disponible', true).order('costo_puntos');
   allShopItems = data || [];
 }
- 
+
 function renderJerseyCard(item, isOwned, isActive, pts, context) {
   const canBuy = !isOwned && pts >= item.costo_puntos;
-  const onclickAttr = isOwned
-    ? `onclick="${context === 'results' ? `equipJersey('${item.slug}')` : `equipJerseyShop('${item.slug}')`}"`
-    : canBuy
-      ? `onclick="${context === 'results' ? `buyJersey('${item.slug}', ${item.costo_puntos})` : `buyJerseyShop('${item.slug}', ${item.costo_puntos})`}"`
-      : '';
-  return `
-    <div class="jersey-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-jersey' : ''}" ${onclickAttr}>
-      ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
-      ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
-      <div class="jersey-svg-wrap">${getJerseySVG(item.slug)}</div>
-      <div class="jersey-name">${item.nombre}</div>
-      <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
-    </div>
-  `;
+  const fn = context === 'results' ? (isOwned ? `equipJersey` : `buyJersey`) : (isOwned ? `equipJerseyShop` : `buyJerseyShop`);
+  const onclickAttr = isOwned ? `onclick="${fn}('${item.slug}')"` : canBuy ? `onclick="${fn}('${item.slug}', ${item.costo_puntos})"` : '';
+  return `<div class="jersey-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-jersey' : ''}" ${onclickAttr}>
+    ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
+    ${isOwned && !isActive ? '<span class="jersey-owned-badge">✓</span>' : ''}
+    <div class="jersey-svg-wrap">${getJerseySVG(item.slug)}</div>
+    <div class="jersey-name">${item.nombre}</div>
+    <div class="jersey-cost">${isOwned ? (isActive ? 'Equipada' : 'Equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
+  </div>`;
 }
- 
+
 async function loadShopInResults() {
   await loadShopItems();
   const owned = currentStudent.playeras_desbloqueadas || ['mexico'];
   const pts = currentStudent.puntos_totales || 0;
   document.getElementById('shopPoints').textContent = `${pts} pts disponibles`;
   document.getElementById('shopGrid').innerHTML = allShopItems.map(item =>
-    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'results')
-  ).join('');
+    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'results')).join('');
 }
- 
+
 async function loadShopScreen() {
   await loadShopItems();
   if (!currentStudent) return;
@@ -817,10 +712,9 @@ async function loadShopScreen() {
   const activeItem = allShopItems.find(i => i.slug === currentStudent.playera_activa);
   document.getElementById('shopActiveJerseyName').textContent = activeItem?.nombre || 'México';
   document.getElementById('shopGridFull').innerHTML = allShopItems.map(item =>
-    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'shop')
-  ).join('');
+    renderJerseyCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'shop')).join('');
 }
- 
+
 async function buyJersey(slug, cost) {
   if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
   const newPts = (currentStudent.puntos_totales || 0) - cost;
@@ -828,9 +722,7 @@ async function buyJersey(slug, cost) {
   const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
   await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
   await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.puntos_totales = newPts;
-  currentStudent.playeras_desbloqueadas = newUnlocked;
-  currentStudent.playera_activa = slug;
+  currentStudent.puntos_totales = newPts; currentStudent.playeras_desbloqueadas = newUnlocked; currentStudent.playera_activa = slug;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
   document.getElementById('shopPoints').textContent = `${newPts} pts disponibles`;
@@ -838,7 +730,7 @@ async function buyJersey(slug, cost) {
   document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(slug)}</div>`;
   await loadShopInResults();
 }
- 
+
 async function equipJersey(slug) {
   await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
   currentStudent.playera_activa = slug;
@@ -847,7 +739,7 @@ async function equipJersey(slug) {
   document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(slug)}</div>`;
   await loadShopInResults();
 }
- 
+
 async function buyJerseyShop(slug, cost) {
   if (!confirm(`¿Comprar esta playera por ${cost} puntos?`)) return;
   const newPts = (currentStudent.puntos_totales || 0) - cost;
@@ -855,22 +747,18 @@ async function buyJerseyShop(slug, cost) {
   const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['mexico']), slug];
   await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
   await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.puntos_totales = newPts;
-  currentStudent.playeras_desbloqueadas = newUnlocked;
-  currentStudent.playera_activa = slug;
+  currentStudent.puntos_totales = newPts; currentStudent.playeras_desbloqueadas = newUnlocked; currentStudent.playera_activa = slug;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  updateHeaderAvatar();
-  loadShopScreen();
+  updateHeaderAvatar(); loadShopScreen();
 }
- 
+
 async function equipJerseyShop(slug) {
   await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
   currentStudent.playera_activa = slug;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  updateHeaderAvatar();
-  loadShopScreen();
+  updateHeaderAvatar(); loadShopScreen();
 }
- 
+
 async function getItemId(slug) {
   const item = allShopItems.find(i => i.slug === slug);
   return item?.id || null;
