@@ -881,10 +881,10 @@ async function generateRecommendations() {
   const examId = document.getElementById('recExamSelect').value;
   const panel = document.getElementById('recPanel');
   if (!examId) return toast('Selecciona un examen primero');
-  panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando resultados con IA...</span></div>';
+  panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando respuestas por alumno...</span></div>';
 
   const [{ data: responses }, { data: exam }] = await Promise.all([
-    sb.from('responses').select('*').eq('exam_id', examId),
+    sb.from('responses').select('*, students(nombre)').eq('exam_id', examId),
     sb.from('exams').select('*, groups(name)').eq('id', examId).single()
   ]);
 
@@ -896,64 +896,116 @@ async function generateRecommendations() {
   const { data: questions } = await sb.from('questions').select('*').in('id', exam.question_ids);
   if (!questions) return;
 
+  // Análisis por alumno
+  const studentAnalysis = responses.map(r => {
+    const nombre = r.students?.nombre || 'Alumno';
+    const errores = [];
+    const aciertos = [];
+    questions.forEach(q => {
+      const respuesta = r.answers?.[q.id];
+      if (respuesta === q.correct_answer) {
+        aciertos.push(q.topic);
+      } else {
+        errores.push({ tema: q.topic, materia: q.subject, respondio: respuesta || 'sin respuesta', correcto: q.correct_answer });
+      }
+    });
+    return { nombre, score: r.score, errores, aciertos };
+  });
+
+  // Análisis por tema
   const topicErrors = {};
   questions.forEach(q => {
     let correct = 0, wrong = 0;
-    responses.forEach(r => { if (r.answers && r.answers[q.id] === q.correct_answer) correct++; else wrong++; });
-    const key = q.topic;
-    if (!topicErrors[key]) topicErrors[key] = { correct: 0, wrong: 0, subject: q.subject };
-    topicErrors[key].correct += correct;
-    topicErrors[key].wrong += wrong;
+    responses.forEach(r => {
+      if (r.answers?.[q.id] === q.correct_answer) correct++;
+      else wrong++;
+    });
+    if (!topicErrors[q.topic]) topicErrors[q.topic] = { correct: 0, wrong: 0, subject: q.subject };
+    topicErrors[q.topic].correct += correct;
+    topicErrors[q.topic].wrong += wrong;
   });
 
-  const summary = Object.entries(topicErrors).map(([topic, stats]) => {
-    const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
-    return `- ${topic} (${stats.subject}): ${pct}% de errores`;
+  // Resumen por alumno para el prompt
+  const resumenAlumnos = studentAnalysis.map(s => {
+    const temasError = s.errores.map(e => e.tema).join(', ') || 'ninguno';
+    return `- ${s.nombre}: ${s.score}/${questions.length} correctas. Falló en: ${temasError}`;
   }).join('\n');
 
-  const prompt = `Eres un experto en educación primaria y en la prueba PIENSE I de College Board Puerto Rico. Analiza los siguientes resultados de un examen de 6to grado y genera recomendaciones pedagógicas específicas para la docente.
+  // Agrupar por patrón de errores
+  const gruposPatron = {};
+  studentAnalysis.forEach(s => {
+    const clave = s.errores.map(e => e.tema).sort().join('|') || 'sin_errores';
+    if (!gruposPatron[clave]) gruposPatron[clave] = [];
+    gruposPatron[clave].push(s.nombre);
+  });
+
+  const resumenGrupos = Object.entries(gruposPatron)
+    .filter(([k]) => k !== 'sin_errores')
+    .sort((a,b) => b[1].length - a[1].length)
+    .slice(0, 4)
+    .map(([temas, alumnos]) => `- Alumnos: ${alumnos.join(', ')} → Temas a reforzar: ${temas.replace(/\|/g, ', ')}`)
+    .join('\n');
+
+  const prompt = `Eres un experto en educación primaria y en la prueba PIENSE I de College Board. Analiza los resultados INDIVIDUALES de este examen de 6to grado y genera recomendaciones pedagógicas CONCRETAS y ACCIONABLES para la docente.
 
 GRUPO: ${exam.groups?.name || '6to grado'}
 EXAMEN: ${exam.name}
-TOTAL DE ALUMNOS: ${responses.length}
-PROMEDIO GENERAL: ${(responses.reduce((s,r) => s + r.score, 0) / responses.length).toFixed(1)} de ${questions.length}
+TOTAL ALUMNOS: ${responses.length}
 
-ERRORES POR TEMA:
-${summary}
+RESULTADOS POR ALUMNO (nombre: puntaje, temas donde falló):
+${resumenAlumnos}
 
-Por favor:
-1. Identifica los 3 temas con mayor porcentaje de errores y explica por qué pueden ser difíciles para estudiantes de 6to grado
-2. Para cada tema problemático, sugiere 2-3 actividades concretas de repaso que la maestra puede hacer en clase
-3. Sugiere recursos o estrategias generales para reforzar los contenidos con más errores
-4. Da un mensaje motivador breve para compartir con los alumnos
+AGRUPACIÓN POR PATRÓN DE ERRORES SIMILARES:
+${resumenGrupos || 'No hay patrones de error compartidos suficientes'}
 
-Responde en español, de forma clara y práctica. Usa encabezados para organizar tu respuesta.`;
+Con base en estos datos ESPECÍFICOS, proporciona:
+
+1. GRUPOS DE TRABAJO SUGERIDOS: Define 2-4 grupos pequeños de alumnos que comparten los mismos errores y pueden trabajar juntos. Nombra explícitamente a cada alumno en su grupo y di qué habilidad específica deben reforzar juntos.
+
+2. PLAN DE ACCIÓN POR GRUPO: Para cada grupo de trabajo, sugiere 1-2 actividades concretas (no genéricas) que la docente puede implementar esta semana.
+
+3. ALUMNOS QUE DOMINAN EL CONTENIDO: Menciona qué alumnos obtuvieron buenos resultados y cómo pueden apoyar a sus compañeros (aprendizaje entre pares).
+
+4. ALERTA DE ATENCIÓN INDIVIDUAL: Si algún alumno tiene un patrón de errores muy diferente al resto o un puntaje muy bajo, señálalo para atención individual.
+
+Sé DIRECTO y ESPECÍFICO. Menciona nombres reales de alumnos. Evita generalidades. La docente debe poder leer esto y actuar inmediatamente.
+
+Responde en español con encabezados claros.`;
 
   try {
     const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();
     const text = data.text || 'No se pudo generar el análisis.';
     const formatted = text
+      .replace(/###\s(.+)/g, '<h4 style="font-size:14px;font-weight:600;color:var(--sky-dark);margin:14px 0 6px;">$1</h4>')
       .replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+)/g, '<li style="margin-bottom:6px;">$1</li>')
+      .replace(/\*(.+)/g, '<li style="margin-bottom:6px;margin-left:16px;">$1</li>')
       .replace(/\n\n/g, '</p><p style="margin-bottom:10px;">')
       .replace(/\n/g, '<br>');
 
+    const alumnoRows = studentAnalysis.map(s => {
+      const pct = Math.round((s.score / questions.length) * 100);
+      const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+      const temasError = [...new Set(s.errores.map(e => e.tema))];
+      return `<tr>
+        <td><span class="fw-600">${s.nombre}</span></td>
+        <td><span style="font-weight:600;color:${color};">${s.score}/${questions.length}</span></td>
+        <td style="font-size:12px;">${temasError.length > 0 ? temasError.map(t => `<span style="display:inline-block;background:var(--danger-bg);color:var(--danger);border-radius:4px;padding:1px 6px;margin:1px;font-size:11px;">${t}</span>`).join('') : '<span style="color:var(--success);">✓ Sin errores</span>'}</td>
+      </tr>`;
+    }).join('');
+
     panel.innerHTML = `
       <div class="card mb-16">
-        <div class="card-title">Análisis — ${exam.name}</div>
-        <div class="grid-stats mb-16">
-          ${Object.entries(topicErrors).sort((a,b) => (b[1].wrong/(b[1].correct+b[1].wrong)) - (a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([topic, stats]) => {
-            const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
-            const color = pct >= 60 ? 'var(--danger)' : pct >= 40 ? 'var(--warning)' : 'var(--success)';
-            return `<div class="stat-card"><div class="stat-label">${topic}</div><div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div><div class="stat-sub">de errores</div></div>`;
-          }).join('')}
-        </div>
+        <div class="card-title">Diagnóstico por alumno — ${exam.name}</div>
+        <table class="data-table">
+          <thead><tr><th>Alumno</th><th>Puntaje</th><th>Temas a reforzar</th></tr></thead>
+          <tbody>${alumnoRows}</tbody>
+        </table>
       </div>
       <div class="card">
-        <div class="card-title">Recomendaciones de la IA</div>
-        <div style="font-size:14px;line-height:1.7;color:var(--text);"><p style="margin-bottom:10px;">${formatted}</p></div>
+        <div class="card-title">Plan de acción — Recomendaciones IA</div>
+        <div style="font-size:14px;line-height:1.8;color:var(--text);"><p style="margin-bottom:10px;">${formatted}</p></div>
         <div class="divider"></div>
         <div class="text-xs text-muted">Análisis generado con IA · ${new Date().toLocaleDateString('es-MX')}</div>
       </div>
