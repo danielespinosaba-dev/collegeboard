@@ -571,7 +571,7 @@ function renderQuestion() {
   document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
   document.getElementById('examSectionLabel').textContent = pruebaLabels[q.prueba] || q.prueba;
   document.getElementById('qNumberLabel').textContent = `${currentQIndex + 1}.`;
-  document.getElementById('qStem').textContent = q.enunciado;
+  document.getElementById('qStem').innerHTML = q.enunciado;
   const instrEl = document.getElementById('qInstructions');
   if (instrMap[q.subtipo]) { instrEl.style.display = 'block'; instrEl.textContent = instrMap[q.subtipo]; }
   else { instrEl.style.display = 'none'; }
@@ -580,7 +580,7 @@ function renderQuestion() {
   if (q.contexto) {
     passageCol.classList.remove('hidden'); questionCol.classList.remove('full-width');
     document.getElementById('passageTitle').textContent = 'Lectura de referencia';
-    document.getElementById('passageText').textContent = q.contexto;
+    document.getElementById('passageText').innerHTML = q.contexto;
   } else { passageCol.classList.add('hidden'); questionCol.classList.add('full-width'); }
   const letters = ['A', 'B', 'C', 'D'];
   const opciones = q.opciones || {};
