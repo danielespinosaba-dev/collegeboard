@@ -142,6 +142,13 @@
   .results-inline { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: none; }
   .results-inline.open { display: block; }
 
+  /* Accordion por reactivo */
+  .section-label { font-size: 13px; font-weight: 600; color: var(--text); margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .reactivo-row-ok td { background: #f0fdf4 !important; }
+  .reactivo-row-warn td { background: #fffbeb !important; }
+  .reactivo-row-bad td { background: #fef2f2 !important; }
+
   .prueba-pill { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
   .prueba-hc { background: #ede9fe; color: #6d28d9; }
   .prueba-esp { background: #fce7f3; color: #be185d; }
@@ -599,11 +606,12 @@ async function loadGroupExams(groupId) {
   `).join('');
 }
 
+// ── TOGGLE RESULTS (con desglose por reactivo) ───────────────────
 async function toggleResults(examId) {
   const panel = document.getElementById(`results-${examId}`);
   if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
   panel.classList.add('open');
-  panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;"><span class="spinner"></span> Cargando...</div>';
+  panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;"><span class="spinner"></span> Cargando...</div>';
 
   const [{ data: results }, { data: examData }] = await Promise.all([
     sb.from('student_results_p2').select('*, students(nombre)').eq('session_id', examId).order('completed_at'),
@@ -615,17 +623,43 @@ async function toggleResults(examId) {
     return;
   }
 
+  // Cargar reactivos del examen
+  const { data: questions } = await sb.from('piense2_questions')
+    .select('id, enunciado, respuesta_correcta, prueba, subtipo')
+    .in('id', examData.question_ids || []);
+
   const total = results.length;
   const avg = (results.reduce((s, r) => s + r.calificacion, 0) / total).toFixed(1);
+  const maxScore = Math.max(...results.map(r => r.calificacion));
+  const minScore = Math.min(...results.map(r => r.calificacion));
+
+  // Calcular aciertos/errores por reactivo
+  const qStats = {};
+  (questions || []).forEach(q => { qStats[q.id] = { question: q, correct: 0, wrong: 0 }; });
+  results.forEach(r => {
+    if (!r.respuestas) return;
+    Object.entries(r.respuestas).forEach(([qId, answer]) => {
+      if (!qStats[qId]) return;
+      if (answer === qStats[qId].question.respuesta_correcta) qStats[qId].correct++;
+      else qStats[qId].wrong++;
+    });
+  });
+
+  // Ordenar según question_ids original
+  const orderedStats = (examData.question_ids || [])
+    .map((id, i) => ({ num: i + 1, ...qStats[id] }))
+    .filter(s => s.question);
 
   panel.innerHTML = `
     <div class="grid-stats mb-16" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
       <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
       <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}</div><div class="stat-sub">de 100</div></div>
-      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${Math.max(...results.map(r => r.calificacion))}</div></div>
-      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${Math.min(...results.map(r => r.calificacion))}</div></div>
+      <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}</div></div>
+      <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}</div></div>
     </div>
-    <table class="data-table">
+
+    <div class="section-label">Resultados por alumno</div>
+    <table class="data-table mb-16">
       <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Puntos</th></tr></thead>
       <tbody>${results.map(r => {
         const pct = r.calificacion;
@@ -645,6 +679,42 @@ async function toggleResults(examId) {
           <td style="color:var(--gold);font-weight:600;">+${r.puntos_ganados || 0} pts</td>
         </tr>`;
       }).join('')}</tbody>
+    </table>
+
+    <div class="section-label">Análisis por reactivo</div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Reactivo</th>
+          <th style="text-align:center;">✅ Correctas</th>
+          <th style="text-align:center;">❌ Incorrectas</th>
+          <th>% Acierto</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${orderedStats.map(({ num, question, correct, wrong }) => {
+          const tot = correct + wrong;
+          const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
+          const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+          const rowClass = pct >= 70 ? 'reactivo-row-ok' : pct >= 50 ? 'reactivo-row-warn' : 'reactivo-row-bad';
+          return `<tr class="${rowClass}">
+            <td style="color:var(--text-3);font-weight:600;font-family:'DM Mono',monospace;">${num}</td>
+            <td style="max-width:340px;line-height:1.4;">
+              <div style="font-size:13px;color:var(--text);">${question.enunciado.substring(0, 100)}${question.enunciado.length > 100 ? '…' : ''}</div>
+              <div style="margin-top:3px;"><span class="prueba-pill ${pruebaClasses[question.prueba] || ''}">${question.prueba.replace(/_/g,' ')}</span></div>
+            </td>
+            <td style="text-align:center;font-weight:600;color:var(--success);">${correct}</td>
+            <td style="text-align:center;font-weight:600;color:var(--danger);">${wrong}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-weight:700;color:${color};min-width:40px;font-size:13px;">${pct}%</span>
+                <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
     </table>
   `;
 }
