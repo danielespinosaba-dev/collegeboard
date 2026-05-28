@@ -639,7 +639,9 @@ async function loadGroupExams(groupId) {
         </div>
         <div class="exam-row-actions">
           <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
+<button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
+<button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
+<button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
         </div>
       </div>
       <div class="results-inline" id="results-${e.id}">
@@ -665,11 +667,42 @@ async function toggleResults(examId) {
     return;
   }
 
+  // Cargar reactivos del examen
+  const { data: questions } = await sb.from('questions')
+    .select('id, stem, correct_answer, subject, topic')
+    .in('id', examData.question_ids || []);
+
   const total = responses.length;
   const totalQ = examData?.question_ids?.length || 10;
   const avg = (responses.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
   const maxScore = Math.max(...responses.map(r => r.score));
   const minScore = Math.min(...responses.map(r => r.score));
+
+  // Calcular aciertos/errores por reactivo
+  const qStats = {};
+  (questions || []).forEach(q => { qStats[q.id] = { question: q, correct: 0, wrong: 0 }; });
+  responses.forEach(r => {
+    if (!r.answers) return;
+    Object.entries(r.answers).forEach(([qId, answer]) => {
+      if (!qStats[qId]) return;
+      if (answer === qStats[qId].question.correct_answer) qStats[qId].correct++;
+      else qStats[qId].wrong++;
+    });
+  });
+
+  // Ordenar según question_ids original
+  const orderedStats = (examData.question_ids || [])
+    .map((id, i) => ({ num: i + 1, ...qStats[id] }))
+    .filter(s => s.question);
+
+  const subjectColors = {
+    matematicas: '#dcfce7', espanol: '#fce7f3',
+    habilidad: '#ede9fe', ingles: '#fff7ed'
+  };
+  const subjectText = {
+    matematicas: '#15803d', espanol: '#be185d',
+    habilidad: '#6d28d9', ingles: '#c2410c'
+  };
 
   panel.innerHTML = `
     <div class="grid-stats mb-16" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
@@ -678,8 +711,13 @@ async function toggleResults(examId) {
       <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}</div></div>
       <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}</div></div>
     </div>
-    <table class="data-table">
-      <thead><tr><th>Alumno</th><th>Calificación</th><th>Tiempo</th></tr></thead>
+
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin:16px 0 10px;display:flex;align-items:center;gap:8px;">
+      Resultados por alumno
+      <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    </div>
+    <table class="data-table mb-16">
+      <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th></tr></thead>
       <tbody>${responses.map(r => {
         const pct = Math.round((r.score / totalQ) * 100);
         const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
@@ -689,14 +727,59 @@ async function toggleResults(examId) {
           <td><span class="fw-600">${r.students?.nombre || 'Alumno'}</span></td>
           <td>
             <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-weight:600;color:${color};">${r.score}/${totalQ}</span>
+              <span style="font-weight:600;color:${color};">${pct}%</span>
               <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
-              <span class="text-xs text-muted">${pct}%</span>
+              <span class="text-xs text-muted">${r.score}/${totalQ}</span>
             </div>
           </td>
+          <td class="text-muted">${r.score}/${totalQ}</td>
           <td class="text-muted">${mins}:${secs}</td>
         </tr>`;
       }).join('')}</tbody>
+    </table>
+
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin:16px 0 10px;display:flex;align-items:center;gap:8px;">
+      Análisis por reactivo
+      <span style="flex:1;height:1px;background:var(--border);display:block;"></span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Reactivo</th>
+          <th style="text-align:center;">✅</th>
+          <th style="text-align:center;">❌</th>
+          <th>% Acierto</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${orderedStats.map(({ num, question, correct, wrong }) => {
+          const tot = correct + wrong;
+          const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
+          const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+          const bgColor = pct >= 70 ? '#f0fdf4' : pct >= 50 ? '#fffbeb' : '#fef2f2';
+          const subBg = subjectColors[question.subject] || '#f1f5f9';
+          const subTxt = subjectText[question.subject] || '#4a5568';
+          return `<tr style="background:${bgColor};">
+            <td style="color:var(--text-3);font-weight:600;font-family:'DM Mono',monospace;">${num}</td>
+            <td style="max-width:320px;line-height:1.4;">
+              <div style="font-size:13px;color:var(--text);">${question.stem.substring(0, 100)}${question.stem.length > 100 ? '…' : ''}</div>
+              <div style="margin-top:3px;">
+                <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:${subBg};color:${subTxt};">${subjectLabels[question.subject] || question.subject}</span>
+                <span style="font-size:11px;color:var(--text-3);margin-left:6px;">📌 ${question.topic}</span>
+              </div>
+            </td>
+            <td style="text-align:center;font-weight:600;color:var(--success);">${correct}</td>
+            <td style="text-align:center;font-weight:600;color:var(--danger);">${wrong}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-weight:700;color:${color};min-width:40px;font-size:13px;">${pct}%</span>
+                <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
     </table>
   `;
 }
@@ -792,6 +875,7 @@ async function loadExams() {
         <td class="text-muted">${e.question_ids?.length || 0} reactivos</td>
         <td>
           <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
+          <button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
         </td>
       </tr>
     `).join('')}</tbody>
@@ -840,6 +924,35 @@ async function createExam() {
   openExamCodeModal(data.id, code, 'draft');
 }
 
+async function duplicateExam(examId) {
+  const { data: original, error } = await sb.from('exams')
+    .select('*')
+    .eq('id', examId)
+    .single();
+
+  if (error || !original) return toast('Error al obtener el examen');
+
+  const newCode = genCode(8);
+  const newName = `${original.name} (copia)`;
+
+  const { data: newExam, error: insertError } = await sb.from('exams').insert({
+    teacher_id: currentTeacher.id,
+    group_id: original.group_id,
+    name: newName,
+    question_ids: original.question_ids,
+    duration_seconds: original.duration_seconds,
+    exam_code: newCode,
+    status: 'draft'
+  }).select().single();
+
+  if (insertError) return toast('Error al duplicar: ' + insertError.message);
+
+  toast(`Examen duplicado ✅ — Nuevo código: ${newCode}`);
+  loadExams();
+  if (currentGroupId) loadGroupExams(currentGroupId);
+  openExamCodeModal(newExam.id, newCode, 'draft');
+}
+ 
 function openExamCodeModal(examId, code, status) {
   currentExamForCode = { id: examId, code, status };
   document.getElementById('examCodeDisplay').textContent = code;
