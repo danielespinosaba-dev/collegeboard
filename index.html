@@ -626,6 +626,7 @@ async function loadGroupExams(groupId) {
     return;
   }
 
+  // ── FIX 1: botón "Gestionar" ya no está duplicado ──
   el.innerHTML = exams.map(e => `
     <div class="exam-row" id="exam-row-${e.id}">
       <div class="exam-row-header">
@@ -639,9 +640,8 @@ async function loadGroupExams(groupId) {
         </div>
         <div class="exam-row-actions">
           <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
-<button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
-<button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
-<button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
+          <button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
         </div>
       </div>
       <div class="results-inline" id="results-${e.id}">
@@ -651,32 +651,70 @@ async function loadGroupExams(groupId) {
   `).join('');
 }
 
+// ── FIX 2 y 3: toggleResults con queries separadas y manejo de error ──
 async function toggleResults(examId) {
   const panel = document.getElementById(`results-${examId}`);
   if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
   panel.classList.add('open');
   panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;"><span class="spinner"></span> Cargando...</div>';
 
-  const [{ data: responses }, { data: examData }] = await Promise.all([
-    sb.from('responses').select('*, students(nombre)').eq('exam_id', examId).order('created_at'),
-    sb.from('exams').select('*').eq('id', examId).single()
-  ]);
+  // Query 1: responses SIN join (evita fallo silencioso por FK ausente)
+  const { data: responses, error: respError } = await sb
+    .from('responses')
+    .select('*')
+    .eq('exam_id', examId)
+    .order('score', { ascending: false });
+
+  if (respError) {
+    console.error('[toggleResults] Error en responses:', respError);
+    panel.innerHTML = `<div style="color:var(--danger);font-size:13px;padding:8px 0;">Error al cargar respuestas: ${respError.message}</div>`;
+    return;
+  }
+
+  console.log(`[toggleResults] examId=${examId} → ${responses?.length ?? 0} respuestas`);
 
   if (!responses || responses.length === 0) {
     panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;">Sin respuestas todavía.</div>';
     return;
   }
 
-  // Cargar reactivos del examen
-  const { data: questions } = await sb.from('questions')
+  // Query 2: datos del examen
+  const { data: examData, error: examError } = await sb
+    .from('exams')
+    .select('*')
+    .eq('id', examId)
+    .single();
+
+  if (examError || !examData) {
+    panel.innerHTML = '<div style="color:var(--danger);font-size:13px;padding:8px 0;">Error al cargar datos del examen.</div>';
+    return;
+  }
+
+  // Query 3: nombres de alumnos por separado (no depende de FK)
+  const studentIds = [...new Set(responses.map(r => r.student_id).filter(Boolean))];
+  let studentMap = {};
+  if (studentIds.length > 0) {
+    const { data: students } = await sb
+      .from('students')
+      .select('id, nombre, apellido')
+      .in('id', studentIds);
+    (students || []).forEach(s => {
+      const nombre = [s.nombre, s.apellido].filter(Boolean).join(' ').trim();
+      studentMap[s.id] = nombre || 'Alumno';
+    });
+  }
+
+  // Query 4: reactivos del examen
+  const { data: questions } = await sb
+    .from('questions')
     .select('id, stem, correct_answer, subject, topic')
     .in('id', examData.question_ids || []);
 
   const total = responses.length;
-  const totalQ = examData?.question_ids?.length || 10;
-  const avg = (responses.reduce((s, r) => s + r.score, 0) / total).toFixed(1);
-  const maxScore = Math.max(...responses.map(r => r.score));
-  const minScore = Math.min(...responses.map(r => r.score));
+  const totalQ = examData.question_ids?.length || 10;
+  const avg = (responses.reduce((s, r) => s + (r.score || 0), 0) / total).toFixed(1);
+  const maxScore = Math.max(...responses.map(r => r.score || 0));
+  const minScore = Math.min(...responses.map(r => r.score || 0));
 
   // Calcular aciertos/errores por reactivo
   const qStats = {};
@@ -719,12 +757,13 @@ async function toggleResults(examId) {
     <table class="data-table mb-16">
       <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th></tr></thead>
       <tbody>${responses.map(r => {
-        const pct = Math.round((r.score / totalQ) * 100);
+        const pct = Math.round(((r.score || 0) / totalQ) * 100);
         const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
         const mins = Math.floor((r.elapsed_seconds || 0) / 60);
         const secs = String((r.elapsed_seconds || 0) % 60).padStart(2, '0');
+        const nombre = studentMap[r.student_id] || 'Alumno';
         return `<tr>
-          <td><span class="fw-600">${r.students?.nombre || 'Alumno'}</span></td>
+          <td><span class="fw-600">${nombre}</span></td>
           <td>
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-weight:600;color:${color};">${pct}%</span>
@@ -952,7 +991,7 @@ async function duplicateExam(examId) {
   if (currentGroupId) loadGroupExams(currentGroupId);
   openExamCodeModal(newExam.id, newCode, 'draft');
 }
- 
+
 function openExamCodeModal(examId, code, status) {
   currentExamForCode = { id: examId, code, status };
   document.getElementById('examCodeDisplay').textContent = code;
@@ -997,7 +1036,7 @@ async function generateRecommendations() {
   panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando respuestas por alumno...</span></div>';
 
   const [{ data: responses }, { data: exam }] = await Promise.all([
-    sb.from('responses').select('*, students(nombre)').eq('exam_id', examId),
+    sb.from('responses').select('*').eq('exam_id', examId),
     sb.from('exams').select('*, groups(name)').eq('id', examId).single()
   ]);
 
@@ -1006,12 +1045,22 @@ async function generateRecommendations() {
     return;
   }
 
+  // Cargar nombres de alumnos por separado
+  const studentIds = [...new Set(responses.map(r => r.student_id).filter(Boolean))];
+  let studentMap = {};
+  if (studentIds.length > 0) {
+    const { data: students } = await sb.from('students').select('id, nombre, apellido').in('id', studentIds);
+    (students || []).forEach(s => {
+      studentMap[s.id] = [s.nombre, s.apellido].filter(Boolean).join(' ').trim() || 'Alumno';
+    });
+  }
+
   const { data: questions } = await sb.from('questions').select('*').in('id', exam.question_ids);
   if (!questions) return;
 
   // Análisis por alumno
   const studentAnalysis = responses.map(r => {
-    const nombre = r.students?.nombre || 'Alumno';
+    const nombre = studentMap[r.student_id] || 'Alumno';
     const errores = [];
     const aciertos = [];
     questions.forEach(q => {
@@ -1025,26 +1074,11 @@ async function generateRecommendations() {
     return { nombre, score: r.score, errores, aciertos };
   });
 
-  // Análisis por tema
-  const topicErrors = {};
-  questions.forEach(q => {
-    let correct = 0, wrong = 0;
-    responses.forEach(r => {
-      if (r.answers?.[q.id] === q.correct_answer) correct++;
-      else wrong++;
-    });
-    if (!topicErrors[q.topic]) topicErrors[q.topic] = { correct: 0, wrong: 0, subject: q.subject };
-    topicErrors[q.topic].correct += correct;
-    topicErrors[q.topic].wrong += wrong;
-  });
-
-  // Resumen por alumno para el prompt
   const resumenAlumnos = studentAnalysis.map(s => {
     const temasError = s.errores.map(e => e.tema).join(', ') || 'ninguno';
     return `- ${s.nombre}: ${s.score}/${questions.length} correctas. Falló en: ${temasError}`;
   }).join('\n');
 
-  // Agrupar por patrón de errores
   const gruposPatron = {};
   studentAnalysis.forEach(s => {
     const clave = s.errores.map(e => e.tema).sort().join('|') || 'sin_errores';
