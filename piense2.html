@@ -43,7 +43,6 @@
   .topbar-back { cursor: pointer; color: var(--sky); font-size: 14px; }
   .content { padding: 28px; max-width: 1100px; }
   .view { display: none; } .view.active { display: block; }
-
   .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--navy); padding: 20px; }
   .login-box { background: var(--surface); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; }
   .login-logo { font-size: 24px; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
@@ -51,8 +50,8 @@
   .login-sub { font-size: 13px; color: var(--text-3); margin-bottom: 28px; }
   .field { margin-bottom: 16px; }
   .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
-  .field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s; }
-  .field input:focus { outline: none; border-color: var(--sky); }
+  .field input, .field select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s; }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--sky); }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 18px; border-radius: var(--radius); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
   .btn-primary { background: var(--sky); color: #fff; }
   .btn-primary:hover { background: var(--sky-dark); }
@@ -66,7 +65,6 @@
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .login-toggle { margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-3); }
   .login-toggle a { color: var(--sky); cursor: pointer; }
-
   .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 24px; box-shadow: var(--shadow); }
   .card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
   .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
@@ -75,7 +73,6 @@
   .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
   .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
   .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-
   .group-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.15s; }
   .group-card:hover { border-color: var(--sky); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
   .group-name { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
@@ -84,7 +81,6 @@
   .group-stats { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
   .group-stat { font-size: 12px; color: var(--text-3); }
   .group-stat span { font-weight: 600; color: var(--text); }
-
   .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
   .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface); cursor: pointer; }
   .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--sky); }
@@ -92,20 +88,40 @@
   .question-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; transition: all 0.15s; }
   .question-item.selected { border-color: var(--sky); background: var(--sky-light); }
   .question-item:hover:not(.selected) { border-color: #c0d5ea; }
+  .question-item.used { border-left: 3px solid #f59e0b; }
+  .q-used-badge { display: inline-block; background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; border-radius: 4px; font-size: 10px; font-weight: 600; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
   .q-check { width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; margin-top: 1px; }
   .question-item.selected .q-check { background: var(--sky); border-color: var(--sky); color: #fff; }
   .q-body { flex: 1; min-width: 0; }
   .q-stem { font-size: 14px; color: var(--text); margin-bottom: 4px; line-height: 1.5; }
-  .q-meta { font-size: 12px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; }
+  .q-meta { font-size: 12px; color: var(--text-3); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   .q-topic { color: var(--sky-dark); font-weight: 500; }
   .selected-counter { background: var(--navy); color: #fff; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; font-size: 14px; }
-
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--surface); border-radius: 14px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
   .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
   .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
-
+  /* Modalidad selector */
+  .modalidad-selector { display: flex; gap: 8px; margin-top: 4px; }
+  .modalidad-option { flex: 1; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; text-align: center; }
+  .modalidad-option:hover { border-color: var(--sky); }
+  .modalidad-option.selected-m { border-color: var(--sky); background: var(--sky-light); }
+  .modalidad-option input[type=radio] { display: none; }
+  .modalidad-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .modalidad-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+  /* Tabs de intentos */
+  .attempt-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .attempt-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-2); transition: all 0.15s; }
+  .attempt-tab:hover { border-color: var(--sky); color: var(--sky); }
+  .attempt-tab.active { background: var(--sky); border-color: var(--sky); color: #fff; }
+  .attempt-panel { display: none; }
+  .attempt-panel.active { display: block; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .badge-active { background: var(--success-bg); color: #16a34a; }
+  .badge-draft { background: #f1f5f9; color: var(--text-3); }
+  .badge-prueba { background: #ede9fe; color: #6d28d9; }
+  .badge-examen { background: #fff7ed; color: #c2410c; }
   .data-table { width: 100%; border-collapse: collapse; }
   .data-table th { text-align: left; font-size: 12px; font-weight: 500; color: var(--text-3); padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--bg); text-transform: uppercase; letter-spacing: 0.04em; }
   .data-table td { padding: 12px 12px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
@@ -113,24 +129,15 @@
   .data-table tr:hover td { background: var(--bg); }
   .progress-wrap { background: #e2e8f0; border-radius: 99px; height: 6px; }
   .progress-bar { height: 6px; border-radius: 99px; background: var(--sky); transition: width 0.3s; }
-
-  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-  .badge-active { background: var(--success-bg); color: #16a34a; }
-  .badge-draft { background: #f1f5f9; color: var(--text-3); }
-  .badge-closed { background: #f1f5f9; color: var(--text-3); }
-
   .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
   .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
-
   .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
   .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
   .empty-text { font-size: 14px; }
-
   .exam-code-display { background: var(--navy); color: #fff; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 16px; }
   .exam-code-big { font-family: 'DM Mono', monospace; font-size: 40px; font-weight: 500; letter-spacing: 0.12em; color: var(--sky); line-height: 1; margin: 8px 0; }
   .exam-code-label { font-size: 13px; color: rgba(255,255,255,0.5); }
-
   .group-header-card { background: var(--navy); color: #fff; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
   .group-header-name { font-size: 22px; font-weight: 600; }
   .group-header-code { font-family: 'DM Mono', monospace; font-size: 16px; color: var(--sky); margin-top: 4px; }
@@ -141,27 +148,21 @@
   .exam-row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .results-inline { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: none; }
   .results-inline.open { display: block; }
-
-  /* Accordion por reactivo */
   .section-label { font-size: 13px; font-weight: 600; color: var(--text); margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .reactivo-row-ok td { background: #f0fdf4 !important; }
   .reactivo-row-warn td { background: #fffbeb !important; }
   .reactivo-row-bad td { background: #fef2f2 !important; }
-
   .prueba-pill { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
   .prueba-hc { background: #ede9fe; color: #6d28d9; }
   .prueba-esp { background: #fce7f3; color: #be185d; }
   .prueba-mat { background: #dcfce7; color: #15803d; }
   .prueba-ing { background: #fff7ed; color: #c2410c; }
-  .prueba-mix { background: var(--sky-light); color: var(--sky-dark); }
-
   .flex-between { display: flex; justify-content: space-between; align-items: center; }
   .flex-gap { display: flex; gap: 8px; align-items: center; }
   .mb-16 { margin-bottom: 16px; } .mb-20 { margin-bottom: 20px; } .mb-24 { margin-bottom: 24px; }
   .text-sm { font-size: 13px; } .text-xs { font-size: 12px; } .text-muted { color: var(--text-3); }
   .fw-600 { font-weight: 600; } .divider { height: 1px; background: var(--border); margin: 16px 0; }
-
   .spinner { width: 20px; height: 20px; border: 2px solid rgba(91,155,216,0.2); border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
@@ -174,26 +175,24 @@
 
 <!-- LOGIN -->
 <div id="authSection" style="display:none;">
-  <div class="login-wrap">
-    <div class="login-box">
-      <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
-      <div class="login-badge">PIENSE II · 9no grado</div>
-      <div class="login-sub">Plataforma docente</div>
-      <div id="loginForm">
-        <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email"></div>
-        <div class="field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
-        <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
-        <div class="login-toggle">¿No tienes cuenta? <a onclick="toggleAuth()">Crear cuenta</a></div>
-      </div>
-      <div id="registerForm" style="display:none;">
-        <div class="field"><label>Nombre completo</label><input type="text" id="regName" placeholder="Ej. Mtra. Lucía Ramírez"></div>
-        <div class="field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@escuela.edu.mx"></div>
-        <div class="field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
-        <button class="btn btn-primary btn-full" onclick="doRegister()">Crear cuenta</button>
-        <div class="login-toggle">¿Ya tienes cuenta? <a onclick="toggleAuth()">Iniciar sesión</a></div>
-      </div>
+  <div class="login-wrap"><div class="login-box">
+    <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
+    <div class="login-badge">PIENSE II · 9no grado</div>
+    <div class="login-sub">Plataforma docente</div>
+    <div id="loginForm">
+      <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email"></div>
+      <div class="field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
+      <div class="login-toggle">¿No tienes cuenta? <a onclick="toggleAuth()">Crear cuenta</a></div>
     </div>
-  </div>
+    <div id="registerForm" style="display:none;">
+      <div class="field"><label>Nombre completo</label><input type="text" id="regName" placeholder="Ej. Mtra. Lucía Ramírez"></div>
+      <div class="field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@escuela.edu.mx"></div>
+      <div class="field"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 6 caracteres"></div>
+      <button class="btn btn-primary btn-full" onclick="doRegister()">Crear cuenta</button>
+      <div class="login-toggle">¿Ya tienes cuenta? <a onclick="toggleAuth()">Iniciar sesión</a></div>
+    </div>
+  </div></div>
 </div>
 
 <!-- DASHBOARD -->
@@ -236,16 +235,11 @@
           <button class="btn btn-primary btn-sm" id="topbarAction" onclick="openCreateGroupModal()">+ Nuevo grupo</button>
         </div>
       </div>
-
       <div class="content">
-
         <!-- GRUPOS -->
         <div class="view active" id="view-grupos">
-          <div class="grid-2" id="groupsGrid">
-            <div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>
-          </div>
+          <div class="grid-2" id="groupsGrid"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div></div></div>
         </div>
-
         <!-- DETALLE GRUPO -->
         <div class="view" id="view-grupo-detalle">
           <div class="group-header-card" id="groupDetailHeader"></div>
@@ -255,14 +249,10 @@
           </div>
           <div id="groupExamsList"></div>
         </div>
-
         <!-- BANCO -->
         <div class="view" id="view-banco">
           <div class="card mb-16">
-            <div class="card-title">
-              Banco PIENSE II
-              <span class="text-xs text-muted" id="bankCount"></span>
-            </div>
+            <div class="card-title">Banco PIENSE II <span class="text-xs text-muted" id="bankCount"></span></div>
             <div class="filter-bar">
               <select id="filterPrueba" onchange="filterQuestions()">
                 <option value="">Todas las pruebas</option>
@@ -274,9 +264,12 @@
               <select id="filterSubtipo" onchange="filterQuestions()"><option value="">Todos los subtipos</option></select>
               <select id="filterDificultad" onchange="filterQuestions()">
                 <option value="">Cualquier dificultad</option>
-                <option value="1">Fácil</option>
-                <option value="2">Medio</option>
-                <option value="3">Difícil</option>
+                <option value="1">Fácil</option><option value="2">Medio</option><option value="3">Difícil</option>
+              </select>
+              <select id="filterUsed" onchange="filterQuestions()">
+                <option value="">Todos los reactivos</option>
+                <option value="unused">Solo no usados</option>
+                <option value="used">Solo usados</option>
               </select>
               <input type="text" id="searchQ" placeholder="Buscar..." style="flex:1;min-width:160px;" oninput="filterQuestions()">
             </div>
@@ -287,24 +280,18 @@
           </div>
           <div class="questions-list" id="questionsList"><div class="empty"><span class="spinner"></span></div></div>
         </div>
-
         <!-- RECOMENDACIONES -->
         <div class="view" id="view-recomendaciones">
           <div class="card mb-16">
             <div class="card-title">Recomendaciones con Inteligencia Artificial</div>
-            <p class="text-sm text-muted mb-16">Selecciona un examen ya aplicado y la IA analizará los resultados para sugerirte qué contenidos deben repasar tus alumnos de 9no.</p>
+            <p class="text-sm text-muted mb-16">Selecciona un examen ya aplicado y la IA analizará los resultados.</p>
             <div class="flex-gap mb-16">
-              <select id="recExamSelect" style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);">
-                <option value="">Selecciona un examen...</option>
-              </select>
+              <select id="recExamSelect" style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface);"><option value="">Selecciona un examen...</option></select>
               <button class="btn btn-primary" onclick="generateRecommendations()">Analizar con IA →</button>
             </div>
           </div>
-          <div id="recPanel">
-            <div class="empty"><div class="empty-icon">🤖</div><div class="empty-title">Selecciona un examen para analizar</div></div>
-          </div>
+          <div id="recPanel"><div class="empty"><div class="empty-icon">🤖</div><div class="empty-title">Selecciona un examen para analizar</div></div></div>
         </div>
-
       </div>
     </main>
   </div>
@@ -329,17 +316,28 @@
     <div class="field"><label>Nombre del examen</label><input type="text" id="newExamName" placeholder="Ej. Habilidad Cognoscitiva - Semana 3"></div>
     <div class="field">
       <label>Grupo destino</label>
-      <select id="newExamGroup" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
-        <option value="">Selecciona un grupo...</option>
-      </select>
+      <select id="newExamGroup" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);"><option value="">Selecciona un grupo...</option></select>
     </div>
     <div class="field">
       <label>Duración</label>
       <select id="newExamDuration" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--text);">
-        <option value="600">10 minutos</option>
-        <option value="900">15 minutos</option>
-        <option value="1200">20 minutos</option>
+        <option value="600">10 minutos</option><option value="900">15 minutos</option><option value="1200">20 minutos</option>
       </select>
+    </div>
+    <div class="field">
+      <label>Modalidad</label>
+      <div class="modalidad-selector">
+        <label class="modalidad-option selected-m" id="mOpt-examen" onclick="selectModalidad('examen')">
+          <input type="radio" name="modalidad" value="examen" checked>
+          <div class="modalidad-title">📋 Examen</div>
+          <div class="modalidad-desc">Una sola vez por alumno</div>
+        </label>
+        <label class="modalidad-option" id="mOpt-prueba" onclick="selectModalidad('prueba')">
+          <input type="radio" name="modalidad" value="prueba">
+          <div class="modalidad-title">🔄 Prueba</div>
+          <div class="modalidad-desc">Reintentos ilimitados</div>
+        </label>
+      </div>
     </div>
     <div id="examPreviewSelected" class="alert alert-info" style="font-size:13px;"></div>
     <div class="modal-footer">
@@ -363,9 +361,7 @@
       <button class="btn btn-outline" onclick="toggleExamStatus()"><span id="statusBtnText">▶ Activar examen</span></button>
       <button class="btn btn-danger btn-sm" onclick="closeExamStatus()">⬛ Cerrar examen</button>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="closeModal('modalExamCode')">Cerrar</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('modalExamCode')">Cerrar</button></div>
   </div>
 </div>
 
@@ -378,26 +374,16 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let currentTeacher = null;
-let allQuestions = [];
-let selectedQuestionIds = new Set();
-let currentExamForCode = null;
-let currentGroupId = null;
+let currentTeacher = null, allQuestions = [], selectedQuestionIds = new Set();
+let currentExamForCode = null, currentGroupId = null;
+let usedQuestionIds = new Set();
+let selectedModalidad = 'examen';
 
-const pruebaLabels = {
-  habilidad_cognoscitiva: '🧠 Habilidad Cognoscitiva',
-  espanol: '📖 Español',
-  matematicas: '📐 Matemáticas',
-  ingles: '🌐 Inglés'
-};
-const pruebaClasses = {
-  habilidad_cognoscitiva: 'prueba-hc', espanol: 'prueba-esp',
-  matematicas: 'prueba-mat', ingles: 'prueba-ing'
-};
-const diffLabels = { 1: 'Fácil', 2: 'Medio', 3: 'Difícil' };
-const diffColors = { 1: '#16a34a', 2: '#d97706', 3: '#dc2626' };
+const pruebaLabels = { habilidad_cognoscitiva:'🧠 Habilidad Cognoscitiva', espanol:'📖 Español', matematicas:'📐 Matemáticas', ingles:'🌐 Inglés' };
+const pruebaClasses = { habilidad_cognoscitiva:'prueba-hc', espanol:'prueba-esp', matematicas:'prueba-mat', ingles:'prueba-ing' };
+const diffLabels = { 1:'Fácil', 2:'Medio', 3:'Difícil' };
+const diffColors = { 1:'#16a34a', 2:'#d97706', 3:'#dc2626' };
 
-// ── INIT ────────────────────────────────────────────────────────
 window.onload = async () => {
   const saved = localStorage.getItem('piense2_teacher');
   if (saved) { currentTeacher = JSON.parse(saved); showApp(); }
@@ -411,29 +397,23 @@ function showApp() {
   document.getElementById('sidebarInitials').textContent = initials;
   document.getElementById('sidebarName').textContent = currentTeacher.name.split(' ').slice(0,2).join(' ');
   loadGroups();
-  loadQuestions();
+  loadUsedQuestions().then(() => loadQuestions());
   loadRecExamSelect();
 }
 
-// ── AUTH ────────────────────────────────────────────────────────
 function toggleAuth() {
-  const lf = document.getElementById('loginForm');
-  const rf = document.getElementById('registerForm');
+  const lf = document.getElementById('loginForm'), rf = document.getElementById('registerForm');
   lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
 }
-
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   if (!email || !password) return toast('Completa todos los campos');
   const { data, error } = await sb.from('teachers').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
   if (error || !data) return toast('Credenciales incorrectas');
-  currentTeacher = data;
-  localStorage.setItem('piense2_teacher', JSON.stringify(data));
-  showApp();
+  currentTeacher = data; localStorage.setItem('piense2_teacher', JSON.stringify(data)); showApp();
 }
-
 async function doRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
@@ -442,15 +422,22 @@ async function doRegister() {
   if (password.length < 6) return toast('Contraseña mínimo 6 caracteres');
   const { data, error } = await sb.from('teachers').insert({ name, email, password_hash: btoa(password) }).select().single();
   if (error) return toast(error.code === '23505' ? 'Este correo ya está registrado' : 'Error al crear cuenta');
-  currentTeacher = data;
-  localStorage.setItem('piense2_teacher', JSON.stringify(data));
-  showApp();
+  currentTeacher = data; localStorage.setItem('piense2_teacher', JSON.stringify(data)); showApp();
+}
+function doLogout() { localStorage.removeItem('piense2_teacher'); currentTeacher = null; location.reload(); }
+
+// ── REACTIVOS USADOS ─────────────────────────────────────────────
+async function loadUsedQuestions() {
+  const { data } = await sb.from('exam_sessions_p2').select('question_ids').eq('docente_id', currentTeacher.id);
+  usedQuestionIds = new Set();
+  (data || []).forEach(e => (e.question_ids || []).forEach(id => usedQuestionIds.add(id)));
 }
 
-function doLogout() {
-  localStorage.removeItem('piense2_teacher');
-  currentTeacher = null;
-  location.reload();
+// ── MODALIDAD SELECTOR ───────────────────────────────────────────
+function selectModalidad(val) {
+  selectedModalidad = val;
+  document.getElementById('mOpt-examen').classList.toggle('selected-m', val === 'examen');
+  document.getElementById('mOpt-prueba').classList.toggle('selected-m', val === 'prueba');
 }
 
 // ── NAVIGATION ──────────────────────────────────────────────────
@@ -460,22 +447,20 @@ function showView(name) {
   document.getElementById('view-' + name).classList.add('active');
   const navEl = document.querySelector(`[data-view="${name}"]`);
   if (navEl) navEl.classList.add('active');
-  const titles = { grupos: 'Mis grupos', banco: 'Banco de reactivos', recomendaciones: 'Recomendaciones IA' };
+  const titles = { grupos:'Mis grupos', banco:'Banco de reactivos', recomendaciones:'Recomendaciones IA' };
   document.getElementById('topbarTitleText').textContent = titles[name] || '';
   document.getElementById('topbarBack').style.display = 'none';
   const actions = {
-    grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
-    banco: { text: 'Actualizar', fn: 'loadQuestions()' },
-    recomendaciones: { text: 'Actualizar', fn: 'loadRecExamSelect()' },
+    grupos: { text:'+ Nuevo grupo', fn:'openCreateGroupModal()' },
+    banco: { text:'Actualizar', fn:'loadQuestions()' },
+    recomendaciones: { text:'Actualizar', fn:'loadRecExamSelect()' },
   };
   const action = actions[name];
   if (action) {
     document.getElementById('topbarAction').textContent = action.text;
     document.getElementById('topbarAction').setAttribute('onclick', action.fn);
     document.getElementById('topbarAction').style.display = '';
-  } else {
-    document.getElementById('topbarAction').style.display = 'none';
-  }
+  } else { document.getElementById('topbarAction').style.display = 'none'; }
   if (name === 'recomendaciones') loadRecExamSelect();
 }
 
@@ -489,37 +474,21 @@ function openGroupDetail(groupId, groupName, groupCode) {
   document.getElementById('topbarAction').setAttribute('onclick', 'openCreateExamModalForGroup()');
   document.getElementById('topbarAction').style.display = '';
   document.getElementById('groupDetailHeader').innerHTML = `
-    <div>
-      <div class="group-header-name">${groupName}</div>
-      <div class="group-header-code">${groupCode}</div>
-    </div>
-    <button class="btn btn-danger btn-sm" onclick="deleteGroup('${groupId}')">Eliminar grupo</button>
-  `;
+    <div><div class="group-header-name">${groupName}</div><div class="group-header-code">${groupCode}</div></div>
+    <button class="btn btn-danger btn-sm" onclick="deleteGroup('${groupId}')">Eliminar grupo</button>`;
   loadGroupExams(groupId);
 }
-
-function backToGroups() {
-  currentGroupId = null;
-  showView('grupos');
-  loadGroups();
-}
+function backToGroups() { currentGroupId = null; showView('grupos'); loadGroups(); }
 
 // ── GROUPS ──────────────────────────────────────────────────────
 async function loadGroups() {
-  const { data } = await sb.from('groups')
-    .select('id, name, access_code, created_at')
-    .eq('teacher_id', currentTeacher.id)
-    .order('created_at');
-
+  const { data } = await sb.from('groups').select('id, name, access_code, created_at').eq('teacher_id', currentTeacher.id).order('created_at');
   const grid = document.getElementById('groupsGrid');
   const sel = document.getElementById('newExamGroup');
-
   if (!data || data.length === 0) {
-    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>`;
-    sel.innerHTML = '<option value="">Sin grupos disponibles</option>';
-    return;
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div></div>`;
+    sel.innerHTML = '<option value="">Sin grupos disponibles</option>'; return;
   }
-
   const { data: exams } = await sb.from('exam_sessions_p2').select('id, group_id, activa').eq('docente_id', currentTeacher.id);
   const examsByGroup = {};
   (exams || []).forEach(e => {
@@ -527,64 +496,43 @@ async function loadGroups() {
     examsByGroup[e.group_id].total++;
     if (e.activa) examsByGroup[e.group_id].active++;
   });
-
   grid.innerHTML = `<div class="grid-2">${data.map(g => {
     const stats = examsByGroup[g.id] || { total: 0, active: 0 };
     return `<div class="group-card" onclick="openGroupDetail('${g.id}','${g.name.replace(/'/g,"\\'")}','${g.access_code}')">
-      <div class="group-name">${g.name}</div>
-      <div class="group-meta">9no grado</div>
+      <div class="group-name">${g.name}</div><div class="group-meta">9no grado</div>
       <div class="group-code">${g.access_code}</div>
       <div class="group-stats">
         <div class="group-stat"><span>${stats.total}</span> exámenes</div>
         ${stats.active > 0 ? `<div class="group-stat" style="color:#16a34a"><span>${stats.active}</span> activo(s)</div>` : ''}
-      </div>
-    </div>`;
+      </div></div>`;
   }).join('')}</div>`;
-
-  sel.innerHTML = '<option value="">Selecciona un grupo...</option>' +
-    data.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+  sel.innerHTML = '<option value="">Selecciona un grupo...</option>' + data.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
 }
-
 function openCreateGroupModal() { openModal('modalCreateGroup'); }
-
 async function createGroup() {
   const name = document.getElementById('newGroupName').value.trim();
   if (!name) return toast('Escribe el nombre del grupo');
   const code = genCode(6);
   const { error } = await sb.from('groups').insert({ teacher_id: currentTeacher.id, name, access_code: code });
   if (error) return toast('Error al crear grupo: ' + error.message);
-  closeModal('modalCreateGroup');
-  document.getElementById('newGroupName').value = '';
-  toast('Grupo creado ✅');
-  loadGroups();
+  closeModal('modalCreateGroup'); document.getElementById('newGroupName').value = '';
+  toast('Grupo creado ✅'); loadGroups();
 }
-
 async function deleteGroup(id) {
-  if (!confirm('¿Eliminar este grupo? Los exámenes asociados no se borrarán.')) return;
-  const { error } = await sb.from('groups').delete().eq('id', id);
-  if (error) return toast('Error al eliminar: ' + error.message);
-  toast('Grupo eliminado');
-  backToGroups();
+  if (!confirm('¿Eliminar este grupo?')) return;
+  await sb.from('groups').delete().eq('id', id);
+  toast('Grupo eliminado'); backToGroups();
 }
 
 // ── GROUP EXAMS ──────────────────────────────────────────────────
 async function loadGroupExams(groupId) {
   const el = document.getElementById('groupExamsList');
   el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
-
-  const { data: exams } = await sb.from('exam_sessions_p2')
-    .select('*')
-    .eq('group_id', groupId)
-    .eq('docente_id', currentTeacher.id)
-    .order('created_at', { ascending: false });
-
-  if (!exams || exams.length === 0) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div><div class="empty-text">Crea el primer examen para este grupo</div></div>`;
-    return;
-  }
-
-  el.innerHTML = exams.map(e => `
-    <div class="exam-row" id="exam-row-${e.id}">
+  const { data: exams } = await sb.from('exam_sessions_p2').select('*').eq('group_id', groupId).eq('docente_id', currentTeacher.id).order('created_at', { ascending: false });
+  if (!exams || exams.length === 0) { el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`; return; }
+  el.innerHTML = exams.map(e => {
+    const modBadge = e.modalidad === 'prueba' ? '<span class="badge badge-prueba">🔄 Prueba</span>' : '<span class="badge badge-examen">📋 Examen</span>';
+    return `<div class="exam-row" id="exam-row-${e.id}">
       <div class="exam-row-header">
         <div>
           <div class="exam-row-name">${e.nombre || 'Examen sin nombre'}</div>
@@ -592,48 +540,100 @@ async function loadGroupExams(groupId) {
             Código: <strong style="font-family:'DM Mono',monospace;color:var(--sky-dark)">${e.codigo}</strong>
             · ${e.question_ids?.length || 0} reactivos
             · <span class="badge ${e.activa ? 'badge-active' : 'badge-draft'}">${e.activa ? '🟢 Activo' : '⚪ Inactivo'}</span>
+            · ${modBadge}
           </div>
         </div>
         <div class="exam-row-actions">
           <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.codigo}',${e.activa})">⚙ Gestionar</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}')">📊 Resultados</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}','${e.modalidad || 'examen'}')">📊 Resultados</button>
         </div>
       </div>
-      <div class="results-inline" id="results-${e.id}">
-        <div style="color:var(--text-3);font-size:13px;">Cargando resultados...</div>
-      </div>
-    </div>
-  `).join('');
+      <div class="results-inline" id="results-${e.id}"></div>
+    </div>`;
+  }).join('');
 }
 
-// ── TOGGLE RESULTS (con desglose por reactivo) ───────────────────
-async function toggleResults(examId) {
+// ── TOGGLE RESULTS (con tabs para Prueba) ────────────────────────
+async function toggleResults(examId, modalidad) {
   const panel = document.getElementById(`results-${examId}`);
   if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
   panel.classList.add('open');
   panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;"><span class="spinner"></span> Cargando...</div>';
 
   const [{ data: results }, { data: examData }] = await Promise.all([
-    sb.from('student_results_p2').select('*, students(nombre)').eq('session_id', examId).order('completed_at'),
+    sb.from('student_results_p2').select('*').eq('session_id', examId).order('completed_at', { ascending: true }),
     sb.from('exam_sessions_p2').select('*').eq('id', examId).single()
   ]);
+  if (!results || results.length === 0) { panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;">Sin respuestas todavía.</div>'; return; }
 
-  if (!results || results.length === 0) {
-    panel.innerHTML = '<div style="color:var(--text-3);font-size:13px;padding:8px 0;">Sin respuestas todavía.</div>';
-    return;
+  const studentIds = [...new Set(results.map(r => r.student_id).filter(Boolean))];
+  let studentMap = {};
+  if (studentIds.length > 0) {
+    const { data: students } = await sb.from('students').select('id, nombre').in('id', studentIds);
+    (students || []).forEach(s => { studentMap[s.id] = s.nombre || 'Alumno'; });
   }
+  const { data: questions } = await sb.from('piense2_questions').select('id, enunciado, respuesta_correcta, prueba, subtipo').in('id', examData.question_ids || []);
 
-  // Cargar reactivos del examen
-  const { data: questions } = await sb.from('piense2_questions')
-    .select('id, enunciado, respuesta_correcta, prueba, subtipo')
-    .in('id', examData.question_ids || []);
+  if (modalidad === 'prueba') {
+    // Agrupar por alumno
+    const byStudent = {};
+    results.forEach(r => {
+      const nombre = studentMap[r.student_id] || 'Alumno';
+      if (!byStudent[r.student_id]) byStudent[r.student_id] = { nombre, attempts: [] };
+      byStudent[r.student_id].attempts.push(r);
+    });
+    const studentEntries = Object.entries(byStudent);
+    let html = '';
+    studentEntries.forEach(([sid, sdata]) => {
+      const tabsId = `tabs-${examId}-${sid}`;
+      const tabHtml = sdata.attempts.map((r, idx) => `<button class="attempt-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${tabsId}',${idx})">${idx + 1}er intento · ${r.calificacion}%</button>`).join('');
+      const panelsHtml = sdata.attempts.map((r, idx) => {
+        const color = r.calificacion >= 70 ? 'var(--success)' : r.calificacion >= 50 ? 'var(--warning)' : 'var(--danger)';
+        const mins = Math.floor((r.tiempo_segundos || 0) / 60);
+        const secs = String((r.tiempo_segundos || 0) % 60).padStart(2, '0');
+        const fecha = new Date(r.completed_at || r.created_at).toLocaleDateString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+        return `<div class="attempt-panel ${idx === 0 ? 'active' : ''}" id="${tabsId}-panel-${idx}">
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+            <span style="font-weight:600;color:${color};font-size:20px;">${r.calificacion}%</span>
+            <span style="font-size:13px;color:var(--text-3);">${r.aciertos}/${r.total_preguntas} correctas</span>
+            <span style="font-size:13px;color:var(--text-3);">⏱ ${mins}:${secs}</span>
+            <span style="font-size:13px;color:var(--text-3);">📅 ${fecha}</span>
+            <span style="color:var(--gold);font-weight:600;font-size:13px;">+${r.puntos_ganados || 0} pts</span>
+          </div>
+        </div>`;
+      }).join('');
+      html += `<div style="background:var(--bg);border-radius:8px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-weight:600;font-size:14px;margin-bottom:10px;">${sdata.nombre}</div>
+        <div class="attempt-tabs" id="${tabsId}">${tabHtml}</div>
+        <div>${panelsHtml}</div>
+      </div>`;
+    });
+    const avg = (results.reduce((s, r) => s + r.calificacion, 0) / results.length).toFixed(1);
+    panel.innerHTML = `
+      <div class="grid-stats mb-16" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+        <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${studentEntries.length}</div></div>
+        <div class="stat-card"><div class="stat-label">Intentos</div><div class="stat-value">${results.length}</div></div>
+        <div class="stat-card"><div class="stat-label">% Promedio</div><div class="stat-value">${avg}%</div></div>
+      </div>
+      <div class="section-label">Intentos por alumno</div>
+      ${html}`;
+  } else {
+    // Modalidad examen: vista original
+    panel.innerHTML = renderExamResults(results, examData, studentMap, questions);
+  }
+}
 
+function switchTab(tabsId, idx) {
+  const container = document.getElementById(tabsId);
+  container.querySelectorAll('.attempt-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  container.parentElement.querySelectorAll('.attempt-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+}
+
+function renderExamResults(results, examData, studentMap, questions) {
   const total = results.length;
   const avg = (results.reduce((s, r) => s + r.calificacion, 0) / total).toFixed(1);
   const maxScore = Math.max(...results.map(r => r.calificacion));
   const minScore = Math.min(...results.map(r => r.calificacion));
-
-  // Calcular aciertos/errores por reactivo
   const qStats = {};
   (questions || []).forEach(q => { qStats[q.id] = { question: q, correct: 0, wrong: 0 }; });
   results.forEach(r => {
@@ -644,20 +644,14 @@ async function toggleResults(examId) {
       else qStats[qId].wrong++;
     });
   });
-
-  // Ordenar según question_ids original
-  const orderedStats = (examData.question_ids || [])
-    .map((id, i) => ({ num: i + 1, ...qStats[id] }))
-    .filter(s => s.question);
-
-  panel.innerHTML = `
+  const orderedStats = (examData.question_ids || []).map((id, i) => ({ num: i+1, ...qStats[id] })).filter(s => s.question);
+  return `
     <div class="grid-stats mb-16" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
       <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${total}</div></div>
       <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${avg}</div><div class="stat-sub">de 100</div></div>
       <div class="stat-card"><div class="stat-label">Máximo</div><div class="stat-value">${maxScore}</div></div>
       <div class="stat-card"><div class="stat-label">Mínimo</div><div class="stat-value">${minScore}</div></div>
     </div>
-
     <div class="section-label">Resultados por alumno</div>
     <table class="data-table mb-16">
       <thead><tr><th>Alumno</th><th>Calificación</th><th>Aciertos</th><th>Tiempo</th><th>Puntos</th></tr></thead>
@@ -666,57 +660,20 @@ async function toggleResults(examId) {
         const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
         const mins = Math.floor((r.tiempo_segundos || 0) / 60);
         const secs = String((r.tiempo_segundos || 0) % 60).padStart(2, '0');
-        return `<tr>
-          <td><span class="fw-600">${r.students?.nombre || 'Alumno'}</span></td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-weight:600;color:${color};">${pct}</span>
-              <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
-            </div>
-          </td>
-          <td class="text-muted">${r.aciertos}/${r.total_preguntas}</td>
-          <td class="text-muted">${mins}:${secs}</td>
-          <td style="color:var(--gold);font-weight:600;">+${r.puntos_ganados || 0} pts</td>
-        </tr>`;
+        return `<tr><td><span class="fw-600">${studentMap[r.student_id] || 'Alumno'}</span></td><td><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;color:${color};">${pct}</span><div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div></div></td><td class="text-muted">${r.aciertos}/${r.total_preguntas}</td><td class="text-muted">${mins}:${secs}</td><td style="color:var(--gold);font-weight:600;">+${r.puntos_ganados || 0} pts</td></tr>`;
       }).join('')}</tbody>
     </table>
-
     <div class="section-label">Análisis por reactivo</div>
     <table class="data-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Reactivo</th>
-          <th style="text-align:center;">✅ Correctas</th>
-          <th style="text-align:center;">❌ Incorrectas</th>
-          <th>% Acierto</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${orderedStats.map(({ num, question, correct, wrong }) => {
-          const tot = correct + wrong;
-          const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
-          const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
-          const rowClass = pct >= 70 ? 'reactivo-row-ok' : pct >= 50 ? 'reactivo-row-warn' : 'reactivo-row-bad';
-          return `<tr class="${rowClass}">
-            <td style="color:var(--text-3);font-weight:600;font-family:'DM Mono',monospace;">${num}</td>
-            <td style="max-width:340px;line-height:1.4;">
-              <div style="font-size:13px;color:var(--text);">${question.enunciado.substring(0, 100)}${question.enunciado.length > 100 ? '…' : ''}</div>
-              <div style="margin-top:3px;"><span class="prueba-pill ${pruebaClasses[question.prueba] || ''}">${question.prueba.replace(/_/g,' ')}</span></div>
-            </td>
-            <td style="text-align:center;font-weight:600;color:var(--success);">${correct}</td>
-            <td style="text-align:center;font-weight:600;color:var(--danger);">${wrong}</td>
-            <td>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-weight:700;color:${color};min-width:40px;font-size:13px;">${pct}%</span>
-                <div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div>
-              </div>
-            </td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>
-  `;
+      <thead><tr><th>#</th><th>Reactivo</th><th style="text-align:center;">✅</th><th style="text-align:center;">❌</th><th>% Acierto</th></tr></thead>
+      <tbody>${orderedStats.map(({ num, question, correct, wrong }) => {
+        const tot = correct + wrong;
+        const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
+        const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+        const rowClass = pct >= 70 ? 'reactivo-row-ok' : pct >= 50 ? 'reactivo-row-warn' : 'reactivo-row-bad';
+        return `<tr class="${rowClass}"><td style="color:var(--text-3);font-weight:600;font-family:'DM Mono',monospace;">${num}</td><td style="max-width:340px;line-height:1.4;"><div style="font-size:13px;">${question.enunciado.substring(0,100)}${question.enunciado.length>100?'…':''}</div><div style="margin-top:3px;"><span class="prueba-pill ${pruebaClasses[question.prueba]||''}">${question.prueba.replace(/_/g,' ')}</span></div></td><td style="text-align:center;font-weight:600;color:var(--success);">${correct}</td><td style="text-align:center;font-weight:600;color:var(--danger);">${wrong}</td><td><div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:700;color:${color};min-width:40px;font-size:13px;">${pct}%</span><div style="flex:1;max-width:80px;"><div class="progress-wrap"><div class="progress-bar" style="width:${pct}%;background:${color};"></div></div></div></div></td></tr>`;
+      }).join('')}</tbody>
+    </table>`;
 }
 
 // ── QUESTIONS ────────────────────────────────────────────────────
@@ -725,61 +682,56 @@ async function loadQuestions() {
   const { data } = await sb.from('piense2_questions').select('*').eq('activo', true).order('prueba').order('subtipo');
   allQuestions = data || [];
   document.getElementById('bankCount').textContent = `${allQuestions.length} reactivos`;
-  populateSubtipoFilter();
-  filterQuestions();
+  populateSubtipoFilter(); filterQuestions();
 }
-
 function populateSubtipoFilter() {
   const prueba = document.getElementById('filterPrueba').value;
   const subtipos = [...new Set(allQuestions.filter(q => !prueba || q.prueba === prueba).map(q => q.subtipo).filter(Boolean))].sort();
   const sel = document.getElementById('filterSubtipo');
   sel.innerHTML = '<option value="">Todos los subtipos</option>' + subtipos.map(s => `<option value="${s}">${s.replace(/_/g,' ')}</option>`).join('');
 }
-
 function filterQuestions() {
   const prueba = document.getElementById('filterPrueba').value;
   const subtipo = document.getElementById('filterSubtipo').value;
   const dificultad = document.getElementById('filterDificultad').value;
+  const usedFilter = document.getElementById('filterUsed').value;
   const search = document.getElementById('searchQ').value.toLowerCase();
   populateSubtipoFilter();
   let filtered = allQuestions.filter(q => {
     if (prueba && q.prueba !== prueba) return false;
     if (subtipo && q.subtipo !== subtipo) return false;
     if (dificultad && String(q.dificultad) !== dificultad) return false;
+    if (usedFilter === 'used' && !usedQuestionIds.has(q.id)) return false;
+    if (usedFilter === 'unused' && usedQuestionIds.has(q.id)) return false;
     if (search && !q.enunciado.toLowerCase().includes(search)) return false;
     return true;
   });
-  renderQuestions(filtered);
-  updateSelectedCounter();
+  renderQuestions(filtered); updateSelectedCounter();
 }
-
 function renderQuestions(list) {
   const el = document.getElementById('questionsList');
   if (!list.length) { el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div></div>'; return; }
-  el.innerHTML = list.map(q => `
-    <div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''}" onclick="toggleQuestion('${q.id}')">
+  el.innerHTML = list.map(q => {
+    const isUsed = usedQuestionIds.has(q.id);
+    const usedBadge = isUsed ? '<span class="q-used-badge">📌 Usado</span>' : '';
+    return `<div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''} ${isUsed ? 'used' : ''}" onclick="toggleQuestion('${q.id}')">
       <div class="q-check">${selectedQuestionIds.has(q.id) ? '✓' : ''}</div>
       <div class="q-body">
-        <div class="q-stem">${q.enunciado.substring(0, 160)}${q.enunciado.length > 160 ? '...' : ''}</div>
+        <div class="q-stem">${q.enunciado.substring(0,160)}${q.enunciado.length>160?'...':''}${usedBadge}</div>
         <div class="q-meta">
-          <span class="prueba-pill ${pruebaClasses[q.prueba] || ''}">${pruebaLabels[q.prueba] || q.prueba}</span>
-          <span class="q-topic">📌 ${q.subtipo ? q.subtipo.replace(/_/g,' ') : '—'}</span>
-          <span style="color:${diffColors[q.dificultad]}">● ${diffLabels[q.dificultad] || q.dificultad}</span>
+          <span class="prueba-pill ${pruebaClasses[q.prueba]||''}">${pruebaLabels[q.prueba]||q.prueba}</span>
+          <span class="q-topic">📌 ${q.subtipo?q.subtipo.replace(/_/g,' '):'—'}</span>
+          <span style="color:${diffColors[q.dificultad]}">● ${diffLabels[q.dificultad]||q.dificultad}</span>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
-
 function toggleQuestion(id) {
   if (selectedQuestionIds.has(id)) { selectedQuestionIds.delete(id); }
-  else {
-    if (selectedQuestionIds.size >= 10) return toast('Máximo 10 reactivos por examen');
-    selectedQuestionIds.add(id);
-  }
-  updateSelectedCounter();
-  filterQuestions();
+  else { if (selectedQuestionIds.size >= 10) return toast('Máximo 10 reactivos por examen'); selectedQuestionIds.add(id); }
+  updateSelectedCounter(); filterQuestions();
 }
-
 function updateSelectedCounter() {
   const n = selectedQuestionIds.size;
   document.getElementById('selectedCount').textContent = n;
@@ -791,16 +743,14 @@ function openCreateExamModal() {
   if (selectedQuestionIds.size < 1) return toast('Selecciona al menos 1 reactivo');
   loadGroups();
   document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
-  openModal('modalCreateExam');
+  selectModalidad('examen'); openModal('modalCreateExam');
 }
-
 function openCreateExamModalForGroup() {
   if (selectedQuestionIds.size < 1) { showView('banco'); toast('Selecciona reactivos del banco primero'); return; }
   document.getElementById('examPreviewSelected').textContent = `${selectedQuestionIds.size} reactivos seleccionados`;
   if (currentGroupId) document.getElementById('newExamGroup').value = currentGroupId;
-  openModal('modalCreateExam');
+  selectModalidad('examen'); openModal('modalCreateExam');
 }
-
 async function createExam() {
   const nombre = document.getElementById('newExamName').value.trim();
   const groupId = document.getElementById('newExamGroup').value;
@@ -810,21 +760,17 @@ async function createExam() {
   const codigo = genCode(8);
   const { data, error } = await sb.from('exam_sessions_p2').insert({
     codigo, docente_id: currentTeacher.id, group_id: groupId,
-    nombre, prueba: detectPrueba(),
-    question_ids: [...selectedQuestionIds],
-    duracion_segundos: duracion, activa: false
+    nombre, prueba: detectPrueba(), question_ids: [...selectedQuestionIds],
+    duracion_segundos: duracion, activa: false, modalidad: selectedModalidad
   }).select().single();
   if (error) return toast('Error al crear examen: ' + error.message);
-  closeModal('modalCreateExam');
-  document.getElementById('newExamName').value = '';
-  selectedQuestionIds.clear();
-  updateSelectedCounter();
-  filterQuestions();
+  closeModal('modalCreateExam'); document.getElementById('newExamName').value = '';
+  selectedQuestionIds.clear(); updateSelectedCounter(); filterQuestions();
+  await loadUsedQuestions(); filterQuestions();
   toast('Examen creado ✅');
   if (currentGroupId === groupId) loadGroupExams(groupId);
   openExamCodeModal(data.id, codigo, false);
 }
-
 function detectPrueba() {
   const counts = {};
   for (const id of selectedQuestionIds) {
@@ -835,14 +781,12 @@ function detectPrueba() {
   if (Object.keys(counts).length > 1) return 'mixto';
   return Object.keys(counts)[0];
 }
-
 function openExamCodeModal(examId, codigo, activa) {
   currentExamForCode = { id: examId, codigo, activa };
   document.getElementById('examCodeDisplay').textContent = codigo;
   document.getElementById('statusBtnText').textContent = activa ? '⏸ Pausar examen' : '▶ Activar examen';
   openModal('modalExamCode');
 }
-
 async function toggleExamStatus() {
   if (!currentExamForCode) return;
   const newActiva = !currentExamForCode.activa;
@@ -853,109 +797,48 @@ async function toggleExamStatus() {
   toast(newActiva ? '🟢 Examen activado' : '⏸ Examen pausado');
   if (currentGroupId) loadGroupExams(currentGroupId);
 }
-
 async function closeExamStatus() {
   if (!currentExamForCode) return;
-  const { error } = await sb.from('exam_sessions_p2').update({ activa: false }).eq('id', currentExamForCode.id);
-  if (error) return toast('Error al cerrar');
-  toast('⬛ Examen cerrado');
-  closeModal('modalExamCode');
+  await sb.from('exam_sessions_p2').update({ activa: false }).eq('id', currentExamForCode.id);
+  toast('⬛ Examen cerrado'); closeModal('modalExamCode');
   if (currentGroupId) loadGroupExams(currentGroupId);
 }
 
 // ── RECOMENDACIONES ──────────────────────────────────────────────
 async function loadRecExamSelect() {
-  const { data } = await sb.from('exam_sessions_p2')
-    .select('id, nombre, grupo, prueba')
-    .eq('docente_id', currentTeacher.id)
-    .order('created_at', { ascending: false });
+  const { data } = await sb.from('exam_sessions_p2').select('id, nombre, grupo, prueba').eq('docente_id', currentTeacher.id).order('created_at', { ascending: false });
   const sel = document.getElementById('recExamSelect');
   if (!data) return;
-  sel.innerHTML = '<option value="">Selecciona un examen...</option>' +
-    data.map(e => `<option value="${e.id}">${e.nombre} · ${e.grupo || ''}</option>`).join('');
+  sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.nombre} · ${e.grupo||''}</option>`).join('');
 }
-
 async function generateRecommendations() {
   const examId = document.getElementById('recExamSelect').value;
   const panel = document.getElementById('recPanel');
   if (!examId) return toast('Selecciona un examen primero');
   panel.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando con IA...</span></div>';
-
   const [{ data: results }, { data: exam }] = await Promise.all([
     sb.from('student_results_p2').select('*').eq('session_id', examId),
     sb.from('exam_sessions_p2').select('*').eq('id', examId).single()
   ]);
-
-  if (!results || results.length === 0) {
-    panel.innerHTML = '<div class="empty"><div class="empty-title">Sin respuestas para analizar</div></div>';
-    return;
-  }
-
+  if (!results || results.length === 0) { panel.innerHTML = '<div class="empty"><div class="empty-title">Sin respuestas para analizar</div></div>'; return; }
   const { data: questions } = await sb.from('piense2_questions').select('*').in('id', exam.question_ids);
   if (!questions) return;
-
   const subtipErrors = {};
   questions.forEach(q => {
     let correct = 0, wrong = 0;
     results.forEach(r => { if (r.respuestas && r.respuestas[q.id] === q.respuesta_correcta) correct++; else wrong++; });
-    const key = `${q.prueba} — ${q.subtipo || 'general'}`;
-    if (!subtipErrors[key]) subtipErrors[key] = { correct: 0, wrong: 0 };
-    subtipErrors[key].correct += correct;
-    subtipErrors[key].wrong += wrong;
+    const key = `${q.prueba} — ${q.subtipo||'general'}`;
+    if (!subtipErrors[key]) subtipErrors[key] = { correct:0, wrong:0 };
+    subtipErrors[key].correct += correct; subtipErrors[key].wrong += wrong;
   });
-
-  const summary = Object.entries(subtipErrors).map(([key, stats]) => {
-    const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
-    return `- ${key}: ${pct}% de errores`;
-  }).join('\n');
-
-  const prompt = `Eres un experto en educación secundaria y en la prueba PIENSE II de College Board Puerto Rico. Analiza los siguientes resultados de un examen de 9no grado y genera recomendaciones pedagógicas específicas para el docente.
-
-EXAMEN: ${exam.nombre}
-TOTAL DE ALUMNOS: ${results.length}
-PROMEDIO GENERAL: ${(results.reduce((s,r) => s + r.calificacion, 0) / results.length).toFixed(1)} de 100
-
-ERRORES POR SUBTIPO:
-${summary}
-
-Por favor:
-1. Identifica los 3 subtipos con mayor porcentaje de errores y explica por qué pueden ser difíciles para estudiantes de 9no grado
-2. Para cada subtipo problemático, sugiere 2-3 actividades concretas de repaso
-3. Sugiere estrategias generales para reforzar los contenidos con más errores en el contexto del PIENSE II
-4. Da un mensaje motivador breve para compartir con los alumnos
-
-Responde en español, de forma clara y práctica. Usa encabezados para organizar tu respuesta.`;
-
+  const summary = Object.entries(subtipErrors).map(([key, stats]) => `- ${key}: ${Math.round((stats.wrong/(stats.correct+stats.wrong))*100)}% de errores`).join('\n');
+  const prompt = `Eres un experto en educación secundaria y en la prueba PIENSE II de College Board. Analiza los resultados de un examen de 9no grado y genera recomendaciones pedagógicas.\n\nEXAMEN: ${exam.nombre}\nTOTAL ALUMNOS: ${results.length}\nPROMEDIO: ${(results.reduce((s,r)=>s+r.calificacion,0)/results.length).toFixed(1)}/100\n\nERRORES POR SUBTIPO:\n${summary}\n\nIdentifica los 3 subtipos con más errores, sugiere actividades de repaso y estrategias para reforzar. Responde en español.`;
   try {
-    const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
+    const res = await fetch('/api/gemini', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    const text = data.text || 'No se pudo generar el análisis.';
-    const formatted = text
-      .replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+)/g, '<li style="margin-bottom:6px;">$1</li>')
-      .replace(/\n\n/g, '</p><p style="margin-bottom:10px;">')
-      .replace(/\n/g, '<br>');
-    panel.innerHTML = `
-      <div class="card mb-16">
-        <div class="card-title">Análisis — ${exam.nombre}</div>
-        <div class="grid-stats mb-16">
-          ${Object.entries(subtipErrors).sort((a,b) => (b[1].wrong/(b[1].correct+b[1].wrong)) - (a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([key, stats]) => {
-            const pct = Math.round((stats.wrong / (stats.correct + stats.wrong)) * 100);
-            const color = pct >= 60 ? 'var(--danger)' : pct >= 40 ? 'var(--warning)' : 'var(--success)';
-            return `<div class="stat-card"><div class="stat-label">${key}</div><div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div><div class="stat-sub">de errores</div></div>`;
-          }).join('')}
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Recomendaciones de la IA</div>
-        <div style="font-size:14px;line-height:1.7;"><p style="margin-bottom:10px;">${formatted}</p></div>
-        <div class="divider"></div>
-        <div class="text-xs text-muted">Análisis generado con IA · ${new Date().toLocaleDateString('es-MX')}</div>
-      </div>`;
-  } catch(e) {
-    panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>';
-  }
+    const text = (data.text||'Sin análisis.').replace(/##\s(.+)/g,'<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+)/g,'<li style="margin-bottom:6px;">$1</li>').replace(/\n\n/g,'</p><p style="margin-bottom:10px;">').replace(/\n/g,'<br>');
+    panel.innerHTML = `<div class="card mb-16"><div class="card-title">Análisis — ${exam.nombre}</div><div class="grid-stats mb-16">${Object.entries(subtipErrors).sort((a,b)=>(b[1].wrong/(b[1].correct+b[1].wrong))-(a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([key,stats])=>{const pct=Math.round((stats.wrong/(stats.correct+stats.wrong))*100);const color=pct>=60?'var(--danger)':pct>=40?'var(--warning)':'var(--success)';return `<div class="stat-card"><div class="stat-label">${key}</div><div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div><div class="stat-sub">de errores</div></div>`;}).join('')}</div></div><div class="card"><div class="card-title">Recomendaciones IA</div><div style="font-size:14px;line-height:1.7;"><p style="margin-bottom:10px;">${text}</p></div><div class="divider"></div><div class="text-xs text-muted">Generado con IA · ${new Date().toLocaleDateString('es-MX')}</div></div>`;
+  } catch(e) { panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>'; }
 }
 
 // ── UTILS ────────────────────────────────────────────────────────
@@ -969,8 +852,7 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
 function toast(msg, duration = 3000) {
-  const el = document.createElement('div');
-  el.className = 'toast'; el.textContent = msg;
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg;
   document.getElementById('toastContainer').appendChild(el);
   setTimeout(() => el.remove(), duration);
 }
