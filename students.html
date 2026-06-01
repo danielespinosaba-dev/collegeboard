@@ -538,8 +538,6 @@ async function startExam() {
   userAnswers = {}; currentQIndex = 0;
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
-  secondsRemaining = currentExam.duration_seconds || 600;
-  // Reemplaza startExam() — solo el bloque del timer
 startTime = Date.now();
 const totalSeconds = currentExam.duration_seconds || 600;
 
