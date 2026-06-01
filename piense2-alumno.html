@@ -170,6 +170,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </header>
 
+<!-- LOGIN -->
 <div class="screen active" id="screenLogin">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -212,6 +213,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </div>
 
+<!-- ENTRADA DE CÓDIGO -->
 <div class="screen" id="screenEntry">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -232,6 +234,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </div>
 
+<!-- SALA DE ESPERA -->
 <div class="screen" id="screenWaiting">
   <div class="entry-wrap">
     <div class="entry-box">
@@ -251,6 +254,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </div>
 
+<!-- EXAMEN -->
 <div class="screen" id="screenExam">
   <div class="exam-subheader">
     <div class="exam-section-label" id="examSectionLabel">Sección</div>
@@ -280,6 +284,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </div>
 
+<!-- RESULTADOS -->
 <div class="screen" id="screenResult">
   <div style="max-width:760px;margin:0 auto;">
     <div class="result-header">
@@ -320,6 +325,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   </div>
 </div>
 
+<!-- TIENDA -->
 <div class="screen" id="screenShop">
   <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
     <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;margin-bottom:0;">
@@ -397,7 +403,7 @@ const jerseysSVG = {
   japon:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#003594"/><circle cx="36" cy="36" r="8" fill="#BC002D"/><rect x="28" y="8" width="16" height="6" fill="#003594"/></svg>`,
   corea:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#CE1126"/><circle cx="36" cy="36" r="7" fill="#fff"/><circle cx="36" cy="36" r="4" fill="#003478"/><rect x="28" y="8" width="16" height="6" fill="#CE1126"/></svg>`,
   marruecos:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#C1272D"/><polygon points="36,28 38,34 44,34 39,38 41,44 36,40 31,44 33,38 28,34 34,34" fill="none" stroke="#006233" stroke-width="1.5"/><rect x="28" y="8" width="16" height="6" fill="#C1272D"/></svg>`,
-  senegal:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L28 62 L28 8 L22 14 Z" fill="#00853F"/><path d="M50 14 L62 42 L54 44 L54 62 L44 62 L44 8 L50 14 Z" fill="#E31B23"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><polygon points="36,28 37,32 41,32 38,35 39,39 36,36 33,39 34,35 31,32 35,32" fill="#00853F"/></svg>`,
+  senegal:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L28 62 L28 8 L22 14 Z" fill="#00853F"/><path d="M50 14 L62 42 L54 44 L54 62 L44 62 L44 8 L50 14 Z" fill="#E31B23"/><rect x="28" y="8" width="16" height="6" fill="#fff"/><polygon points="36,28 37.5,32 41,32 38.5,35 39,39 36,36 33,39 34,35 31,32 35,32" fill="#00853F"/></svg>`,
   holanda:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FF6600"/><rect x="28" y="8" width="16" height="6" fill="#FF6600"/><text x="36" y="40" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="sans-serif">NED</text></svg>`,
   australia:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#FFD700"/><rect x="28" y="8" width="16" height="6" fill="#FFD700"/><text x="36" y="42" text-anchor="middle" font-size="7" font-weight="700" fill="#00843D" font-family="sans-serif">AUS</text></svg>`,
   canada:`<svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg"><path d="M22 14 L14 22 L10 42 L18 44 L18 62 L54 62 L54 44 L62 42 L58 22 L50 14 L44 10 L36 8 L28 10 Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/><path d="M22 14 L10 42 L18 44 L18 62 L24 62 L24 8 L22 14 Z" fill="#FF0000"/><path d="M50 14 L62 42 L54 44 L54 62 L48 62 L48 8 L50 14 Z" fill="#FF0000"/><rect x="24" y="8" width="24" height="6" fill="#fff"/><polygon points="36,26 37.5,31 42,31 38.5,33.5 40,38.5 36,36 32,38.5 33.5,33.5 30,31 34.5,31" fill="#FF0000"/></svg>`,
@@ -411,6 +417,7 @@ function clearAllTimers() {
   if (waitInterval) { clearInterval(waitInterval); waitInterval = null; }
 }
 
+// ── INIT ──────────────────────────────────────────────────────────
 window.onload = async () => {
   const saved = localStorage.getItem('piense2_alumno');
   if (saved) {
@@ -492,6 +499,8 @@ function goToEntry() {
 
 function goToShop() { loadShopScreen(); showScreen('screenShop'); }
 
+// ── BUSCAR EXAMEN ─────────────────────────────────────────────────
+// CAMBIO: gate de modalidad — solo bloquea reintento si modalidad === 'examen'
 async function goToWaiting() {
   if (!currentStudent) return alert('Debes iniciar sesión primero');
   const code = document.getElementById('examCode').value.trim().toUpperCase();
@@ -505,9 +514,13 @@ async function goToWaiting() {
   if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
   if (!data.activa) return alert('Este examen no está activo. Espera a que tu docente lo active.');
 
-  const { data: yaContesto } = await sb.from('student_results_p2')
-    .select('id').eq('session_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
-  if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
+  // Solo bloquear reintento en modalidad 'examen' (o sin modalidad, retrocompatible)
+  const modalidad = data.modalidad || 'examen';
+  if (modalidad === 'examen') {
+    const { data: yaContesto } = await sb.from('student_results_p2')
+      .select('id').eq('session_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
+    if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
+  }
 
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
@@ -535,6 +548,7 @@ async function checkExamStatus() {
   }
 }
 
+// ── INICIAR EXAMEN ────────────────────────────────────────────────
 async function startExam() {
   clearAllTimers();
   examSubmitted = false;
@@ -544,15 +558,20 @@ async function startExam() {
   userAnswers = {}; currentQIndex = 0;
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
-  secondsRemaining = currentExam.duracion_segundos || 600;
+
+  // CAMBIO: timer con wall-clock (resiste throttling de pestaña en segundo plano)
+  const totalSeconds = currentExam.duracion_segundos || 600;
+  secondsRemaining = totalSeconds;
   startTime = Date.now();
   renderTimer();
   timerInterval = setInterval(() => {
     if (examSubmitted) { clearAllTimers(); return; }
-    secondsRemaining--;
-    if (secondsRemaining <= 0) { secondsRemaining = 0; clearAllTimers(); submitExam(true); }
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    secondsRemaining = Math.max(0, totalSeconds - elapsed);
     renderTimer();
-  }, 1000);
+    if (secondsRemaining <= 0) { clearAllTimers(); submitExam(true); }
+  }, 500);
+
   renderQuestion(); renderDots();
 }
 
@@ -618,12 +637,13 @@ function confirmSubmit() {
   submitExam(false);
 }
 
+// ── ENTREGAR EXAMEN ───────────────────────────────────────────────
 async function submitExam(timeUp) {
   if (examSubmitted) return;
   examSubmitted = true;
   clearAllTimers();
-  secondsRemaining = 0;
   elapsedSeconds = Math.round((Date.now() - startTime) / 1000);
+  secondsRemaining = 0;
   let aciertos = 0;
   currentQuestions.forEach(q => { if (userAnswers[q.id] === q.respuesta_correcta) aciertos++; });
   const total = currentQuestions.length;
@@ -641,6 +661,7 @@ async function submitExam(timeUp) {
   showResults(aciertos, calificacion, puntosGanados, newTotal);
 }
 
+// ── RESULTADOS ────────────────────────────────────────────────────
 async function showResults(aciertos, calificacion, puntosGanados, totalPuntos) {
   const total = currentQuestions.length;
   const mins = Math.floor(elapsedSeconds / 60);
@@ -677,6 +698,7 @@ async function showResults(aciertos, calificacion, puntosGanados, totalPuntos) {
   showScreen('screenResult');
 }
 
+// ── TIENDA ────────────────────────────────────────────────────────
 async function loadShopItems() {
   if (allShopItems.length > 0) return;
   const { data } = await sb.from('shop_items').select('*').eq('disponible', true).order('costo_puntos');
@@ -685,7 +707,7 @@ async function loadShopItems() {
 
 function renderJerseyCard(item, isOwned, isActive, pts, context) {
   const canBuy = !isOwned && pts >= item.costo_puntos;
-  const fn = context === 'results' ? (isOwned ? `equipJersey` : `buyJersey`) : (isOwned ? `equipJerseyShop` : `buyJerseyShop`);
+  const fn = context === 'results' ? (isOwned ? 'equipJersey' : 'buyJersey') : (isOwned ? 'equipJerseyShop' : 'buyJerseyShop');
   const onclickAttr = isOwned ? `onclick="${fn}('${item.slug}')"` : canBuy ? `onclick="${fn}('${item.slug}', ${item.costo_puntos})"` : '';
   return `<div class="jersey-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-jersey' : ''}" ${onclickAttr}>
     ${isActive ? '<span class="jersey-active-badge">ACTIVA</span>' : ''}
