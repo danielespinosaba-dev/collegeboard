@@ -539,14 +539,23 @@ async function startExam() {
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
   secondsRemaining = currentExam.duration_seconds || 600;
-  startTime = Date.now();
+  // Reemplaza startExam() — solo el bloque del timer
+startTime = Date.now();
+const totalSeconds = currentExam.duration_seconds || 600;
+
+timerInterval = setInterval(() => {
+  if (examSubmitted) { clearAllTimers(); return; }
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  secondsRemaining = Math.max(0, totalSeconds - elapsed);
+
   renderTimer();
-  timerInterval = setInterval(() => {
-    if (examSubmitted) { clearAllTimers(); return; }
-    secondsRemaining--;
-    if (secondsRemaining <= 0) { secondsRemaining = 0; clearAllTimers(); submitExam(true); }
-    renderTimer();
-  }, 1000);
+
+  if (secondsRemaining <= 0) {
+    clearAllTimers();
+    submitExam(true);
+  }
+}, 500); // 500ms para que no se vea lag en pantalla
   renderQuestion(); renderDots();
 }
 
