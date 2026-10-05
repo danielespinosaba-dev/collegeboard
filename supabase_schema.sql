@@ -205,6 +205,11 @@ ALTER TABLE public.exam_sessions_p2 ADD COLUMN IF NOT EXISTS duracion_segundos i
 ALTER TABLE public.exam_sessions_p2 ADD COLUMN IF NOT EXISTS modalidad text DEFAULT 'examen';
 CREATE UNIQUE INDEX IF NOT EXISTS exam_sessions_p2_codigo_key ON public.exam_sessions_p2 (codigo) WHERE codigo IS NOT NULL;
 
+-- La vista de Resultados ordena por responses.created_at; la tabla real
+-- no la tenía (otro caso de deriva vs. este schema reconstruido).
+ALTER TABLE public.responses ADD COLUMN IF NOT EXISTS created_at timestamp with time zone DEFAULT now();
+ALTER TABLE public.student_results_p2 ADD COLUMN IF NOT EXISTS completed_at timestamp with time zone DEFAULT now();
+
 -- 6.3 El banco histórico de PIENSE I (tabla questions, origen distinto de
 -- banco_1a11_original) se deja SIN grade_level: no se mezcla con el banco
 -- graduado 1°-11° para que el generador muestre la misma cantidad en cada
@@ -286,6 +291,15 @@ VALUES
 (1,'habilidad','Comparación','facil','¿Cuál es más grande, un elefante o un ratón?','el ratón','el elefante','son iguales','ninguno','B',NULL,NULL,'banco_1a11_original'),
 (1,'habilidad','Comparación','medio','¿Cuál pesa más, una pluma o una piedra?','la pluma','la piedra','pesan igual','ninguna','B',NULL,NULL,'banco_1a11_original'),
 (1,'habilidad','Comparación','medio','¿Cuál es más larga, una serpiente o una hormiga?','la hormiga','la serpiente','son iguales','ninguna','B',NULL,NULL,'banco_1a11_original'),
+(1,'espanol','Comprensión lectora','facil','¿Dónde le gusta dormir a Tom?','en la cama','en el sofá','en el piso','en el jardín','B','El gato Tom','Tom es un gato pequeño. Le gusta dormir en el sofá y jugar con una pelota. Todos los días toma leche por la mañana.','banco_1a11_original'),
+(1,'espanol','Comprensión lectora','facil','¿Con qué le gusta jugar a Tom?','con un hueso','con una pelota','con un ratón','con un libro','B','El gato Tom','Tom es un gato pequeño. Le gusta dormir en el sofá y jugar con una pelota. Todos los días toma leche por la mañana.','banco_1a11_original'),
+(1,'espanol','Comprensión lectora','facil','¿Qué toma Tom por la mañana?','agua','jugo','leche','café','C','El gato Tom','Tom es un gato pequeño. Le gusta dormir en el sofá y jugar con una pelota. Todos los días toma leche por la mañana.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','What color is Max?','black','white','brown','gray','C','My Dog Max','I have a dog named Max. He is brown and small. Max likes to run in the park.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','Where does Max like to run?','in the house','in the park','in the pool','in the car','B','My Dog Max','I have a dog named Max. He is brown and small. Max likes to run in the park.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','What kind of animal is Max?','a cat','a dog','a bird','a fish','B','My Dog Max','I have a dog named Max. He is brown and small. Max likes to run in the park.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','What is the weather like today?','rainy','sunny','snowy','cloudy','B','A Sunny Day','Today is a sunny day. The sky is blue. Children are playing outside.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','What color is the sky?','green','blue','red','yellow','B','A Sunny Day','Today is a sunny day. The sky is blue. Children are playing outside.','banco_1a11_original'),
+(1,'ingles','Reading comprehension','facil','Where are the children playing?','inside','outside','at school','in bed','B','A Sunny Day','Today is a sunny day. The sky is blue. Children are playing outside.','banco_1a11_original'),
 -- ── 2° grado ──────────────────────────────────────────────────────────
 (2,'matematicas','Suma y resta','facil','38 + 15 = ?','43','53','63','48','B',NULL,NULL,'banco_1a11_original'),
 (2,'matematicas','Suma y resta','medio','72 − 29 = ?','43','53','33','47','A',NULL,NULL,'banco_1a11_original'),
