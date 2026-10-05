@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PIENSE I · Alumno</title>
+<title>College Board · Alumno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -155,7 +155,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
     <div class="cb-logo">
       <div class="cb-logo-mark">College Board</div>
       <div class="cb-logo-text">
-        <div class="cb-logo-title">PIENSE I</div>
+        <div class="cb-logo-title">Mini-Exámenes</div>
         <div class="cb-logo-sub">Pruebas estandarizadas · 1° a 11°</div>
       </div>
     </div>
@@ -176,7 +176,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   <div class="entry-wrap">
     <div class="entry-box">
       <div class="entry-eyebrow">College Board · Puerto Rico y América Latina</div>
-      <div class="entry-title">PIENSE I<br>Pruebas 1° a 11°</div>
+      <div class="entry-title">College Board<br>Pruebas 1° a 11°</div>
       <div class="entry-sub">Inicia sesión o crea tu cuenta para continuar</div>
       <div id="loginForm">
         <div class="field">
@@ -217,7 +217,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 <div class="screen" id="screenEntry">
   <div class="entry-wrap">
     <div class="entry-box">
-      <div class="entry-eyebrow">College Board · PIENSE I</div>
+      <div class="entry-eyebrow">College Board · Pruebas estandarizadas</div>
       <div class="entry-title">Ingresa el código<br>de tu examen</div>
       <div class="entry-sub" id="entryStudentName">Alumno registrado</div>
       <div style="text-align:right;margin-top:-8px;margin-bottom:8px;">
@@ -290,7 +290,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 <div class="screen" id="screenResult">
   <div style="max-width:760px;margin:0 auto;">
     <div class="result-header">
-      <div class="result-header-eyebrow">College Board · PIENSE I</div>
+      <div class="result-header-eyebrow">College Board · Pruebas estandarizadas</div>
       <div class="result-header-title">Resultados de la Prueba</div>
       <div class="result-header-sub" id="resultStudentName">Estudiante</div>
     </div>
@@ -508,7 +508,7 @@ async function goToWaiting() {
 
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
-  document.getElementById('waitExamName').textContent = data.name || 'Examen PIENSE I';
+  document.getElementById('waitExamName').textContent = data.name || 'Examen College Board';
   showScreen('screenWaiting');
   startWaiting();
 }
