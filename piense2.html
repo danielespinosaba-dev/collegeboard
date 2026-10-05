@@ -375,7 +375,7 @@ window.CONFIG = CONFIG;
 <script>
 const { createClient } = supabase;
 // Read credentials from window.CONFIG (loaded from config.js)
-const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://gkekofjqyyxagpppsgyq.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrZWtvZmpxeXl4YWdwcHBzZ3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyODIzNTEsImV4cCI6MjEwMzg1ODM1MX0.203A8GlOsV6-4bqqv1LqvV1RQti65YtayDUniMLRKLc');
+const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://euwsjtcvfwcivywpkyyn.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk');
 
 let currentTeacher = null, allQuestions = [], selectedQuestionIds = new Set();
 let currentExamForCode = null, currentGroupId = null;

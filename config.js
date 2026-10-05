@@ -3,8 +3,8 @@
 
 const CONFIG = {
   // Supabase Configuration
-  SUPABASE_URL: process.env.SUPABASE_URL || 'https://gkekofjqyyxagpppsgyq.supabase.co',
-  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrZWtvZmpxeXl4YWdwcHBzZ3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyODIzNTEsImV4cCI6MjEwMzg1ODM1MX0.203A8GlOsV6-4bqqv1LqvV1RQti65YtayDUniMLRKLc',
+  SUPABASE_URL: process.env.SUPABASE_URL || 'https://euwsjtcvfwcivywpkyyn.supabase.co',
+  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk',
 
   // OpenRouter API Configuration
   OPENROUTER_KEY: process.env.OPENROUTER_KEY,
