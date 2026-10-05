@@ -160,11 +160,19 @@ ALTER TABLE public.exam_sessions_p2 DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.student_results_p2 DISABLE ROW LEVEL SECURITY;
 
 -- Insertar las playeras básicas
-INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
-('mexico', 'México (Básica)', 0, true),
-('oro', 'Playera de Oro', 100, true),
-('diamante', 'Diamante Cósmico', 500, true)
-ON CONFLICT (slug) DO NOTHING;
+-- Envuelto en DO/EXCEPTION porque la tabla real puede tener columnas
+-- adicionales NOT NULL (p. ej. "pais") que este schema reconstruido no
+-- conoce; si falla, no debe tumbar el resto del script (secciones 1-6).
+DO $$
+BEGIN
+  INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
+  ('mexico', 'México (Básica)', 0, true),
+  ('oro', 'Playera de Oro', 100, true),
+  ('diamante', 'Diamante Cósmico', 500, true)
+  ON CONFLICT (slug) DO NOTHING;
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'Se omitió el insert de shop_items (tabla real con columnas adicionales): %', SQLERRM;
+END $$;
 
 -- =========================================================================
 -- 6. PRUEBAS ESTANDARIZADAS 1° A 11° (generador rápido: 10 reactivos / 10 min)
