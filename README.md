@@ -1,6 +1,14 @@
 # PIENSE Mini-Exámenes · Guía de despliegue
 
-Plataforma de mini-exámenes cronometrados para 6to grado, alineada al PIENSE I.
+Plataforma de mini-exámenes cronometrados, con banco de reactivos graduado de 1° a 11° grado.
+
+---
+
+## 🎯 Pruebas estandarizadas (1° a 11°)
+
+Cualquier docente puede entrar a **index.html**, abrir **"Pruebas estandarizadas"** en el menú, elegir un grado (1° a 11°) y una materia (o "mixta"), y el sistema arma automáticamente una prueba de **10 reactivos para 10 minutos**, graduada según el nivel. Internamente reutiliza el mismo motor de exámenes de PIENSE I (código de examen, grupos, resultados), solo que selecciona los reactivos al azar según `grade_level`.
+
+**Requisito:** correr la sección 6 de `supabase_schema.sql` (agrega la columna `grade_level` y 110 reactivos originales, 10 por grado) — es aditiva y segura de ejecutar aunque la base ya tenga datos; no borra ni modifica nada existente salvo etiquetar con `grade_level = 6` los reactivos antiguos de PIENSE I que no tuvieran grado asignado.
 
 ---
 

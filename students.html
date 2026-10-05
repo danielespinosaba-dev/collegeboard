@@ -156,7 +156,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
       <div class="cb-logo-mark">College Board</div>
       <div class="cb-logo-text">
         <div class="cb-logo-title">PIENSE I</div>
-        <div class="cb-logo-sub">Prueba de Práctica · 6to grado</div>
+        <div class="cb-logo-sub">Pruebas estandarizadas · 1° a 11°</div>
       </div>
     </div>
     <div class="cb-header-right">
@@ -176,7 +176,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
   <div class="entry-wrap">
     <div class="entry-box">
       <div class="entry-eyebrow">College Board · Puerto Rico y América Latina</div>
-      <div class="entry-title">PIENSE I<br>6to grado</div>
+      <div class="entry-title">PIENSE I<br>Pruebas 1° a 11°</div>
       <div class="entry-sub">Inicia sesión o crea tu cuenta para continuar</div>
       <div id="loginForm">
         <div class="field">
@@ -350,11 +350,15 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script type="module">
+import CONFIG from './config.js';
+window.CONFIG = CONFIG;
+</script>
 <script>
-const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Lee credenciales de window.CONFIG (cargado desde config.js) para que todas
+// las páginas (docente y alumno) apunten siempre al mismo proyecto Supabase.
+const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://gkekofjqyyxagpppsgyq.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrZWtvZmpxeXl4YWdwcHBzZ3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyODIzNTEsImV4cCI6MjEwMzg1ODM1MX0.203A8GlOsV6-4bqqv1LqvV1RQti65YtayDUniMLRKLc');
 
 let currentStudent = null;
 let currentExam = null;

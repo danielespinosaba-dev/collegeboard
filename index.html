@@ -156,6 +156,9 @@
  
   .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
   .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
+  .alert-success { background: var(--success-bg); color: #15803d; border: 1px solid #bbf7d0; }
+  .alert-warning { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
+  .alert-danger { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
  
   .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
@@ -190,7 +193,7 @@
   <div class="login-wrap">
     <div class="login-box">
       <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
-      <div class="login-sub">Plataforma docente · 6to grado</div>
+      <div class="login-sub">Plataforma docente · 1° a 11°</div>
       <div id="loginForm">
         <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email"></div>
         <div class="field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
@@ -214,10 +217,11 @@
     <aside class="sidebar">
       <div class="sidebar-logo">
         <div class="logo-mark">📚 PIENSE</div>
-        <div class="logo-sub">Mini-Exámenes · 6to grado</div>
+        <div class="logo-sub">Mini-Exámenes · 1° a 11°</div>
       </div>
       <nav class="sidebar-nav">
         <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">👥</span> Mis grupos</a>
+        <a class="nav-item" data-view="estandar" onclick="showView('estandar')"><span class="nav-icon">🎯</span> Pruebas estandarizadas</a>
         <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">📋</span> Banco de reactivos</a>
         <a class="nav-item" data-view="examenes" onclick="showView('examenes')"><span class="nav-icon">📝</span> Exámenes</a>
         <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">🤖</span> Recomendaciones IA</a>
@@ -231,7 +235,7 @@
           <div class="teacher-avatar" id="sidebarInitials">M</div>
           <div>
             <div class="teacher-name" id="sidebarName">Docente</div>
-            <div class="teacher-role">6to grado</div>
+            <div class="teacher-role">Docente</div>
           </div>
         </div>
         <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
@@ -267,11 +271,58 @@
           <div id="groupExamsList"></div>
         </div>
  
+        <!-- PRUEBAS ESTANDARIZADAS -->
+        <div class="view" id="view-estandar">
+          <div class="card mb-16">
+            <div class="card-title">🎯 Generador de pruebas estandarizadas</div>
+            <p class="text-sm text-muted mb-16">Elige el grado y la materia. El sistema arma automáticamente una prueba de <strong>10 reactivos</strong> para <strong>10 minutos</strong>, graduada según el nivel escolar.</p>
+            <div class="filter-bar">
+              <select id="stdGrade" onchange="updateEstandarHint()">
+                <option value="">Selecciona grado...</option>
+                <option value="1">1° grado</option>
+                <option value="2">2° grado</option>
+                <option value="3">3° grado</option>
+                <option value="4">4° grado</option>
+                <option value="5">5° grado</option>
+                <option value="6">6° grado</option>
+                <option value="7">7° grado</option>
+                <option value="8">8° grado</option>
+                <option value="9">9° grado</option>
+                <option value="10">10° grado</option>
+                <option value="11">11° grado</option>
+              </select>
+              <select id="stdSubject" onchange="updateEstandarHint()">
+                <option value="">Todas las materias (mixta)</option>
+                <option value="matematicas">Matemáticas</option>
+                <option value="espanol">Español</option>
+                <option value="ingles">Inglés</option>
+                <option value="habilidad">Habilidad Cognoscitiva</option>
+              </select>
+            </div>
+          </div>
+          <div class="alert alert-info" id="stdHint" style="font-size:13px;">Selecciona un grado para ver cuántos reactivos hay disponibles.</div>
+          <button class="btn btn-primary" style="margin-top:14px;" onclick="generarPruebaEstandarizada()">⚡ Generar prueba (10 reactivos · 10 min) →</button>
+        </div>
+
         <!-- BANCO -->
         <div class="view" id="view-banco">
           <div class="card mb-16">
             <div class="card-title">Banco de reactivos</div>
             <div class="filter-bar">
+              <select id="filterGrade" onchange="filterQuestions()">
+                <option value="">Todos los grados</option>
+                <option value="1">1° grado</option>
+                <option value="2">2° grado</option>
+                <option value="3">3° grado</option>
+                <option value="4">4° grado</option>
+                <option value="5">5° grado</option>
+                <option value="6">6° grado</option>
+                <option value="7">7° grado</option>
+                <option value="8">8° grado</option>
+                <option value="9">9° grado</option>
+                <option value="10">10° grado</option>
+                <option value="11">11° grado</option>
+              </select>
               <select id="filterSubject" onchange="filterQuestions()">
                 <option value="">Todas las materias</option>
                 <option value="matematicas">Matemáticas</option>
@@ -409,11 +460,15 @@
 <div class="toast-container" id="toastContainer"></div>
  
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script type="module">
+import CONFIG from './config.js';
+window.CONFIG = CONFIG;
+</script>
 <script>
-const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Read credentials from window.CONFIG (loaded from config.js)
+const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://gkekofjqyyxagpppsgyq.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrZWtvZmpxeXl4YWdwcHBzZ3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyODIzNTEsImV4cCI6MjEwMzg1ODM1MX0.203A8GlOsV6-4bqqv1LqvV1RQti65YtayDUniMLRKLc');
+
  
 let currentTeacher = null;
 let allQuestions = [];
@@ -487,9 +542,10 @@ function selectModalidad(val) {
 }
  
 // ── NAVIGATION ──────────────────────────────────────────────────
-const viewTitles = { grupos:'Mis grupos', banco:'Banco de reactivos', examenes:'Exámenes', recomendaciones:'Recomendaciones IA' };
+const viewTitles = { grupos:'Mis grupos', estandar:'Pruebas estandarizadas', banco:'Banco de reactivos', examenes:'Exámenes', recomendaciones:'Recomendaciones IA' };
 const viewActions = {
   grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
+  estandar: { text: 'Actualizar', fn: 'loadQuestions()' },
   banco: { text: 'Actualizar', fn: 'loadQuestions()' },
   examenes: { text: '+ Crear examen', fn: "showView('banco')" },
   recomendaciones: { text: 'Actualizar', fn: 'loadRecExamSelect()' },
@@ -509,6 +565,7 @@ function showView(name) {
     document.getElementById('topbarAction').style.display = '';
   }
   if (name === 'recomendaciones') loadRecExamSelect();
+  if (name === 'estandar') updateEstandarHint();
 }
  
 function openGroupDetail(groupId, groupName, groupCode) {
@@ -546,7 +603,7 @@ async function loadGroups() {
   grid.innerHTML = `<div class="grid-2">${data.map(g => {
     const stats = examsByGroup[g.id] || { total: 0, active: 0 };
     return `<div class="group-card" onclick="openGroupDetail('${g.id}','${g.name.replace(/'/g,"\\'")}','${g.access_code}')">
-      <div class="group-name">${g.name}</div><div class="group-meta">6to grado</div>
+      <div class="group-name">${g.name}</div>
       <div class="group-code">${g.access_code}</div>
       <div class="group-stats">
         <div class="group-stat"><span>${stats.total}</span> exámenes</div>
@@ -772,6 +829,7 @@ function populateTopicFilter() {
   sel.innerHTML = '<option value="">Todos los temas</option>' + topics.map(t => `<option value="${t}">${t}</option>`).join('');
 }
 function filterQuestions() {
+  const grade = document.getElementById('filterGrade').value;
   const subject = document.getElementById('filterSubject').value;
   const topic = document.getElementById('filterTopic').value;
   const difficulty = document.getElementById('filterDifficulty').value;
@@ -779,6 +837,7 @@ function filterQuestions() {
   const search = document.getElementById('searchQ').value.toLowerCase();
   populateTopicFilter();
   let filtered = allQuestions.filter(q => {
+    if (grade && String(q.grade_level) !== grade) return false;
     if (subject && q.subject !== subject) return false;
     if (topic && q.topic !== topic) return false;
     if (difficulty && q.difficulty !== difficulty) return false;
@@ -804,6 +863,7 @@ function renderQuestions(list) {
       <div class="q-body">
         <div class="q-stem">${q.stem}${usedBadge}</div>
         <div class="q-meta">
+          ${q.grade_level ? `<span>🎓 ${q.grade_level}° grado</span>` : ''}
           <span>${subjectLabels[q.subject] || q.subject}</span>
           <span class="q-topic">📌 ${q.topic}</span>
           <span style="color:${diffColors[q.difficulty]}">● ${q.difficulty}</span>
@@ -822,7 +882,55 @@ function updateSelectedCounter() {
   document.getElementById('selectedCount').textContent = n;
   document.getElementById('selectedCounter').style.display = n > 0 ? 'flex' : 'none';
 }
- 
+
+// ── PRUEBAS ESTANDARIZADAS (1° a 11°) ──────────────────────────────
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pooledStandardQuestions() {
+  const grade = document.getElementById('stdGrade').value;
+  const subject = document.getElementById('stdSubject').value;
+  if (!grade) return { grade: null, subject, pool: [] };
+  const pool = allQuestions.filter(q => String(q.grade_level) === grade && (!subject || q.subject === subject));
+  return { grade, subject, pool };
+}
+function updateEstandarHint() {
+  const hint = document.getElementById('stdHint');
+  const { grade, pool } = pooledStandardQuestions();
+  if (!grade) { hint.className = 'alert alert-info'; hint.textContent = 'Selecciona un grado para ver cuántos reactivos hay disponibles.'; return; }
+  if (pool.length === 0) {
+    hint.className = 'alert alert-danger';
+    hint.textContent = `No hay reactivos todavía para ${grade}° grado con ese filtro. Prueba con "Todas las materias" u otro grado.`;
+  } else if (pool.length < 10) {
+    hint.className = 'alert alert-warning';
+    hint.textContent = `Hay ${pool.length} de 10 reactivos disponibles para ${grade}° grado. La prueba se generará con los ${pool.length} que hay.`;
+  } else {
+    hint.className = 'alert alert-success';
+    hint.textContent = `✅ Hay ${pool.length} reactivos disponibles para ${grade}° grado. Se elegirán 10 al azar.`;
+  }
+}
+function generarPruebaEstandarizada() {
+  const { grade, subject, pool } = pooledStandardQuestions();
+  if (!grade) return toast('Selecciona un grado primero');
+  if (pool.length === 0) return toast('No hay reactivos disponibles para ese grado/materia todavía');
+  const picked = shuffleArray(pool).slice(0, 10);
+  selectedQuestionIds = new Set(picked.map(q => String(q.id)));
+  updateSelectedCounter();
+  const today = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+  const subjLabel = subject ? (subjectLabels[subject] || subject).replace(/^\S+\s/, '') : 'Mixta';
+  document.getElementById('newExamName').value = `Prueba estandarizada ${grade}° grado · ${subjLabel} · ${today}`;
+  loadGroups();
+  document.getElementById('examPreviewSelected').textContent = `${picked.length} reactivos seleccionados automáticamente para ${grade}° grado`;
+  document.getElementById('newExamDuration').value = '600';
+  selectModalidad('examen');
+  openModal('modalCreateExam');
+}
+
 // ── EXAMS ────────────────────────────────────────────────────────
 async function loadExams() {
   const { data } = await sb.from('exams').select('*, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
@@ -956,7 +1064,11 @@ async function generateRecommendations() {
     return { nombre, score: r.score, errores, aciertos };
   });
   const resumenAlumnos = studentAnalysis.map(s => `- ${s.nombre}: ${s.score}/${questions.length} correctas. Falló en: ${s.errores.map(e => e.tema).join(', ') || 'ninguno'}`).join('\n');
-  const prompt = `Eres un experto en educación primaria y en la prueba PIENSE I de College Board. Analiza los resultados INDIVIDUALES de este examen de 6to grado y genera recomendaciones pedagógicas CONCRETAS y ACCIONABLES para la docente.\n\nGRUPO: ${exam.groups?.name || '6to grado'}\nEXAMEN: ${exam.name}\nTOTAL ALUMNOS: ${responses.length}\n\nRESULTADOS POR ALUMNO:\n${resumenAlumnos}\n\nGenera grupos de trabajo, plan de acción y alertas individuales. Sé DIRECTO y menciona nombres reales. Responde en español.`;
+  const gradeLevels = [...new Set(questions.map(q => q.grade_level).filter(Boolean))].sort((a,b) => a - b);
+  const gradeLabel = gradeLevels.length === 1 ? `${gradeLevels[0]}° grado`
+    : gradeLevels.length > 1 ? `${gradeLevels[0]}° a ${gradeLevels[gradeLevels.length - 1]}° grado`
+    : 'nivel escolar correspondiente';
+  const prompt = `Eres un experto en educación básica y media, y en pruebas estandarizadas tipo College Board (PIENSE/PAA). Analiza los resultados INDIVIDUALES de este examen de ${gradeLabel} y genera recomendaciones pedagógicas CONCRETAS y ACCIONABLES para la docente.\n\nGRUPO: ${exam.groups?.name || gradeLabel}\nEXAMEN: ${exam.name}\nTOTAL ALUMNOS: ${responses.length}\n\nRESULTADOS POR ALUMNO:\n${resumenAlumnos}\n\nGenera grupos de trabajo, plan de acción y alertas individuales. Sé DIRECTO y menciona nombres reales. Responde en español.`;
   try {
     const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();

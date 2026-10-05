@@ -349,11 +349,15 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script type="module">
+import CONFIG from './config.js';
+window.CONFIG = CONFIG;
+</script>
 <script>
-const SUPABASE_URL = 'https://euwsjtcvfwcivywpkyyn.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk';
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Lee credenciales de window.CONFIG (cargado desde config.js) para que todas
+// las páginas (docente y alumno) apunten siempre al mismo proyecto Supabase.
+const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://gkekofjqyyxagpppsgyq.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrZWtvZmpxeXl4YWdwcHBzZ3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyODIzNTEsImV4cCI6MjEwMzg1ODM1MX0.203A8GlOsV6-4bqqv1LqvV1RQti65YtayDUniMLRKLc');
 
 let currentStudent = null;
 let currentExam = null;
