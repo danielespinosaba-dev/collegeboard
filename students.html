@@ -576,7 +576,7 @@ function renderQuestion() {
   document.getElementById('examProgressText').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
   document.getElementById('examSectionLabel').textContent = subjectLabels[q.subject] || q.subject;
   document.getElementById('qNumberLabel').textContent = `${currentQIndex + 1}.`;
-  document.getElementById('qStem').textContent = q.stem;
+  document.getElementById('qStem').innerHTML = q.stem;
   const instrEl = document.getElementById('qInstructions');
   if (q.subject === 'habilidad') { instrEl.style.display = 'block'; instrEl.textContent = 'Selecciona la opción que mejor completa o responde cada planteamiento.'; }
   else if (q.reading_passage) { instrEl.style.display = 'block'; instrEl.textContent = 'Los siguientes ejercicios están basados en el contenido de la lectura. Selecciona la mejor respuesta.'; }
@@ -586,7 +586,7 @@ function renderQuestion() {
   if (q.reading_passage) {
     passageCol.classList.remove('hidden'); questionCol.classList.remove('full-width');
     document.getElementById('passageTitle').textContent = q.reading_title || 'Lee el siguiente texto';
-    document.getElementById('passageText').textContent = q.reading_passage;
+    document.getElementById('passageText').innerHTML = q.reading_passage;
     document.getElementById('lineNumbers').textContent = q.reading_passage.split('\n').map((_, i) => (i + 1) % 5 === 0 ? `(${i + 1})` : '').join('\n');
   } else { passageCol.classList.add('hidden'); questionCol.classList.add('full-width'); }
   const letters = ['A', 'B', 'C', 'D'];
