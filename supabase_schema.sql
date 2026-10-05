@@ -205,13 +205,17 @@ ALTER TABLE public.exam_sessions_p2 ADD COLUMN IF NOT EXISTS duracion_segundos i
 ALTER TABLE public.exam_sessions_p2 ADD COLUMN IF NOT EXISTS modalidad text DEFAULT 'examen';
 CREATE UNIQUE INDEX IF NOT EXISTS exam_sessions_p2_codigo_key ON public.exam_sessions_p2 (codigo) WHERE codigo IS NOT NULL;
 
--- 6.3 El banco histórico de PIENSE I (tabla questions) está alineado a 6to
--- grado. Si ya tiene reactivos sin grade_level, se etiquetan como 6° para
--- que aparezcan de inmediato en el generador — no se borra ni modifica
--- ningún otro dato de esas filas.
+-- 6.3 El banco histórico de PIENSE I (tabla questions, origen distinto de
+-- banco_1a11_original) se deja SIN grade_level: no se mezcla con el banco
+-- graduado 1°-11° para que el generador muestre la misma cantidad en cada
+-- grado (incluido 6°). Sigue disponible para los docentes en "Banco de
+-- reactivos" con el filtro "Todos los grados"; solo se revierte cualquier
+-- etiquetado anterior de grade_level=6 que haya dejado una corrida previa
+-- de este script (esa columna es nueva, así que ese valor solo pudo venir
+-- de esta migración).
 UPDATE public.questions
-SET grade_level = 6
-WHERE grade_level IS NULL
+SET grade_level = NULL
+WHERE grade_level = 6
   AND (source IS NULL OR source <> 'banco_1a11_original');
 
 -- 6.4 Banco original graduado 1° a 11° (reactivos propios, no tomados de
