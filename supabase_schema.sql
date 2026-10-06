@@ -1080,3 +1080,56 @@ CREATE TABLE IF NOT EXISTS public.challenge_results (
 
 ALTER TABLE public.student_challenges DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;
+
+-- =========================================================================
+-- 9. MONEDAS CON ANIMALES MEXICANOS (reemplaza a las playeras de países)
+-- =========================================================================
+-- No se borra ningún registro real de shop_items/student_inventory (eso
+-- rompería el historial de compras de alumnos reales). En su lugar:
+--   - Se desactivan (disponible=false) los slugs de playeras de países que
+--     ya existían, para que dejen de aparecer como comprables en la tienda.
+--   - Se insertan los nuevos slugs de monedas-animal.
+-- Las columnas de la tabla students (playera_activa, playeras_desbloqueadas)
+-- se reutilizan tal cual: antes guardaban un slug de bandera, ahora guardan
+-- un slug de moneda. No requiere cambio de esquema.
+DO $$
+BEGIN
+  UPDATE public.shop_items SET disponible = false
+  WHERE slug IN (
+    'mexico','argentina','brasil','francia','portugal','espana','alemania',
+    'italia','inglaterra','uruguay','colombia','chile','japon','corea',
+    'marruecos','senegal','holanda','australia','canada','eeuu','oro','diamante'
+  );
+
+  INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
+  ('ajolote', 'Ajolote', 0, true),
+  ('mariposa', 'Mariposa Monarca', 50, true),
+  ('quetzal', 'Quetzal', 150, true),
+  ('jaguar', 'Jaguar', 300, true),
+  ('guacamaya', 'Guacamaya', 450, true),
+  ('aguila_real', 'Águila Real', 600, true)
+  ON CONFLICT (slug) DO UPDATE SET disponible = true;
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'Se omitió la migración de monedas (tabla real con columnas adicionales): %', SQLERRM;
+END $$;
+
+-- Los alumnos que ya tenían una playera de país equipada/desbloqueada
+-- quedan con la moneda inicial (ajolote) para que el shop no les muestre
+-- un slug deshabilitado como "activo".
+UPDATE public.students
+SET playera_activa = 'ajolote'
+WHERE playera_activa IN (
+  'mexico','argentina','brasil','francia','portugal','espana','alemania',
+  'italia','inglaterra','uruguay','colombia','chile','japon','corea',
+  'marruecos','senegal','holanda','australia','canada','eeuu'
+) OR playera_activa IS NULL;
+
+-- =========================================================================
+-- 10. GRUPO DEL ALUMNO Y TOP 5 (ranking dentro de su propio grupo)
+-- =========================================================================
+-- Aditivo: el alumno se "une" a su grupo con el access_code que ya existe
+-- en la tabla groups (hoy solo lo usaba el docente para identificar el
+-- grupo). Guardamos esa relación en students.group_id para poder mostrar
+-- un top 5 de puntos_totales acotado al grupo del alumno, sin mezclar
+-- alumnos de otras maestras/grupos.
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS group_id uuid REFERENCES public.groups(id) ON DELETE SET NULL;
