@@ -86,6 +86,14 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .option.selected .option-bubble { background: var(--cb-navy); border-color: var(--cb-navy); color: #fff; }
 .option-text { font-size: 14px; color: var(--cb-text); line-height: 1.5; }
 .exam-nav { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--cb-gray-2); }
+/* Texto más grande para primaria baja (1°-3°), activado por JS según el grado del examen */
+body.text-large .q-stem { font-size: 20px; line-height: 1.6; }
+body.text-large .q-instructions { font-size: 16px; }
+body.text-large .option-text { font-size: 18px; line-height: 1.5; }
+body.text-large .option-bubble { width: 28px; height: 28px; font-size: 14px; }
+body.text-large .passage-text { font-size: 17px; line-height: 1.8; }
+body.text-large .passage-title { font-size: 15px; }
+body.text-large .q-number-label { font-size: 14px; }
 .nav-btn { padding: 9px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; border: 1.5px solid var(--cb-navy); transition: all 0.15s; }
 .nav-btn-prev { background: #fff; color: var(--cb-navy); }
 .nav-btn-prev:hover { background: var(--cb-navy); color: #fff; }
@@ -191,6 +199,9 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
         <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
           ¿Primera vez? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Crear cuenta</a>
         </div>
+        <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--cb-gray-3);">
+          ¿Primaria baja o no recuerdas tu contraseña? <a onclick="toggleGuestForm()" style="color:var(--cb-blue);cursor:pointer;">Solo escribe tu nombre</a>
+        </div>
       </div>
       <div id="registerForm" style="display:none;">
         <div class="field">
@@ -208,6 +219,16 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
         <button class="cb-btn" onclick="doRegisterAlumno()">Crear cuenta</button>
         <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
           ¿Ya tienes cuenta? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Iniciar sesión</a>
+        </div>
+      </div>
+      <div id="guestForm" style="display:none;">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="guestNombre" placeholder="Ej. Ana Pérez" onkeyup="if(event.key==='Enter') continuarComoInvitado()">
+        </div>
+        <button class="cb-btn" onclick="continuarComoInvitado()">Continuar</button>
+        <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
+          No se guardan puntos ni tienda en este modo. <a onclick="backToLoginFromGuest()" style="color:var(--cb-blue);cursor:pointer;">Volver a iniciar sesión</a>
         </div>
       </div>
     </div>
@@ -229,7 +250,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
           oninput="this.value=this.value.toUpperCase()" onkeyup="if(event.key==='Enter') goToWaiting()">
       </div>
       <button class="cb-btn" onclick="goToWaiting()" id="btnSearchExam">Buscar examen</button>
-      <button class="cb-btn-outline" onclick="goToShop()">Ver mi avatar y tienda</button>
+      <button class="cb-btn-outline" onclick="goToShop()" id="btnShopLink">Ver mi avatar y tienda</button>
     </div>
   </div>
 </div>
@@ -310,7 +331,7 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
       </div>
       <div id="bannerJersey" style="width:64px;height:64px;flex-shrink:0;"></div>
     </div>
-    <div class="shop-section">
+    <div class="shop-section" id="resultShopSection">
       <div class="shop-header">
         Tienda de Playeras
         <span id="shopPoints" style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6);"></span>
@@ -408,21 +429,59 @@ function clearAllTimers() {
   if (waitInterval) { clearInterval(waitInterval); waitInterval = null; }
 }
 
+const urlExamCode = (new URLSearchParams(location.search).get('code') || '').trim().toUpperCase();
+
 window.onload = async () => {
   const saved = localStorage.getItem('piense1_alumno');
   if (saved) {
     currentStudent = JSON.parse(saved);
     showScreen('screenEntry');
     document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
+    updateShopLinkVisibility();
     updateHeaderAvatar();
+    afterLoginGoToCodeIfNeeded();
   } else { showScreen('screenLogin'); }
 };
+
+function afterLoginGoToCodeIfNeeded() {
+  if (!urlExamCode) return;
+  document.getElementById('examCode').value = urlExamCode;
+  goToWaiting();
+}
+
+function updateShopLinkVisibility() {
+  document.getElementById('btnShopLink').style.display = currentStudent?.isGuest ? 'none' : 'block';
+}
 
 function toggleLoginRegister() {
   const lf = document.getElementById('loginForm');
   const rf = document.getElementById('registerForm');
+  document.getElementById('guestForm').style.display = 'none';
   lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleGuestForm() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('guestForm').style.display = 'block';
+}
+
+function backToLoginFromGuest() {
+  document.getElementById('guestForm').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+}
+
+function continuarComoInvitado() {
+  const nombre = document.getElementById('guestNombre').value.trim();
+  if (!nombre) return alert('Escribe tu nombre');
+  currentStudent = { id: null, nombre, isGuest: true, puntos_totales: 0, playera_activa: 'mexico' };
+  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
+  document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + nombre;
+  document.getElementById('headerAvatar').style.display = 'none';
+  updateShopLinkVisibility();
+  showScreen('screenEntry');
+  afterLoginGoToCodeIfNeeded();
 }
 
 async function doLoginAlumno() {
@@ -434,8 +493,10 @@ async function doLoginAlumno() {
   currentStudent = data;
   localStorage.setItem('piense1_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
+  updateShopLinkVisibility();
   updateHeaderAvatar();
   showScreen('screenEntry');
+  afterLoginGoToCodeIfNeeded();
 }
 
 async function doRegisterAlumno() {
@@ -453,8 +514,10 @@ async function doRegisterAlumno() {
   currentStudent = data;
   localStorage.setItem('piense1_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
+  updateShopLinkVisibility();
   updateHeaderAvatar();
   showScreen('screenEntry');
+  afterLoginGoToCodeIfNeeded();
 }
 
 function cerrarSesionAlumno() {
@@ -502,9 +565,11 @@ async function goToWaiting() {
   if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
   if (data.status === 'closed') return alert('Este examen ya está cerrado.');
 
-  const { data: yaContesto } = await sb.from('responses')
-    .select('id').eq('exam_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
-  if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
+  if (!currentStudent.isGuest) {
+    const { data: yaContesto } = await sb.from('responses')
+      .select('id').eq('exam_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
+    if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
+  }
 
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
@@ -540,6 +605,9 @@ async function startExam() {
   if (!data || !data.length) return alert('Error al cargar preguntas.');
   currentQuestions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
   userAnswers = {}; currentQIndex = 0;
+  const grades = currentQuestions.map(q => q.grade_level).filter(Boolean);
+  const minGrade = grades.length ? Math.min(...grades) : null;
+  document.body.classList.toggle('text-large', !!(minGrade && minGrade <= 3));
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
 startTime = Date.now();
@@ -635,15 +703,20 @@ async function submitExam(timeUp) {
   currentQuestions.forEach(q => { if (userAnswers[q.id] === q.correct_answer) score++; });
   const total = currentQuestions.length;
   const calificacion = Math.round((score / total) * 100);
-  const puntosGanados = Math.round(calificacion / 10);
+  const puntosGanados = currentStudent.isGuest ? 0 : Math.round(calificacion / 10);
   await sb.from('responses').insert({
-    exam_id: currentExam.id, student_id: currentStudent.id,
+    exam_id: currentExam.id,
+    student_id: currentStudent.isGuest ? null : currentStudent.id,
+    student_name: currentStudent.isGuest ? currentStudent.nombre : null,
     answers: userAnswers, score, total_questions: total, elapsed_seconds: elapsedSeconds
   });
-  const newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
-  await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
-  currentStudent.puntos_totales = newTotal;
-  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
+  let newTotal = currentStudent.puntos_totales || 0;
+  if (!currentStudent.isGuest) {
+    newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
+    await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
+    currentStudent.puntos_totales = newTotal;
+    localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
+  }
   showResults(score, calificacion, puntosGanados, newTotal);
 }
 
@@ -659,11 +732,17 @@ async function showResults(score, calificacion, puntosGanados, totalPuntos) {
     <div class="result-stat"><div class="result-stat-value">${score}</div><div class="result-stat-label">Correctas</div></div>
     <div class="result-stat"><div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div><div class="result-stat-label">Incorrectas</div></div>
     <div class="result-stat"><div class="result-stat-value">${mins}:${secs}</div><div class="result-stat-label">Tiempo</div></div>`;
-  document.getElementById('pointsBanner').style.display = 'flex';
-  document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
-  document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
-  document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
-  await loadShopInResults();
+  if (currentStudent.isGuest) {
+    document.getElementById('pointsBanner').style.display = 'none';
+    document.getElementById('resultShopSection').style.display = 'none';
+  } else {
+    document.getElementById('pointsBanner').style.display = 'flex';
+    document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
+    document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
+    document.getElementById('bannerJersey').innerHTML = `<div style="width:64px;height:64px;">${getJerseySVG(currentStudent.playera_activa)}</div>`;
+    document.getElementById('resultShopSection').style.display = 'block';
+    await loadShopInResults();
+  }
   const letters = ['A', 'B', 'C', 'D'];
   const getOpt = (q, l) => [q.option_a, q.option_b, q.option_c, q.option_d][letters.indexOf(l)] || '—';
   document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {

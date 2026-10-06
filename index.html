@@ -445,10 +445,16 @@
       <div class="exam-code-big" id="examCodeDisplay">------</div>
       <div class="exam-code-label">Comparte este código con tus alumnos</div>
     </div>
-    <div class="alert alert-info">Los alumnos deben entrar a <strong>students.html</strong> e ingresar el código del examen.</div>
+    <div class="alert alert-info">Los alumnos deben entrar a <strong>students.html</strong> e ingresar el código del examen, o escanear el código QR (útil con iPads).</div>
+    <div style="display:flex;justify-content:center;margin:12px 0;">
+      <div id="examQrCode"></div>
+    </div>
     <div class="flex-gap mb-12" style="justify-content:center;gap:12px;">
       <button class="btn btn-outline" onclick="toggleExamStatus()"><span id="statusBtnText">▶ Activar examen</span></button>
       <button class="btn btn-danger btn-sm" onclick="closeExamStatus()">⬛ Cerrar examen</button>
+    </div>
+    <div class="flex-gap mb-12" style="justify-content:center;gap:12px;">
+      <button class="btn btn-secondary" onclick="abrirVersionImprimible()">🖨 Versión imprimible</button>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="closeModal('modalExamCode')">Cerrar</button>
@@ -459,6 +465,7 @@
 <div class="toast-container" id="toastContainer"></div>
  
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script type="module">
 import CONFIG from './config.js';
 window.CONFIG = CONFIG;
@@ -1007,7 +1014,14 @@ function openExamCodeModal(examId, code, status) {
   currentExamForCode = { id: examId, code, status };
   document.getElementById('examCodeDisplay').textContent = code;
   document.getElementById('statusBtnText').textContent = status === 'active' ? '⏸ Pausar examen' : '▶ Activar examen';
+  const qrEl = document.getElementById('examQrCode');
+  qrEl.innerHTML = '';
+  new QRCode(qrEl, { text: `${location.origin}/students.html?code=${code}`, width: 140, height: 140 });
   openModal('modalExamCode');
+}
+function abrirVersionImprimible() {
+  if (!currentExamForCode) return;
+  window.open(`imprimir.html?exam=${currentExamForCode.id}`, '_blank');
 }
 async function toggleExamStatus() {
   if (!currentExamForCode) return;
