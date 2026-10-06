@@ -461,7 +461,18 @@
     </div>
   </div>
 </div>
- 
+
+<!-- MODAL: Analizar reactivo (IA) -->
+<div class="modal-overlay" id="modalAnalizarReactivo">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-title">🔎 Análisis del reactivo</div>
+    <div id="analizarReactivoBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('modalAnalizarReactivo')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
  
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -873,6 +884,7 @@ function renderQuestions(list) {
           <span>${subjectLabels[q.subject] || q.subject}</span>
           <span class="q-topic">📌 ${q.topic}</span>
           <span style="color:${diffColors[q.difficulty]}">● ${q.difficulty}</span>
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); analizarReactivo('${q.id}')">🔎 Analizar</button>
         </div>
       </div>
     </div>`;
@@ -1085,7 +1097,7 @@ async function generateRecommendations() {
   try {
     const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    const text = (data.text || 'No se pudo generar el análisis.').replace(/###\s(.+)/g, '<h4 style="font-size:14px;font-weight:600;color:var(--sky-dark);margin:14px 0 6px;">$1</h4>').replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+)/g, '<li style="margin-bottom:6px;margin-left:16px;">$1</li>').replace(/\n\n/g, '</p><p style="margin-bottom:10px;">').replace(/\n/g, '<br>');
+    const text = formatAiText(data.text || 'No se pudo generar el análisis.');
     const alumnoRows = studentAnalysis.map(s => {
       const pct = Math.round((s.score / questions.length) * 100);
       const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
@@ -1094,6 +1106,28 @@ async function generateRecommendations() {
     }).join('');
     panel.innerHTML = `<div class="card mb-16"><div class="card-title">Diagnóstico por alumno — ${exam.name}</div><table class="data-table"><thead><tr><th>Alumno</th><th>Puntaje</th><th>Temas a reforzar</th></tr></thead><tbody>${alumnoRows}</tbody></table></div><div class="card"><div class="card-title">Plan de acción — Recomendaciones IA</div><div style="font-size:14px;line-height:1.8;color:var(--text);"><p style="margin-bottom:10px;">${text}</p></div><div class="divider"></div><div class="text-xs text-muted">Análisis generado con IA · ${new Date().toLocaleDateString('es-MX')}</div></div>`;
   } catch(e) { panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>'; }
+}
+
+function formatAiText(text) {
+  return text.replace(/###\s(.+)/g, '<h4 style="font-size:14px;font-weight:600;color:var(--sky-dark);margin:14px 0 6px;">$1</h4>').replace(/##\s(.+)/g, '<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+)/g, '<li style="margin-bottom:6px;margin-left:16px;">$1</li>').replace(/\n\n/g, '</p><p style="margin-bottom:10px;">').replace(/\n/g, '<br>');
+}
+
+async function analizarReactivo(id) {
+  const q = allQuestions.find(x => String(x.id) === String(id));
+  if (!q) return toast('No se encontró el reactivo');
+  const body = document.getElementById('analizarReactivoBody');
+  body.innerHTML = '<div class="empty"><span class="spinner"></span><span style="margin-left:10px;font-size:14px;color:var(--text-3);">Analizando reactivo...</span></div>';
+  openModal('modalAnalizarReactivo');
+  const opciones = `A) ${q.option_a}\nB) ${q.option_b}\nC) ${q.option_c}\nD) ${q.option_d}`;
+  const prompt = `Eres un docente experto explicando reactivos de examen tipo College Board/PAA a otra maestra.\n\nPREGUNTA (${subjectLabels[q.subject] || q.subject}${q.grade_level ? `, ${q.grade_level}° grado` : ''}, tema: ${q.topic}):\n${q.stem}\n\nOPCIONES:\n${opciones}\n\nRESPUESTA CORRECTA: ${q.correct_answer}\n\nExplica PASO A PASO cómo se resuelve esta pregunta y por qué la respuesta correcta es la ${q.correct_answer}. También explica brevemente por qué cada una de las otras opciones es incorrecta (errores comunes de los alumnos). Sé claro y conciso. Responde en español, salvo que la pregunta esté en inglés, en cuyo caso puedes explicar en español pero citando el texto en inglés.`;
+  try {
+    const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
+    const data = await res.json();
+    const text = formatAiText(data.text || 'No se pudo generar el análisis.');
+    body.innerHTML = `<div style="font-size:13px;color:var(--text-3);margin-bottom:10px;">${q.stem}</div><div style="font-size:14px;line-height:1.7;color:var(--text);"><p style="margin-bottom:10px;">${text}</p></div>`;
+  } catch (e) {
+    body.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>';
+  }
 }
  
 // ── UTILS ────────────────────────────────────────────────────────
