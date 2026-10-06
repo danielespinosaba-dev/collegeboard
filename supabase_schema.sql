@@ -1046,3 +1046,37 @@ VALUES
 -- sí usan cuenta (siguen guardando student_id normalmente).
 ALTER TABLE public.responses ALTER COLUMN student_id DROP NOT NULL;
 ALTER TABLE public.responses ADD COLUMN IF NOT EXISTS student_name text;
+
+-- =========================================================================
+-- 8. RETOS ENTRE ALUMNOS (mini-examen de competencia, vida de 15 minutos)
+-- =========================================================================
+-- Aditivo: tablas nuevas, no tocan nada de PIENSE I/II ni del docente.
+-- Un alumno genera un reto de 5 reactivos aleatorios de su grado; el reto
+-- queda "abierto" desde el momento en que el propio alumno que reta lo
+-- genera (expires_at = ahora + 15 minutos) y deja de aceptar nuevos
+-- intentos después de ese tiempo, aunque alguien ya lo tenga abierto.
+CREATE TABLE IF NOT EXISTS public.student_challenges (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    code text UNIQUE NOT NULL,
+    creator_student_id uuid REFERENCES public.students(id) ON DELETE CASCADE,
+    creator_name text NOT NULL,
+    grade_level smallint,
+    question_ids jsonb NOT NULL,
+    created_at timestamp with time zone DEFAULT now(),
+    expires_at timestamp with time zone NOT NULL
+);
+
+-- Resultados de cada alumno que contesta un reto (incluye al propio creador).
+CREATE TABLE IF NOT EXISTS public.challenge_results (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    challenge_id uuid REFERENCES public.student_challenges(id) ON DELETE CASCADE,
+    student_id uuid REFERENCES public.students(id) ON DELETE CASCADE,
+    student_name text NOT NULL,
+    score integer NOT NULL,
+    total_questions integer NOT NULL,
+    elapsed_seconds integer NOT NULL,
+    created_at timestamp with time zone DEFAULT now()
+);
+
+ALTER TABLE public.student_challenges DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;

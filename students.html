@@ -41,8 +41,8 @@ body { font-family: var(--font-sans); background: #fff; color: var(--cb-text); m
 .entry-sub { font-size: 14px; color: var(--cb-gray-3); margin-bottom: 28px; border-bottom: 1px solid var(--cb-gray-2); padding-bottom: 20px; }
 .field { margin-bottom: 18px; }
 .field label { display: block; font-size: 13px; font-weight: 600; color: var(--cb-text-2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-.field input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cb-border); font-family: var(--font-sans); font-size: 15px; color: var(--cb-text); background: #fff; transition: border-color 0.15s; }
-.field input:focus { outline: none; border-color: var(--cb-blue); }
+.field input, .field select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--cb-border); font-family: var(--font-sans); font-size: 15px; color: var(--cb-text); background: #fff; transition: border-color 0.15s; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--cb-blue); }
 .field input.code-input { font-size: 22px; font-weight: 600; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
 .cb-btn { display: block; width: 100%; padding: 12px 20px; background: var(--cb-navy); color: #fff; font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.15s; text-align: center; }
 .cb-btn:hover { background: var(--cb-blue); }
@@ -250,7 +250,70 @@ body.text-large .q-number-label { font-size: 14px; }
           oninput="this.value=this.value.toUpperCase()" onkeyup="if(event.key==='Enter') goToWaiting()">
       </div>
       <button class="cb-btn" onclick="goToWaiting()" id="btnSearchExam">Buscar examen</button>
+      <button class="cb-btn-outline" onclick="openChallengeSetup()">⚔ Retar a un compañero</button>
       <button class="cb-btn-outline" onclick="goToShop()" id="btnShopLink">Ver mi avatar y tienda</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screenChallengeSetup">
+  <div class="entry-wrap">
+    <div class="entry-box">
+      <div class="entry-eyebrow">Reto entre compañeros</div>
+      <div class="entry-title">Crea un reto breve</div>
+      <div class="entry-sub">5 preguntas aleatorias de tu grado · dura 15 minutos desde que lo abras</div>
+      <div class="field">
+        <label>Tu grado</label>
+        <select id="challengeGrade">
+          <option value="">Selecciona tu grado</option>
+          <option value="1">1°</option><option value="2">2°</option><option value="3">3°</option>
+          <option value="4">4°</option><option value="5">5°</option><option value="6">6°</option>
+          <option value="7">7°</option><option value="8">8°</option><option value="9">9°</option>
+          <option value="10">10°</option><option value="11">11°</option>
+        </select>
+      </div>
+      <button class="cb-btn" onclick="generarReto()" id="btnGenerarReto">Generar reto</button>
+      <button class="cb-btn-outline" onclick="goToEntry()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screenChallengeShare">
+  <div class="entry-wrap">
+    <div class="entry-box">
+      <div class="entry-eyebrow">¡Reto listo!</div>
+      <div class="entry-title">Compártelo con tus compañeros</div>
+      <div class="entry-sub">Válido 15 minutos desde ahora. Después deja de funcionar.</div>
+      <div style="text-align:center;margin:12px 0 20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:700;letter-spacing:0.15em;color:var(--cb-navy);" id="challengeCodeDisplay">------</div>
+      </div>
+      <button class="cb-btn-outline" onclick="copyChallengeLink()">📋 Copiar enlace para compartir</button>
+      <button class="cb-btn" onclick="comenzarMiIntento()" style="margin-top:14px;">Comenzar mi intento</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screenChallengeResult">
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="result-header">
+      <div class="result-header-eyebrow">Reto entre compañeros</div>
+      <div class="result-header-title">Resultado de tu reto</div>
+      <div class="result-header-sub" id="challengeResultStudentName">Estudiante</div>
+    </div>
+    <div class="result-score-band">
+      <div><div class="result-score-number" id="challengeScoreBig">-</div></div>
+      <div>
+        <div class="result-score-label">Reactivos correctos</div>
+        <div style="font-size:13px;color:var(--cb-navy);margin-top:4px;" id="challengeScoreOutOf"></div>
+      </div>
+    </div>
+    <div class="review-section">
+      <div class="review-section-header">Tabla de posiciones de este reto</div>
+      <div id="challengeLeaderboard" style="padding:16px 20px;"></div>
+    </div>
+    <div style="padding:20px 0;display:flex;gap:12px;">
+      <button class="cb-btn-outline" onclick="copyChallengeLink()" style="flex:1;">📋 Compartir de nuevo</button>
+      <button class="cb-btn" onclick="goToEntry()" style="flex:1;">Volver</button>
     </div>
   </div>
 </div>
@@ -393,6 +456,8 @@ let elapsedSeconds = 0;
 let secondsRemaining = 600;
 let allShopItems = [];
 let examSubmitted = false;
+let isChallengeMode = false;
+let currentChallenge = null;
 
 const subjectLabels = {
   matematicas: 'Parte 3 — Matemáticas', espanol: 'Parte 2 — Español',
@@ -430,6 +495,7 @@ function clearAllTimers() {
 }
 
 const urlExamCode = (new URLSearchParams(location.search).get('code') || '').trim().toUpperCase();
+const urlChallengeCode = (new URLSearchParams(location.search).get('reto') || '').trim().toUpperCase();
 
 window.onload = async () => {
   const saved = localStorage.getItem('piense1_alumno');
@@ -444,9 +510,11 @@ window.onload = async () => {
 };
 
 function afterLoginGoToCodeIfNeeded() {
-  if (!urlExamCode) return;
-  document.getElementById('examCode').value = urlExamCode;
-  goToWaiting();
+  if (urlChallengeCode) return joinChallenge(urlChallengeCode);
+  if (urlExamCode) {
+    document.getElementById('examCode').value = urlExamCode;
+    goToWaiting();
+  }
 }
 
 function updateShopLinkVisibility() {
@@ -543,6 +611,7 @@ function goToEntry() {
   clearAllTimers();
   examSubmitted = false;
   currentExam = null; currentQuestions = []; userAnswers = {};
+  isChallengeMode = false; currentChallenge = null;
   currentQIndex = 0; secondsRemaining = 600;
   document.getElementById('examCode').value = '';
   document.getElementById('timerWrap').style.display = 'none';
@@ -601,32 +670,136 @@ async function checkExamStatus() {
 async function startExam() {
   clearAllTimers();
   examSubmitted = false;
+  isChallengeMode = false; currentChallenge = null;
   const { data } = await sb.from('questions').select('*').in('id', currentExam.question_ids);
   if (!data || !data.length) return alert('Error al cargar preguntas.');
-  currentQuestions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
+  const questions = currentExam.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
+  beginExamUI(questions, currentExam.duration_seconds || 600);
+}
+
+function beginExamUI(questions, totalSeconds) {
+  currentQuestions = questions;
   userAnswers = {}; currentQIndex = 0;
   const grades = currentQuestions.map(q => q.grade_level).filter(Boolean);
   const minGrade = grades.length ? Math.min(...grades) : null;
   document.body.classList.toggle('text-large', !!(minGrade && minGrade <= 3));
   showScreen('screenExam');
   document.getElementById('timerWrap').style.display = 'block';
-startTime = Date.now();
-const totalSeconds = currentExam.duration_seconds || 600;
+  startTime = Date.now();
 
-timerInterval = setInterval(() => {
-  if (examSubmitted) { clearAllTimers(); return; }
-
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
-  secondsRemaining = Math.max(0, totalSeconds - elapsed);
-
-  renderTimer();
-
-  if (secondsRemaining <= 0) {
-    clearAllTimers();
-    submitExam(true);
-  }
-}, 500); // 500ms para que no se vea lag en pantalla
+  timerInterval = setInterval(() => {
+    if (examSubmitted) { clearAllTimers(); return; }
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    secondsRemaining = Math.max(0, totalSeconds - elapsed);
+    renderTimer();
+    if (secondsRemaining <= 0) {
+      clearAllTimers();
+      submitExam(true);
+    }
+  }, 500); // 500ms para que no se vea lag en pantalla
   renderQuestion(); renderDots();
+}
+
+// ── RETOS ENTRE ALUMNOS ────────────────────────────────────────────
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function genChallengeCode(len) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+function openChallengeSetup() { showScreen('screenChallengeSetup'); }
+
+async function generarReto() {
+  const grade = document.getElementById('challengeGrade').value;
+  if (!grade) return alert('Selecciona tu grado');
+  const btn = document.getElementById('btnGenerarReto');
+  btn.disabled = true; btn.textContent = 'Generando...';
+  const { data: pool, error: poolError } = await sb.from('questions').select('id').eq('grade_level', Number(grade));
+  btn.disabled = false; btn.textContent = 'Generar reto';
+  if (poolError || !pool || pool.length < 5) return alert('No hay suficientes reactivos para ese grado todavía.');
+  const picked = shuffleArray(pool).slice(0, 5).map(q => q.id);
+  const code = genChallengeCode(6);
+  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+  const { data: challenge, error } = await sb.from('student_challenges').insert({
+    code, creator_student_id: currentStudent.isGuest ? null : currentStudent.id,
+    creator_name: currentStudent.nombre, grade_level: grade,
+    question_ids: picked, expires_at: expiresAt
+  }).select().single();
+  if (error) return alert('Error al generar el reto: ' + error.message);
+  currentChallenge = challenge;
+  document.getElementById('challengeCodeDisplay').textContent = code;
+  showScreen('screenChallengeShare');
+}
+
+function challengeLink(code) { return `${location.origin}${location.pathname}?reto=${code}`; }
+
+async function copyChallengeLink() {
+  const link = challengeLink(currentChallenge.code);
+  try {
+    await navigator.clipboard.writeText(link);
+    alert('Enlace copiado. Compártelo con tus compañeros:\n' + link);
+  } catch (e) {
+    alert('Copia este enlace manualmente:\n' + link);
+  }
+}
+
+function comenzarMiIntento() {
+  startChallengeExam(currentChallenge);
+}
+
+async function joinChallenge(code) {
+  const { data: challenge, error } = await sb.from('student_challenges').select('*').eq('code', code).single();
+  if (error || !challenge) { alert('No encontramos ese reto. Pide a tu compañero que te comparta uno nuevo.'); return goToEntry(); }
+  if (new Date(challenge.expires_at) < new Date()) {
+    alert('Este reto ya caducó (duraba 15 minutos). Pide a tu compañero que genere uno nuevo.');
+    return goToEntry();
+  }
+  if (!currentStudent.isGuest) {
+    const { data: yaContesto } = await sb.from('challenge_results')
+      .select('id').eq('challenge_id', challenge.id).eq('student_id', currentStudent.id).maybeSingle();
+    if (yaContesto) { alert('Ya contestaste este reto. Solo se puede una vez.'); return goToEntry(); }
+  }
+  startChallengeExam(challenge);
+}
+
+async function startChallengeExam(challenge) {
+  clearAllTimers();
+  examSubmitted = false;
+  isChallengeMode = true; currentChallenge = challenge;
+  const { data } = await sb.from('questions').select('*').in('id', challenge.question_ids);
+  if (!data || !data.length) return alert('Error al cargar las preguntas del reto.');
+  const questions = challenge.question_ids.map(id => data.find(q => q.id === id)).filter(Boolean);
+  beginExamUI(questions, 300); // 5 min para 5 preguntas
+}
+
+async function showChallengeResults(score, calificacion) {
+  const total = currentQuestions.length;
+  document.getElementById('challengeResultStudentName').textContent = currentStudent.nombre;
+  document.getElementById('challengeScoreBig').textContent = score;
+  document.getElementById('challengeScoreOutOf').textContent = `de ${total} reactivos · ${calificacion}/100`;
+  const { data: results } = await sb.from('challenge_results')
+    .select('student_name, score, total_questions, elapsed_seconds')
+    .eq('challenge_id', currentChallenge.id)
+    .order('score', { ascending: false })
+    .order('elapsed_seconds', { ascending: true });
+  const board = results || [];
+  document.getElementById('challengeLeaderboard').innerHTML = board.length
+    ? board.map((r, i) => `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cb-gray-2);font-size:14px;">
+        <span>${i + 1}. ${r.student_name}</span>
+        <span style="color:var(--cb-navy);font-weight:600;">${r.score}/${r.total_questions}</span>
+      </div>`).join('')
+    : '<div style="color:var(--cb-gray-3);font-size:13px;">Todavía no hay resultados.</div>';
+  document.getElementById('timerWrap').style.display = 'none';
+  showScreen('screenChallengeResult');
 }
 
 function renderTimer() {
@@ -703,6 +876,17 @@ async function submitExam(timeUp) {
   currentQuestions.forEach(q => { if (userAnswers[q.id] === q.correct_answer) score++; });
   const total = currentQuestions.length;
   const calificacion = Math.round((score / total) * 100);
+
+  if (isChallengeMode) {
+    await sb.from('challenge_results').insert({
+      challenge_id: currentChallenge.id,
+      student_id: currentStudent.isGuest ? null : currentStudent.id,
+      student_name: currentStudent.nombre,
+      score, total_questions: total, elapsed_seconds: elapsedSeconds
+    });
+    return showChallengeResults(score, calificacion);
+  }
+
   const puntosGanados = currentStudent.isGuest ? 0 : Math.round(calificacion / 10);
   await sb.from('responses').insert({
     exam_id: currentExam.id,
