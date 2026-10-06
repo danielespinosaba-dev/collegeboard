@@ -1133,3 +1133,29 @@ WHERE playera_activa IN (
 -- un top 5 de puntos_totales acotado al grupo del alumno, sin mezclar
 -- alumnos de otras maestras/grupos.
 ALTER TABLE public.students ADD COLUMN IF NOT EXISTS group_id uuid REFERENCES public.groups(id) ON DELETE SET NULL;
+
+-- =========================================================================
+-- 11. REASEGURAR RLS DESACTIVADO EN TODAS LAS TABLAS
+-- =========================================================================
+-- Esta app no usa autenticación de Supabase (auth.uid()); el control de
+-- acceso lo hace el propio frontend con el anon key. Si alguna tabla quedó
+-- con RLS activado (por ejemplo, "new row violates row-level security
+-- policy for table student_challenges"), las consultas desde el anon key
+-- fallan aunque la tabla exista y la política de INSERT/SELECT esté bien
+-- intencionada, porque sin políticas definidas el acceso por defecto es
+-- denegar todo. Este bloque reafirma que RLS está apagado en cada tabla,
+-- sin importar en qué sesión se haya creado o si alguna quedó activada
+-- manualmente desde el dashboard de Supabase.
+ALTER TABLE public.teachers DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.groups DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.students DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.questions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.exams DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.responses DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.shop_items DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.student_inventory DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.piense2_questions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.exam_sessions_p2 DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.student_results_p2 DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.student_challenges DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;
