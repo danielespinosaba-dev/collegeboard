@@ -1092,25 +1092,51 @@ ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;
 -- Las columnas de la tabla students (playera_activa, playeras_desbloqueadas)
 -- se reutilizan tal cual: antes guardaban un slug de bandera, ahora guardan
 -- un slug de moneda. No requiere cambio de esquema.
-DO $$
-BEGIN
-  UPDATE public.shop_items SET disponible = false
-  WHERE slug IN (
-    'mexico','argentina','brasil','francia','portugal','espana','alemania',
-    'italia','inglaterra','uruguay','colombia','chile','japon','corea',
-    'marruecos','senegal','holanda','australia','canada','eeuu','oro','diamante'
-  );
+-- 9a. Desactivar playeras de países: bloque INDEPENDIENTE del insert de
+-- abajo. Antes estaban juntos en un solo DO $$ y, si el INSERT fallaba
+-- (p. ej. por la columna "pais" NOT NULL que ya nos había pasado antes),
+-- Postgres revertía TODO el bloque, incluida esta desactivación — por
+-- eso seguían apareciendo "Selección México", "Selección Argentina", etc.
+UPDATE public.shop_items SET disponible = false
+WHERE slug IN (
+  'mexico','argentina','brasil','francia','portugal','espana','alemania',
+  'italia','inglaterra','uruguay','colombia','chile','japon','corea',
+  'marruecos','senegal','holanda','australia','canada','eeuu','oro','diamante'
+);
 
-  INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
-  ('ajolote', 'Ajolote', 0, true),
-  ('mariposa', 'Mariposa Monarca', 50, true),
-  ('quetzal', 'Quetzal', 150, true),
-  ('jaguar', 'Jaguar', 300, true),
-  ('guacamaya', 'Guacamaya', 450, true),
-  ('aguila_real', 'Águila Real', 600, true)
-  ON CONFLICT (slug) DO UPDATE SET disponible = true;
+-- 9b. Insertar monedas nuevas, en su propio bloque. Detecta si la tabla
+-- real tiene la columna "pais" (NOT NULL en versiones anteriores) y la
+-- llena solo si existe, en vez de adivinar y arriesgar otro fallo.
+DO $$
+DECLARE
+  has_pais boolean;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'shop_items' AND column_name = 'pais'
+  ) INTO has_pais;
+
+  IF has_pais THEN
+    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
+    ('ajolote', 'Ajolote', 0, true, 'México'),
+    ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
+    ('quetzal', 'Quetzal', 150, true, 'México'),
+    ('jaguar', 'Jaguar', 300, true, 'México'),
+    ('guacamaya', 'Guacamaya', 450, true, 'México'),
+    ('aguila_real', 'Águila Real', 600, true, 'México')
+    ON CONFLICT (slug) DO UPDATE SET disponible = true;
+  ELSE
+    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
+    ('ajolote', 'Ajolote', 0, true),
+    ('mariposa', 'Mariposa Monarca', 50, true),
+    ('quetzal', 'Quetzal', 150, true),
+    ('jaguar', 'Jaguar', 300, true),
+    ('guacamaya', 'Guacamaya', 450, true),
+    ('aguila_real', 'Águila Real', 600, true)
+    ON CONFLICT (slug) DO UPDATE SET disponible = true;
+  END IF;
 EXCEPTION WHEN OTHERS THEN
-  RAISE NOTICE 'Se omitió la migración de monedas (tabla real con columnas adicionales): %', SQLERRM;
+  RAISE NOTICE 'Se omitió el insert de monedas (tabla real con otra columna adicional): %', SQLERRM;
 END $$;
 
 -- Los alumnos que ya tenían una playera de país equipada/desbloqueada
