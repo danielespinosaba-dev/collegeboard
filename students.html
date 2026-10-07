@@ -531,102 +531,64 @@ function renderInsigniaBanner(pts) {
   </div>`;
 }
 
-// ── AVATAR PERSONALIZABLE (SVG por capas) ──────────────────────────
-const DEFAULT_AVATAR = { skin: 'piel_clara', hair: 'pelo_corto_negro', top: 'playera_azul', headwear: 'ninguno', background: 'fondo_azul' };
+// ── AVATAR PERSONALIZABLE (DiceBear "adventurer", MIT license) ─────
+// Ilustración ya hecha y pulida por una librería open-source en vez de
+// SVG dibujado a mano (que se veía plano/barato). El servicio arma el
+// avatar combinando parámetros en la URL; los rasgos faciales (ojos,
+// cejas, boca) quedan fijos por alumno vía "seed" para que cada quien
+// tenga una cara consistente sin necesidad de comprarla aparte.
+const DEFAULT_AVATAR = { skin: 'piel_clara', hair: 'corto_a', hairColor: 'negro', accessory: 'ninguno', background: 'fondo_celeste' };
 
-const HAIR_STYLE_PATHS = {
-  corto: 'M58,70 Q58,28 100,26 Q142,28 142,70 Q142,48 100,43 Q58,48 58,70 Z',
-  largo: 'M55,78 Q48,26 100,22 Q152,26 145,78 L150,145 L132,145 L130,82 Q130,56 100,52 Q70,56 70,82 L68,145 L50,145 Z',
-  chino: 'M56,74 Q46,58 55,42 Q52,28 68,24 Q78,13 100,16 Q122,13 132,24 Q148,28 145,42 Q154,58 144,74 Q150,50 120,46 Q132,34 108,29 Q100,38 92,29 Q68,34 80,46 Q50,50 56,74 Z',
-  moño: 'M60,68 Q58,28 100,26 Q142,28 140,68 Q142,46 100,42 Q58,46 60,68 Z M86,12 a14,14 0 1,0 0.1,0 Z'
-};
-const HAIR_COLORS = { negro: '#1c1c1c', cafe: '#6b4423', rubio: '#e8c56b' };
-
-const AVATAR_PARTS = {
+const AVATAR_OPTIONS = {
   skin: {
-    piel_clara: { color: '#ffd9b3' }, piel_media: { color: '#e8b084' },
-    piel_morena: { color: '#b87f52' }, piel_oscura: { color: '#7a4f32' }
+    piel_clara: { skinColor: 'f2d3b1' }, piel_media: { skinColor: 'ecad80' },
+    piel_morena: { skinColor: '9e5622' }, piel_oscura: { skinColor: '763900' }
   },
   hair: {
-    pelo_corto_negro: { style: 'corto', color: HAIR_COLORS.negro },
-    pelo_corto_cafe: { style: 'corto', color: HAIR_COLORS.cafe },
-    pelo_largo_negro: { style: 'largo', color: HAIR_COLORS.negro },
-    pelo_largo_rubio: { style: 'largo', color: HAIR_COLORS.rubio },
-    pelo_chino_cafe: { style: 'chino', color: HAIR_COLORS.cafe },
-    'pelo_moño': { style: 'moño', color: HAIR_COLORS.negro }
+    corto_a: { hair: 'short01' }, corto_b: { hair: 'short06' }, corto_c: { hair: 'short10' }, corto_d: { hair: 'short16' },
+    largo_a: { hair: 'long01' }, largo_b: { hair: 'long08' }, largo_c: { hair: 'long15' }, largo_d: { hair: 'long26' }
   },
-  top: {
-    playera_azul: { color: '#2f6fb0', pattern: 'none' },
-    playera_roja: { color: '#c0392b', pattern: 'none' },
-    playera_verde: { color: '#2e8b57', pattern: 'none' },
-    playera_amarilla: { color: '#e8b800', pattern: 'none' },
-    playera_rayas: { color: '#2f6fb0', pattern: 'rayas' },
-    playera_estrellas: { color: '#2c2c54', pattern: 'estrellas' }
+  hairColor: {
+    negro: { hairColor: '0e0e0e' }, cafe_oscuro: { hairColor: '562306' }, cafe: { hairColor: '6a4e35' },
+    castano: { hairColor: '796a45' }, rubio: { hairColor: 'e5d7a3' }, rojizo: { hairColor: 'ab2a18' },
+    gris: { hairColor: 'afafaf' }, verde_fantasia: { hairColor: '3eac2c' },
+    azul_fantasia: { hairColor: '85c2c6' }, rosa_fantasia: { hairColor: 'dba3be' }
   },
-  headwear: {
-    ninguno: { style: 'ninguno' },
-    gorra_roja: { style: 'gorra', color: '#c0392b' },
-    gorra_azul: { style: 'gorra', color: '#2f6fb0' },
-    casco_futbol: { style: 'casco', color: '#444444' },
-    corona: { style: 'corona', color: '#f5c518' },
-    flores: { style: 'flores', color: '#e75480' }
+  accessory: {
+    ninguno: {},
+    lentes_redondos: { glassesProbability: 100, glasses: 'variant01' },
+    lentes_cuadrados: { glassesProbability: 100, glasses: 'variant03' },
+    lentes_sol: { glassesProbability: 100, glasses: 'variant05' },
+    aretes_a: { earringsProbability: 100, earrings: 'variant01' },
+    aretes_b: { earringsProbability: 100, earrings: 'variant04' },
+    bigote: { featuresProbability: 100, features: 'mustache' },
+    pecas: { featuresProbability: 100, features: 'freckles' }
   },
-  background: { fondo_azul: {}, fondo_bosque: {}, fondo_espacio: {}, fondo_playa: {}, fondo_atardecer: {}, fondo_fuego: {} }
+  background: {
+    fondo_celeste: { backgroundColor: 'bde0fe' }, fondo_menta: { backgroundColor: 'caffbf' },
+    fondo_amarillo: { backgroundColor: 'fdffb6' }, fondo_lavanda: { backgroundColor: 'bdb2ff' },
+    fondo_atardecer: { backgroundColor: 'ffb67a', backgroundType: 'gradientLinear' },
+    fondo_espacio: { backgroundColor: '0b1437' }
+  }
 };
 
-function getBackgroundSVG(slug) {
-  switch (slug) {
-    case 'fondo_bosque':
-      return `<rect width="200" height="200" fill="#bfe3c0"/><rect y="150" width="200" height="50" fill="#3c7a44"/><polygon points="38,150 55,95 72,150" fill="#2e5e36"/><polygon points="150,150 170,82 190,150" fill="#2e5e36"/><polygon points="95,150 115,78 135,150" fill="#356b3d"/>`;
-    case 'fondo_espacio':
-      return `<rect width="200" height="200" fill="#0b1437"/><circle cx="28" cy="38" r="2" fill="#fff"/><circle cx="165" cy="28" r="2" fill="#fff"/><circle cx="172" cy="112" r="1.5" fill="#fff"/><circle cx="35" cy="160" r="1.5" fill="#fff"/><circle cx="105" cy="18" r="1.5" fill="#fff"/><circle cx="150" cy="170" r="14" fill="#cfd8e3"/>`;
-    case 'fondo_playa':
-      return `<rect width="200" height="135" fill="#8fd6e8"/><rect y="135" width="200" height="65" fill="#f2d8a0"/><circle cx="158" cy="38" r="20" fill="#ffd93d"/>`;
-    case 'fondo_atardecer':
-      return `<rect width="200" height="200" fill="url(#gradAtardecer)"/><circle cx="100" cy="135" r="35" fill="#ff8a3d"/>`;
-    case 'fondo_fuego':
-      return `<circle cx="100" cy="100" r="95" fill="#1a0a05"/><circle cx="100" cy="100" r="85" fill="none" stroke="url(#gradFuego)" stroke-width="18"/>`;
-    default:
-      return `<rect width="200" height="200" fill="#bfe0f5"/>`;
-  }
+function buildAvatarUrl(equipped, seed) {
+  const eq = Object.assign({}, DEFAULT_AVATAR, equipped || {});
+  const params = new URLSearchParams({ seed: seed || 'alumno' });
+  Object.keys(AVATAR_OPTIONS).forEach(cat => {
+    const opt = AVATAR_OPTIONS[cat][eq[cat]] || AVATAR_OPTIONS[cat][DEFAULT_AVATAR[cat]] || {};
+    Object.keys(opt).forEach(k => params.set(k, opt[k]));
+  });
+  if (!params.has('glassesProbability')) params.set('glassesProbability', '0');
+  if (!params.has('earringsProbability')) params.set('earringsProbability', '0');
+  if (!params.has('featuresProbability')) params.set('featuresProbability', '0');
+  return `https://api.dicebear.com/9.x/adventurer/svg?${params.toString()}`;
 }
 
-function getAvatarSVG(equipped, size) {
-  const eq = Object.assign({}, DEFAULT_AVATAR, equipped || {});
-  const skin = AVATAR_PARTS.skin[eq.skin] || AVATAR_PARTS.skin.piel_clara;
-  const hair = AVATAR_PARTS.hair[eq.hair] || AVATAR_PARTS.hair.pelo_corto_negro;
-  const top = AVATAR_PARTS.top[eq.top] || AVATAR_PARTS.top.playera_azul;
-  const headwear = AVATAR_PARTS.headwear[eq.headwear] || AVATAR_PARTS.headwear.ninguno;
-  const hairPath = HAIR_STYLE_PATHS[hair.style] || '';
-  const topPattern = top.pattern === 'rayas'
-    ? `<rect x="52" y="155" width="96" height="9" fill="rgba(255,255,255,0.45)"/><rect x="52" y="174" width="96" height="9" fill="rgba(255,255,255,0.45)"/>`
-    : top.pattern === 'estrellas'
-    ? `<text x="72" y="168" font-size="15" fill="#f5c518">★</text><text x="105" y="183" font-size="11" fill="#f5c518">★</text><text x="120" y="162" font-size="10" fill="#f5c518">★</text>`
-    : '';
-  let headwearSvg = '';
-  if (headwear.style === 'gorra') headwearSvg = `<path d="M55,55 Q100,8 145,55 L150,66 Q100,44 50,66 Z" fill="${headwear.color}"/><ellipse cx="100" cy="60" rx="52" ry="8" fill="${headwear.color}"/>`;
-  else if (headwear.style === 'casco') headwearSvg = `<path d="M50,66 Q50,8 100,6 Q150,8 150,66 L150,76 L50,76 Z" fill="${headwear.color}"/><rect x="58" y="69" width="84" height="10" fill="#bbbbbb"/>`;
-  else if (headwear.style === 'corona') headwearSvg = `<polygon points="58,56 70,28 86,50 100,22 114,50 130,28 142,56" fill="${headwear.color}" stroke="#a9820a" stroke-width="2"/>`;
-  else if (headwear.style === 'flores') headwearSvg = `<circle cx="60" cy="50" r="7" fill="${headwear.color}"/><circle cx="80" cy="38" r="7" fill="#f5c518"/><circle cx="100" cy="33" r="7" fill="${headwear.color}"/><circle cx="120" cy="38" r="7" fill="#f5c518"/><circle cx="140" cy="50" r="7" fill="${headwear.color}"/>`;
-  return `<svg viewBox="0 0 200 200" width="${size || '100%'}" height="${size || '100%'}" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="gradAtardecer" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb67a"/><stop offset="100%" stop-color="#8e4b8f"/></linearGradient>
-      <linearGradient id="gradFuego" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff5b1f"/><stop offset="100%" stop-color="#ffcf4a"/></linearGradient>
-      <clipPath id="avatarClip"><circle cx="100" cy="100" r="95"/></clipPath>
-    </defs>
-    <g clip-path="url(#avatarClip)">
-      ${getBackgroundSVG(eq.background)}
-      <path d="M38,200 Q38,138 100,138 Q162,138 162,200 Z" fill="${top.color}"/>
-      ${topPattern}
-      <ellipse cx="100" cy="88" rx="42" ry="46" fill="${skin.color}"/>
-      <circle cx="78" cy="88" r="4" fill="#222222"/>
-      <circle cx="122" cy="88" r="4" fill="#222222"/>
-      <path d="M85,104 Q100,112 115,104" stroke="#8a4b32" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="${hairPath}" fill="${hair.color || '#1c1c1c'}"/>
-      ${headwearSvg}
-    </g>
-    <circle cx="100" cy="100" r="95" fill="none" stroke="#f5a800" stroke-width="8"/>
-  </svg>`;
+function getAvatarSVG(equipped, size, seed) {
+  const url = buildAvatarUrl(equipped, seed);
+  const dim = size ? `width:${size}px;height:${size}px;` : 'width:100%;height:100%;';
+  return `<img src="${url}" alt="" style="${dim}border-radius:50%;display:block;">`;
 }
 
 function clearAllTimers() {
@@ -766,7 +728,7 @@ function updateHeaderAvatar() {
   if (!currentStudent) return;
   const el = document.getElementById('headerAvatar');
   el.style.display = 'flex';
-  el.innerHTML = `<div style="width:32px;height:32px;">${getAvatarSVG(currentStudent.avatar_equipped)}</div>`;
+  el.innerHTML = `<div style="width:32px;height:32px;">${getAvatarSVG(currentStudent.avatar_equipped, 32, currentStudent.id)}</div>`;
 }
 
 function showScreen(id) {
@@ -1102,8 +1064,8 @@ async function showResults(score, calificacion, puntosGanados, totalPuntos) {
 }
 
 const AVATAR_CATEGORIES = [
-  { key: 'skin', label: 'Piel' }, { key: 'hair', label: 'Cabello' }, { key: 'top', label: 'Playera' },
-  { key: 'headwear', label: 'Gorra' }, { key: 'background', label: 'Fondo' }
+  { key: 'skin', label: 'Piel' }, { key: 'hair', label: 'Peinado' }, { key: 'hairColor', label: 'Color de cabello' },
+  { key: 'accessory', label: 'Accesorio' }, { key: 'background', label: 'Fondo' }
 ];
 let currentAvatarTab = 'skin';
 let allAvatarItems = [];
@@ -1119,7 +1081,7 @@ async function loadShopScreen() {
   if (!currentStudent) return;
   document.getElementById('shopStudentName').textContent = currentStudent.nombre;
   document.getElementById('shopStudentPoints').textContent = `${currentStudent.puntos_totales || 0} puntos acumulados`;
-  document.getElementById('avatarPreview').innerHTML = getAvatarSVG(currentStudent.avatar_equipped);
+  document.getElementById('avatarPreview').innerHTML = getAvatarSVG(currentStudent.avatar_equipped, null, currentStudent.id);
   renderAvatarTabs();
   renderAvatarItemsGrid();
 }
@@ -1135,7 +1097,7 @@ function switchAvatarTab(key) { currentAvatarTab = key; renderAvatarTabs(); rend
 
 function getAvatarItemPreview(category, slug) {
   const preview = Object.assign({}, currentStudent.avatar_equipped, { [category]: slug });
-  return `<div class="coin-visual">${getAvatarSVG(preview)}</div>`;
+  return `<div class="coin-visual">${getAvatarSVG(preview, null, currentStudent.id)}</div>`;
 }
 
 function renderAvatarItemsGrid() {

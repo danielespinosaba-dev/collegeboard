@@ -1269,3 +1269,67 @@ INSERT INTO public.avatar_items (slug, category, nombre, costo_puntos, disponibl
 ('fondo_atardecer','background','Atardecer',250,true),
 ('fondo_fuego','background','Aro de fuego',400,true)
 ON CONFLICT (slug) DO NOTHING;
+
+-- =========================================================================
+-- 14. AVATAR CON DICEBEAR (reemplaza el dibujo SVG a mano, que se veía chafa)
+-- =========================================================================
+-- El dibujo a mano alzada en SVG de la sección 13 se veía plano comparado
+-- con un generador de avatares ilustrado de verdad. Se reemplaza por
+-- DiceBear (estilo "adventurer", MIT license, https://www.dicebear.com):
+-- el frontend arma la URL del avatar (https://api.dicebear.com/9.x/adventurer/svg?...)
+-- combinando los parámetros de abajo; es un servicio público gratuito, sin
+-- llave ni cuenta.
+--
+-- Ese estilo es de busto (sin ropa de cuerpo completo), así que cambian
+-- las categorías: ya no hay "top"/"headwear"; se agrega "hairColor" como
+-- categoría independiente y "accessory" (lentes/aretes/rasgos) en su lugar.
+-- Como es solo un catálogo de apariencia (no datos de alumnos), se
+-- reemplaza por completo y se reinicia avatar_equipped/avatar_unlocked de
+-- todos los alumnos a los valores nuevos: el feature se acaba de lanzar,
+-- nadie depende todavía de lo que traía puesto.
+DELETE FROM public.avatar_items;
+
+INSERT INTO public.avatar_items (slug, category, nombre, costo_puntos, disponible) VALUES
+('piel_clara','skin','Piel clara',0,true),
+('piel_media','skin','Piel media',0,true),
+('piel_morena','skin','Piel morena',0,true),
+('piel_oscura','skin','Piel oscura',0,true),
+('corto_a','hair','Corto estilo A',0,true),
+('corto_b','hair','Corto estilo B',50,true),
+('corto_c','hair','Corto estilo C',100,true),
+('corto_d','hair','Corto estilo D',150,true),
+('largo_a','hair','Largo estilo A',100,true),
+('largo_b','hair','Largo estilo B',150,true),
+('largo_c','hair','Largo estilo C',200,true),
+('largo_d','hair','Largo estilo D',250,true),
+('negro','hairColor','Negro',0,true),
+('cafe_oscuro','hairColor','Café oscuro',30,true),
+('cafe','hairColor','Café',30,true),
+('castano','hairColor','Castaño',50,true),
+('rubio','hairColor','Rubio',50,true),
+('rojizo','hairColor','Rojizo',75,true),
+('gris','hairColor','Gris plata',100,true),
+('verde_fantasia','hairColor','Verde fantasía',200,true),
+('azul_fantasia','hairColor','Azul fantasía',200,true),
+('rosa_fantasia','hairColor','Rosa fantasía',200,true),
+('ninguno','accessory','Sin accesorio',0,true),
+('lentes_redondos','accessory','Lentes redondos',100,true),
+('lentes_cuadrados','accessory','Lentes cuadrados',100,true),
+('lentes_sol','accessory','Lentes de sol',150,true),
+('aretes_a','accessory','Aretes estilo A',100,true),
+('aretes_b','accessory','Aretes estilo B',100,true),
+('bigote','accessory','Bigote',150,true),
+('pecas','accessory','Pecas',75,true),
+('fondo_celeste','background','Celeste',0,true),
+('fondo_menta','background','Menta',50,true),
+('fondo_amarillo','background','Amarillo suave',50,true),
+('fondo_lavanda','background','Lavanda',75,true),
+('fondo_atardecer','background','Atardecer',200,true),
+('fondo_espacio','background','Espacio',250,true);
+
+ALTER TABLE public.students ALTER COLUMN avatar_equipped
+  SET DEFAULT '{"skin":"piel_clara","hair":"corto_a","hairColor":"negro","accessory":"ninguno","background":"fondo_celeste"}'::jsonb;
+
+UPDATE public.students SET
+  avatar_equipped = '{"skin":"piel_clara","hair":"corto_a","hairColor":"negro","accessory":"ninguno","background":"fondo_celeste"}'::jsonb,
+  avatar_unlocked = '[]'::jsonb;
