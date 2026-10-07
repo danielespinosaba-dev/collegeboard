@@ -1104,37 +1104,20 @@ WHERE slug IN (
   'marruecos','senegal','holanda','australia','canada','eeuu','oro','diamante'
 );
 
--- 9b. Insertar monedas nuevas, en su propio bloque. Detecta si la tabla
--- real tiene la columna "pais" (NOT NULL en versiones anteriores) y la
--- llena solo si existe, en vez de adivinar y arriesgar otro fallo.
+-- 9b. Insertar monedas nuevas, en su propio bloque. Mismo patrón simple
+-- que ya probamos que funciona (sección "Insertar las playeras básicas"
+-- al inicio del archivo): se incluye "pais" directamente y, si la columna
+-- no existiera, el EXCEPTION lo atrapa sin tumbar el resto del script.
 DO $$
-DECLARE
-  has_pais boolean;
 BEGIN
-  SELECT EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'shop_items' AND column_name = 'pais'
-  ) INTO has_pais;
-
-  IF has_pais THEN
-    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
-    ('ajolote', 'Ajolote', 0, true, 'México'),
-    ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
-    ('quetzal', 'Quetzal', 150, true, 'México'),
-    ('jaguar', 'Jaguar', 300, true, 'México'),
-    ('guacamaya', 'Guacamaya', 450, true, 'México'),
-    ('aguila_real', 'Águila Real', 600, true, 'México')
-    ON CONFLICT (slug) DO UPDATE SET disponible = true;
-  ELSE
-    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
-    ('ajolote', 'Ajolote', 0, true),
-    ('mariposa', 'Mariposa Monarca', 50, true),
-    ('quetzal', 'Quetzal', 150, true),
-    ('jaguar', 'Jaguar', 300, true),
-    ('guacamaya', 'Guacamaya', 450, true),
-    ('aguila_real', 'Águila Real', 600, true)
-    ON CONFLICT (slug) DO UPDATE SET disponible = true;
-  END IF;
+  INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
+  ('ajolote', 'Ajolote', 0, true, 'México'),
+  ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
+  ('quetzal', 'Quetzal', 150, true, 'México'),
+  ('jaguar', 'Jaguar', 300, true, 'México'),
+  ('guacamaya', 'Guacamaya', 450, true, 'México'),
+  ('aguila_real', 'Águila Real', 600, true, 'México')
+  ON CONFLICT (slug) DO UPDATE SET disponible = true;
 EXCEPTION WHEN OTHERS THEN
   RAISE NOTICE 'Se omitió el insert de monedas (tabla real con otra columna adicional): %', SQLERRM;
 END $$;
@@ -1195,46 +1178,24 @@ ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;
 -- (no se borran, mismo criterio no destructivo de siempre). Los 4 slugs
 -- que sí continúan (ajolote, mariposa, quetzal, jaguar) solo actualizan
 -- nombre/costo; los 6 nuevos (puma, tiburon_ballena, tortuga, venado,
--- mapache, morpho) se insertan. Reutiliza la misma detección de la
--- columna "pais" que el bloque anterior.
+-- mapache, morpho) se insertan. Mismo patrón simple con "pais" fijo que
+-- ya probamos que funciona (sin DECLARE/variable dinámica).
 UPDATE public.shop_items SET disponible = false WHERE slug IN ('guacamaya', 'aguila_real');
 
 DO $$
-DECLARE
-  has_pais boolean;
 BEGIN
-  SELECT EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'shop_items' AND column_name = 'pais'
-  ) INTO has_pais;
-
-  IF has_pais THEN
-    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
-    ('ajolote', 'Ajolote', 0, true, 'México'),
-    ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
-    ('mapache', 'Mapache', 100, true, 'México'),
-    ('venado', 'Venado Cola Blanca', 150, true, 'México'),
-    ('tortuga', 'Tortuga Marina', 200, true, 'México'),
-    ('puma', 'Puma', 250, true, 'México'),
-    ('quetzal', 'Quetzal', 300, true, 'México'),
-    ('tiburon_ballena', 'Tiburón Ballena', 400, true, 'México'),
-    ('jaguar', 'Jaguar', 500, true, 'México'),
-    ('morpho', 'Mariposa Morpho Azul', 600, true, 'México')
-    ON CONFLICT (slug) DO UPDATE SET disponible = true, nombre = excluded.nombre, costo_puntos = excluded.costo_puntos;
-  ELSE
-    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
-    ('ajolote', 'Ajolote', 0, true),
-    ('mariposa', 'Mariposa Monarca', 50, true),
-    ('mapache', 'Mapache', 100, true),
-    ('venado', 'Venado Cola Blanca', 150, true),
-    ('tortuga', 'Tortuga Marina', 200, true),
-    ('puma', 'Puma', 250, true),
-    ('quetzal', 'Quetzal', 300, true),
-    ('tiburon_ballena', 'Tiburón Ballena', 400, true),
-    ('jaguar', 'Jaguar', 500, true),
-    ('morpho', 'Mariposa Morpho Azul', 600, true)
-    ON CONFLICT (slug) DO UPDATE SET disponible = true, nombre = excluded.nombre, costo_puntos = excluded.costo_puntos;
-  END IF;
+  INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
+  ('ajolote', 'Ajolote', 0, true, 'México'),
+  ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
+  ('mapache', 'Mapache', 100, true, 'México'),
+  ('venado', 'Venado Cola Blanca', 150, true, 'México'),
+  ('tortuga', 'Tortuga Marina', 200, true, 'México'),
+  ('puma', 'Puma', 250, true, 'México'),
+  ('quetzal', 'Quetzal', 300, true, 'México'),
+  ('tiburon_ballena', 'Tiburón Ballena', 400, true, 'México'),
+  ('jaguar', 'Jaguar', 500, true, 'México'),
+  ('morpho', 'Mariposa Morpho Azul', 600, true, 'México')
+  ON CONFLICT (slug) DO UPDATE SET disponible = true, nombre = excluded.nombre, costo_puntos = excluded.costo_puntos;
 EXCEPTION WHEN OTHERS THEN
   RAISE NOTICE 'Se omitió el insert del roster final de monedas: %', SQLERRM;
 END $$;
