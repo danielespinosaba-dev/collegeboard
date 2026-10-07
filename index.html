@@ -268,6 +268,11 @@
             <button class="btn btn-secondary btn-sm" onclick="showView('banco')">+ Crear examen →</button>
           </div>
           <div id="groupExamsList"></div>
+          <div class="flex-between mb-16" style="margin-top:28px;">
+            <div style="font-size:15px;font-weight:600;">Alumnos del grupo</div>
+            <button class="btn btn-secondary btn-sm" onclick="openAddStudentModal()">+ Agregar alumno</button>
+          </div>
+          <div id="groupStudentsList"></div>
         </div>
  
         <!-- PRUEBAS ESTANDARIZADAS -->
@@ -391,6 +396,29 @@
   </div>
 </div>
  
+<!-- MODAL: Agregar alumno -->
+<div class="modal-overlay" id="modalAddStudent">
+  <div class="modal">
+    <div class="modal-title">Agregar alumno</div>
+    <div class="field"><label>Nombre completo</label><input type="text" id="newStudentNombre" placeholder="Ej. Ana Pérez"></div>
+    <div class="field"><label>Correo electrónico</label><input type="email" id="newStudentEmail" placeholder="correo@escuela.edu.mx"></div>
+    <div class="field"><label>Contraseña</label><input type="text" id="newStudentPassword" placeholder="Fácil de recordar para el alumno"></div>
+    <div class="field"><label>Grado</label>
+      <select id="newStudentGrado">
+        <option value="">Selecciona...</option>
+        <option value="1">1°</option><option value="2">2°</option><option value="3">3°</option>
+        <option value="4">4°</option><option value="5">5°</option><option value="6">6°</option>
+        <option value="7">7°</option><option value="8">8°</option><option value="9">9°</option>
+        <option value="10">10°</option><option value="11">11°</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalAddStudent')">Cancelar</button>
+      <button class="btn btn-primary" onclick="addStudentToGroup()">Agregar alumno</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: Crear examen -->
 <div class="modal-overlay" id="modalCreateExam">
   <div class="modal">
@@ -598,6 +626,7 @@ function openGroupDetail(groupId, groupName, groupCode) {
     <div><div class="group-header-name">${groupName}</div><div class="group-header-code">${groupCode}</div></div>
     <button class="btn btn-danger btn-sm" onclick="deleteGroup('${groupId}')">Eliminar grupo</button>`;
   loadGroupExams(groupId);
+  loadGroupStudents(groupId);
 }
 function backToGroups() { currentGroupId = null; showView('grupos'); loadGroups(); }
  
@@ -645,7 +674,57 @@ async function deleteGroup(id) {
   if (error) return toast('Error al eliminar: ' + error.message);
   toast('Grupo eliminado'); backToGroups();
 }
- 
+
+// ── ALUMNOS DEL GRUPO (registro hecho por la maestra, con usuario/contraseña) ──
+async function loadGroupStudents(groupId) {
+  const el = document.getElementById('groupStudentsList');
+  el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  const { data } = await sb.from('students').select('id, nombre, email, grado, puntos_totales').eq('group_id', groupId).order('nombre');
+  const list = data || [];
+  el.innerHTML = list.length
+    ? `<div class="grid-2">${list.map(s => `
+      <div class="group-card" style="cursor:default;">
+        <div class="group-name">${s.nombre}</div>
+        <div class="group-code" style="font-size:12px;letter-spacing:0;text-transform:none;">${s.email} · ${s.grado || '?'}°</div>
+        <div class="group-stats">
+          <div class="group-stat"><span>${s.puntos_totales || 0}</span> pts</div>
+        </div>
+        <button class="btn btn-outline btn-sm" style="margin-top:10px;width:100%;" onclick="resetStudentPassword('${s.id}','${s.nombre.replace(/'/g, "\\'")}')">🔑 Restablecer contraseña</button>
+      </div>`).join('')}</div>`
+    : `<div class="empty"><div class="empty-icon">🧑‍🎓</div><div class="empty-title">Sin alumnos registrados</div><div class="empty-text">Agrégalos para que entren con su usuario y contraseña</div></div>`;
+}
+
+function openAddStudentModal() { openModal('modalAddStudent'); }
+
+async function addStudentToGroup() {
+  const nombre = document.getElementById('newStudentNombre').value.trim();
+  const email = document.getElementById('newStudentEmail').value.trim();
+  const password = document.getElementById('newStudentPassword').value;
+  const grado = document.getElementById('newStudentGrado').value;
+  if (!nombre || !email || !password || !grado) return toast('Completa todos los campos');
+  if (password.length < 4) return toast('La contraseña debe tener al menos 4 caracteres');
+  const { error } = await sb.from('students').insert({
+    nombre, email, password_hash: btoa(password), grado, group_id: currentGroupId, puntos_totales: 0
+  });
+  if (error) return toast(error.code === '23505' ? 'Ese correo ya está registrado' : 'Error: ' + error.message);
+  closeModal('modalAddStudent');
+  document.getElementById('newStudentNombre').value = '';
+  document.getElementById('newStudentEmail').value = '';
+  document.getElementById('newStudentPassword').value = '';
+  document.getElementById('newStudentGrado').value = '';
+  toast('Alumno agregado ✅');
+  loadGroupStudents(currentGroupId);
+}
+
+async function resetStudentPassword(id, nombre) {
+  const nueva = prompt(`Nueva contraseña para ${nombre}:`);
+  if (!nueva) return;
+  if (nueva.length < 4) return toast('Mínimo 4 caracteres');
+  const { error } = await sb.from('students').update({ password_hash: btoa(nueva) }).eq('id', id);
+  if (error) return toast('Error: ' + error.message);
+  toast('Contraseña actualizada ✅');
+}
+
 // ── GROUP EXAMS ──────────────────────────────────────────────────
 async function loadGroupExams(groupId) {
   const el = document.getElementById('groupExamsList');

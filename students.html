@@ -208,8 +208,8 @@ body.text-large .q-number-label { font-size: 14px; }
         <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
           ¿Primera vez? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Crear cuenta</a>
         </div>
-        <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--cb-gray-3);">
-          ¿Primaria baja o no recuerdas tu contraseña? <a onclick="toggleGuestForm()" style="color:var(--cb-blue);cursor:pointer;">Solo escribe tu nombre</a>
+        <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--cb-gray-3);">
+          Primaria baja: pide tu usuario y contraseña a tu maestra.
         </div>
       </div>
       <div id="registerForm" style="display:none;">
@@ -234,16 +234,6 @@ body.text-large .q-number-label { font-size: 14px; }
           ¿Ya tienes cuenta? <a onclick="toggleLoginRegister()" style="color:var(--cb-blue);cursor:pointer;">Iniciar sesión</a>
         </div>
       </div>
-      <div id="guestForm" style="display:none;">
-        <div class="field">
-          <label>Nombre completo</label>
-          <input type="text" id="guestNombre" placeholder="Ej. Ana Pérez" onkeyup="if(event.key==='Enter') continuarComoInvitado()">
-        </div>
-        <button class="cb-btn" onclick="continuarComoInvitado()">Continuar</button>
-        <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--cb-gray-3);">
-          No se guardan puntos ni tienda en este modo. <a onclick="backToLoginFromGuest()" style="color:var(--cb-blue);cursor:pointer;">Volver a iniciar sesión</a>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -264,7 +254,7 @@ body.text-large .q-number-label { font-size: 14px; }
       </div>
       <button class="cb-btn" onclick="goToWaiting()" id="btnSearchExam">Buscar examen</button>
       <button class="cb-btn-outline" onclick="openChallengeSetup()">⚔ Retar a un compañero</button>
-      <button class="cb-btn-outline" onclick="goToShop()" id="btnShopLink">Ver mis monedas y tienda</button>
+      <button class="cb-btn-outline" onclick="goToShop()" id="btnShopLink">🎨 Mi avatar</button>
       <button class="cb-btn-outline" onclick="openGroupOrLeaderboard()" id="btnGroupLink">👥 Unirme a mi grupo</button>
     </div>
   </div>
@@ -437,11 +427,9 @@ body.text-large .q-number-label { font-size: 14px; }
       <div id="bannerCoin" class="coin-pop" style="width:64px;height:64px;flex-shrink:0;"></div>
     </div>
     <div class="shop-section" id="resultShopSection">
-      <div class="shop-header">
-        Tienda de Monedas
-        <span id="shopPoints" style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.6);"></span>
-      </div>
-      <div class="shop-grid" id="shopGrid"></div>
+      <div class="shop-header">Mi insignia</div>
+      <div id="insigniaBanner"></div>
+      <div style="padding:0 20px 16px;"><button class="cb-btn-outline" onclick="goToShop()">🎨 Personalizar mi avatar</button></div>
     </div>
     <div class="review-section">
       <div class="review-section-header">Revisión de respuestas</div>
@@ -454,22 +442,18 @@ body.text-large .q-number-label { font-size: 14px; }
 </div>
 
 <div class="screen" id="screenShop">
-  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
-    <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;margin-bottom:0;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--cb-gold);margin-bottom:4px;">Mi perfil</div>
-      <div style="font-size:20px;font-weight:700;" id="shopStudentName">Alumno</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:2px;" id="shopStudentPoints">0 puntos acumulados</div>
-    </div>
-    <div style="background:var(--cb-gold);padding:16px 28px;display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-      <div id="shopActiveCoin" class="coin-spin" style="width:64px;height:64px;flex-shrink:0;"></div>
+  <div style="max-width:640px;margin:0 auto;padding:40px 24px;">
+    <div style="background:var(--cb-navy);color:#fff;padding:24px 28px;display:flex;align-items:center;gap:20px;">
+      <div style="width:110px;height:110px;flex-shrink:0;" id="avatarPreview"></div>
       <div>
-        <div style="font-size:13px;font-weight:600;color:var(--cb-navy);text-transform:uppercase;letter-spacing:0.06em;">Moneda activa</div>
-        <div style="font-size:12px;color:var(--cb-navy);" id="shopActiveCoinName">Ajolote</div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--cb-gold);margin-bottom:4px;">Mi avatar</div>
+        <div style="font-size:20px;font-weight:700;" id="shopStudentName">Alumno</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:2px;" id="shopStudentPoints">0 puntos acumulados</div>
       </div>
     </div>
-    <div class="shop-section">
-      <div class="shop-header">Tienda de Monedas</div>
-      <div class="shop-grid" id="shopGridFull"></div>
+    <div style="display:flex;" id="avatarTabs"></div>
+    <div class="shop-section" style="border-top:none;margin-bottom:24px;">
+      <div class="shop-grid" id="avatarItemsGrid"></div>
     </div>
     <button class="cb-btn" onclick="goToEntry()">← Volver al examen</button>
   </div>
@@ -496,7 +480,6 @@ let waitInterval = null;
 let startTime = null;
 let elapsedSeconds = 0;
 let secondsRemaining = 600;
-let allShopItems = [];
 let examSubmitted = false;
 let isChallengeMode = false;
 let currentChallenge = null;
@@ -511,6 +494,139 @@ const coinSlugs = ['ajolote', 'mariposa', 'mapache', 'venado', 'tortuga', 'puma'
 function getCoinSVG(slug) {
   const safeSlug = coinSlugs.includes(slug) ? slug : 'ajolote';
   return `<div class="coin-visual"><img src="coin-icons/${safeSlug}.png" alt="" onerror="this.remove(); this.parentElement.classList.add('coin-missing');"></div>`;
+}
+
+// ── INSIGNIAS (niveles automáticos, ya no se compran) ──────────────
+// Reutiliza el roster de 10 monedas-animal como niveles de logro: se
+// desbloquean solas al llegar al puntaje umbral, como un certificado.
+const insigniaLevels = [
+  { slug: 'ajolote', nombre: 'Ajolote', umbral: 0 },
+  { slug: 'mariposa', nombre: 'Mariposa Monarca', umbral: 50 },
+  { slug: 'mapache', nombre: 'Mapache', umbral: 100 },
+  { slug: 'venado', nombre: 'Venado Cola Blanca', umbral: 150 },
+  { slug: 'tortuga', nombre: 'Tortuga Marina', umbral: 200 },
+  { slug: 'puma', nombre: 'Puma', umbral: 250 },
+  { slug: 'quetzal', nombre: 'Quetzal', umbral: 300 },
+  { slug: 'tiburon_ballena', nombre: 'Tiburón Ballena', umbral: 400 },
+  { slug: 'jaguar', nombre: 'Jaguar', umbral: 500 },
+  { slug: 'morpho', nombre: 'Mariposa Morpho Azul', umbral: 600 }
+];
+
+function getInsigniaInfo(pts) {
+  let idx = 0;
+  for (let i = 0; i < insigniaLevels.length; i++) { if (pts >= insigniaLevels[i].umbral) idx = i; }
+  return { current: insigniaLevels[idx], next: insigniaLevels[idx + 1] || null, level: idx + 1, total: insigniaLevels.length };
+}
+
+function renderInsigniaBanner(pts) {
+  const info = getInsigniaInfo(pts);
+  const faltan = info.next ? info.next.umbral - pts : 0;
+  return `<div style="display:flex;align-items:center;gap:16px;padding:16px 20px;">
+    <div style="width:64px;height:64px;flex-shrink:0;">${getCoinSVG(info.current.slug)}</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--cb-navy);text-transform:uppercase;letter-spacing:0.06em;">Nivel ${info.level} de ${info.total}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--cb-navy);">${info.current.nombre}</div>
+      <div style="font-size:12px;color:var(--cb-gray-3);">${info.next ? `Te faltan ${faltan} pts para "${info.next.nombre}"` : '¡Nivel máximo alcanzado!'}</div>
+    </div>
+  </div>`;
+}
+
+// ── AVATAR PERSONALIZABLE (SVG por capas) ──────────────────────────
+const DEFAULT_AVATAR = { skin: 'piel_clara', hair: 'pelo_corto_negro', top: 'playera_azul', headwear: 'ninguno', background: 'fondo_azul' };
+
+const HAIR_STYLE_PATHS = {
+  corto: 'M58,70 Q58,28 100,26 Q142,28 142,70 Q142,48 100,43 Q58,48 58,70 Z',
+  largo: 'M55,78 Q48,26 100,22 Q152,26 145,78 L150,145 L132,145 L130,82 Q130,56 100,52 Q70,56 70,82 L68,145 L50,145 Z',
+  chino: 'M56,74 Q46,58 55,42 Q52,28 68,24 Q78,13 100,16 Q122,13 132,24 Q148,28 145,42 Q154,58 144,74 Q150,50 120,46 Q132,34 108,29 Q100,38 92,29 Q68,34 80,46 Q50,50 56,74 Z',
+  moño: 'M60,68 Q58,28 100,26 Q142,28 140,68 Q142,46 100,42 Q58,46 60,68 Z M86,12 a14,14 0 1,0 0.1,0 Z'
+};
+const HAIR_COLORS = { negro: '#1c1c1c', cafe: '#6b4423', rubio: '#e8c56b' };
+
+const AVATAR_PARTS = {
+  skin: {
+    piel_clara: { color: '#ffd9b3' }, piel_media: { color: '#e8b084' },
+    piel_morena: { color: '#b87f52' }, piel_oscura: { color: '#7a4f32' }
+  },
+  hair: {
+    pelo_corto_negro: { style: 'corto', color: HAIR_COLORS.negro },
+    pelo_corto_cafe: { style: 'corto', color: HAIR_COLORS.cafe },
+    pelo_largo_negro: { style: 'largo', color: HAIR_COLORS.negro },
+    pelo_largo_rubio: { style: 'largo', color: HAIR_COLORS.rubio },
+    pelo_chino_cafe: { style: 'chino', color: HAIR_COLORS.cafe },
+    'pelo_moño': { style: 'moño', color: HAIR_COLORS.negro }
+  },
+  top: {
+    playera_azul: { color: '#2f6fb0', pattern: 'none' },
+    playera_roja: { color: '#c0392b', pattern: 'none' },
+    playera_verde: { color: '#2e8b57', pattern: 'none' },
+    playera_amarilla: { color: '#e8b800', pattern: 'none' },
+    playera_rayas: { color: '#2f6fb0', pattern: 'rayas' },
+    playera_estrellas: { color: '#2c2c54', pattern: 'estrellas' }
+  },
+  headwear: {
+    ninguno: { style: 'ninguno' },
+    gorra_roja: { style: 'gorra', color: '#c0392b' },
+    gorra_azul: { style: 'gorra', color: '#2f6fb0' },
+    casco_futbol: { style: 'casco', color: '#444444' },
+    corona: { style: 'corona', color: '#f5c518' },
+    flores: { style: 'flores', color: '#e75480' }
+  },
+  background: { fondo_azul: {}, fondo_bosque: {}, fondo_espacio: {}, fondo_playa: {}, fondo_atardecer: {}, fondo_fuego: {} }
+};
+
+function getBackgroundSVG(slug) {
+  switch (slug) {
+    case 'fondo_bosque':
+      return `<rect width="200" height="200" fill="#bfe3c0"/><rect y="150" width="200" height="50" fill="#3c7a44"/><polygon points="38,150 55,95 72,150" fill="#2e5e36"/><polygon points="150,150 170,82 190,150" fill="#2e5e36"/><polygon points="95,150 115,78 135,150" fill="#356b3d"/>`;
+    case 'fondo_espacio':
+      return `<rect width="200" height="200" fill="#0b1437"/><circle cx="28" cy="38" r="2" fill="#fff"/><circle cx="165" cy="28" r="2" fill="#fff"/><circle cx="172" cy="112" r="1.5" fill="#fff"/><circle cx="35" cy="160" r="1.5" fill="#fff"/><circle cx="105" cy="18" r="1.5" fill="#fff"/><circle cx="150" cy="170" r="14" fill="#cfd8e3"/>`;
+    case 'fondo_playa':
+      return `<rect width="200" height="135" fill="#8fd6e8"/><rect y="135" width="200" height="65" fill="#f2d8a0"/><circle cx="158" cy="38" r="20" fill="#ffd93d"/>`;
+    case 'fondo_atardecer':
+      return `<rect width="200" height="200" fill="url(#gradAtardecer)"/><circle cx="100" cy="135" r="35" fill="#ff8a3d"/>`;
+    case 'fondo_fuego':
+      return `<circle cx="100" cy="100" r="95" fill="#1a0a05"/><circle cx="100" cy="100" r="85" fill="none" stroke="url(#gradFuego)" stroke-width="18"/>`;
+    default:
+      return `<rect width="200" height="200" fill="#bfe0f5"/>`;
+  }
+}
+
+function getAvatarSVG(equipped, size) {
+  const eq = Object.assign({}, DEFAULT_AVATAR, equipped || {});
+  const skin = AVATAR_PARTS.skin[eq.skin] || AVATAR_PARTS.skin.piel_clara;
+  const hair = AVATAR_PARTS.hair[eq.hair] || AVATAR_PARTS.hair.pelo_corto_negro;
+  const top = AVATAR_PARTS.top[eq.top] || AVATAR_PARTS.top.playera_azul;
+  const headwear = AVATAR_PARTS.headwear[eq.headwear] || AVATAR_PARTS.headwear.ninguno;
+  const hairPath = HAIR_STYLE_PATHS[hair.style] || '';
+  const topPattern = top.pattern === 'rayas'
+    ? `<rect x="52" y="155" width="96" height="9" fill="rgba(255,255,255,0.45)"/><rect x="52" y="174" width="96" height="9" fill="rgba(255,255,255,0.45)"/>`
+    : top.pattern === 'estrellas'
+    ? `<text x="72" y="168" font-size="15" fill="#f5c518">★</text><text x="105" y="183" font-size="11" fill="#f5c518">★</text><text x="120" y="162" font-size="10" fill="#f5c518">★</text>`
+    : '';
+  let headwearSvg = '';
+  if (headwear.style === 'gorra') headwearSvg = `<path d="M55,55 Q100,8 145,55 L150,66 Q100,44 50,66 Z" fill="${headwear.color}"/><ellipse cx="100" cy="60" rx="52" ry="8" fill="${headwear.color}"/>`;
+  else if (headwear.style === 'casco') headwearSvg = `<path d="M50,66 Q50,8 100,6 Q150,8 150,66 L150,76 L50,76 Z" fill="${headwear.color}"/><rect x="58" y="69" width="84" height="10" fill="#bbbbbb"/>`;
+  else if (headwear.style === 'corona') headwearSvg = `<polygon points="58,56 70,28 86,50 100,22 114,50 130,28 142,56" fill="${headwear.color}" stroke="#a9820a" stroke-width="2"/>`;
+  else if (headwear.style === 'flores') headwearSvg = `<circle cx="60" cy="50" r="7" fill="${headwear.color}"/><circle cx="80" cy="38" r="7" fill="#f5c518"/><circle cx="100" cy="33" r="7" fill="${headwear.color}"/><circle cx="120" cy="38" r="7" fill="#f5c518"/><circle cx="140" cy="50" r="7" fill="${headwear.color}"/>`;
+  return `<svg viewBox="0 0 200 200" width="${size || '100%'}" height="${size || '100%'}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gradAtardecer" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffb67a"/><stop offset="100%" stop-color="#8e4b8f"/></linearGradient>
+      <linearGradient id="gradFuego" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff5b1f"/><stop offset="100%" stop-color="#ffcf4a"/></linearGradient>
+      <clipPath id="avatarClip"><circle cx="100" cy="100" r="95"/></clipPath>
+    </defs>
+    <g clip-path="url(#avatarClip)">
+      ${getBackgroundSVG(eq.background)}
+      <path d="M38,200 Q38,138 100,138 Q162,138 162,200 Z" fill="${top.color}"/>
+      ${topPattern}
+      <ellipse cx="100" cy="88" rx="42" ry="46" fill="${skin.color}"/>
+      <circle cx="78" cy="88" r="4" fill="#222222"/>
+      <circle cx="122" cy="88" r="4" fill="#222222"/>
+      <path d="M85,104 Q100,112 115,104" stroke="#8a4b32" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="${hairPath}" fill="${hair.color || '#1c1c1c'}"/>
+      ${headwearSvg}
+    </g>
+    <circle cx="100" cy="100" r="95" fill="none" stroke="#f5a800" stroke-width="8"/>
+  </svg>`;
 }
 
 function clearAllTimers() {
@@ -543,12 +659,11 @@ function afterLoginGoToCodeIfNeeded() {
 }
 
 function updateShopLinkVisibility() {
-  document.getElementById('btnShopLink').style.display = currentStudent?.isGuest ? 'none' : 'block';
+  document.getElementById('btnShopLink').style.display = 'block';
 }
 
 function updateGroupButtonVisibility() {
   const btn = document.getElementById('btnGroupLink');
-  if (currentStudent?.isGuest) { btn.style.display = 'none'; return; }
   btn.style.display = 'block';
   btn.textContent = currentStudent?.group_id ? '🏆 Top 5 de mi grupo' : '👥 Unirme a mi grupo';
 }
@@ -592,33 +707,8 @@ async function loadLeaderboard() {
 function toggleLoginRegister() {
   const lf = document.getElementById('loginForm');
   const rf = document.getElementById('registerForm');
-  document.getElementById('guestForm').style.display = 'none';
   lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
   rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
-}
-
-function toggleGuestForm() {
-  document.getElementById('loginForm').style.display = 'none';
-  document.getElementById('registerForm').style.display = 'none';
-  document.getElementById('guestForm').style.display = 'block';
-}
-
-function backToLoginFromGuest() {
-  document.getElementById('guestForm').style.display = 'none';
-  document.getElementById('loginForm').style.display = 'block';
-}
-
-function continuarComoInvitado() {
-  const nombre = document.getElementById('guestNombre').value.trim();
-  if (!nombre) return alert('Escribe tu nombre');
-  currentStudent = { id: null, nombre, isGuest: true, puntos_totales: 0, playera_activa: 'ajolote' };
-  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + nombre;
-  document.getElementById('headerAvatar').style.display = 'none';
-  updateShopLinkVisibility();
-    updateGroupButtonVisibility();
-  showScreen('screenEntry');
-  afterLoginGoToCodeIfNeeded();
 }
 
 async function doLoginAlumno() {
@@ -652,8 +742,7 @@ async function doRegisterAlumno() {
   }
   const { data, error } = await sb.from('students').insert({
     nombre, email, password_hash: btoa(password),
-    grado: '6', puntos_totales: 0, group_id: groupId,
-    playera_activa: 'ajolote', playeras_desbloqueadas: ['ajolote']
+    grado: '6', puntos_totales: 0, group_id: groupId
   }).select().single();
   if (error) return alert(error.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + error.message);
   currentStudent = data;
@@ -677,7 +766,7 @@ function updateHeaderAvatar() {
   if (!currentStudent) return;
   const el = document.getElementById('headerAvatar');
   el.style.display = 'flex';
-  el.innerHTML = `<div style="width:32px;height:32px;">${getCoinSVG(currentStudent.playera_activa)}</div>`;
+  el.innerHTML = `<div style="width:32px;height:32px;">${getAvatarSVG(currentStudent.avatar_equipped)}</div>`;
 }
 
 function showScreen(id) {
@@ -712,11 +801,9 @@ async function goToWaiting() {
   if (error || !data) return alert('Código no encontrado. Verifica con tu docente.');
   if (data.status === 'closed') return alert('Este examen ya está cerrado.');
 
-  if (!currentStudent.isGuest) {
-    const { data: yaContesto } = await sb.from('responses')
-      .select('id').eq('exam_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
-    if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
-  }
+  const { data: yaContesto } = await sb.from('responses')
+    .select('id').eq('exam_id', data.id).eq('student_id', currentStudent.id).maybeSingle();
+  if (yaContesto) return alert('Ya contestaste este examen. Solo se puede realizar una vez.');
 
   currentExam = data;
   document.getElementById('waitStudentName').textContent = currentStudent.nombre;
@@ -807,7 +894,7 @@ async function generarReto() {
   const code = genChallengeCode(6);
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
   const { data: challenge, error } = await sb.from('student_challenges').insert({
-    code, creator_student_id: currentStudent.isGuest ? null : currentStudent.id,
+    code, creator_student_id: currentStudent.id,
     creator_name: currentStudent.nombre, grade_level: grade,
     question_ids: picked, expires_at: expiresAt
   }).select().single();
@@ -840,11 +927,9 @@ async function joinChallenge(code) {
     alert('Este reto ya caducó (duraba 15 minutos). Pide a tu compañero que genere uno nuevo.');
     return goToEntry();
   }
-  if (!currentStudent.isGuest) {
-    const { data: yaContesto } = await sb.from('challenge_results')
-      .select('id').eq('challenge_id', challenge.id).eq('student_id', currentStudent.id).maybeSingle();
-    if (yaContesto) { alert('Ya contestaste este reto. Solo se puede una vez.'); return goToEntry(); }
-  }
+  const { data: yaContesto } = await sb.from('challenge_results')
+    .select('id').eq('challenge_id', challenge.id).eq('student_id', currentStudent.id).maybeSingle();
+  if (yaContesto) { alert('Ya contestaste este reto. Solo se puede una vez.'); return goToEntry(); }
   startChallengeExam(challenge);
 }
 
@@ -958,27 +1043,23 @@ async function submitExam(timeUp) {
   if (isChallengeMode) {
     await sb.from('challenge_results').insert({
       challenge_id: currentChallenge.id,
-      student_id: currentStudent.isGuest ? null : currentStudent.id,
+      student_id: currentStudent.id,
       student_name: currentStudent.nombre,
       score, total_questions: total, elapsed_seconds: elapsedSeconds
     });
     return showChallengeResults(score, calificacion);
   }
 
-  const puntosGanados = currentStudent.isGuest ? 0 : Math.round(calificacion / 10);
+  const puntosGanados = Math.round(calificacion / 10);
   await sb.from('responses').insert({
     exam_id: currentExam.id,
-    student_id: currentStudent.isGuest ? null : currentStudent.id,
-    student_name: currentStudent.isGuest ? currentStudent.nombre : null,
+    student_id: currentStudent.id,
     answers: userAnswers, score, total_questions: total, elapsed_seconds: elapsedSeconds
   });
-  let newTotal = currentStudent.puntos_totales || 0;
-  if (!currentStudent.isGuest) {
-    newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
-    await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
-    currentStudent.puntos_totales = newTotal;
-    localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  }
+  const newTotal = (currentStudent.puntos_totales || 0) + puntosGanados;
+  await sb.from('students').update({ puntos_totales: newTotal }).eq('id', currentStudent.id);
+  currentStudent.puntos_totales = newTotal;
+  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
   showResults(score, calificacion, puntosGanados, newTotal);
 }
 
@@ -994,17 +1075,12 @@ async function showResults(score, calificacion, puntosGanados, totalPuntos) {
     <div class="result-stat"><div class="result-stat-value">${score}</div><div class="result-stat-label">Correctas</div></div>
     <div class="result-stat"><div class="result-stat-value">${wrong < 0 ? 0 : wrong}</div><div class="result-stat-label">Incorrectas</div></div>
     <div class="result-stat"><div class="result-stat-value">${mins}:${secs}</div><div class="result-stat-label">Tiempo</div></div>`;
-  if (currentStudent.isGuest) {
-    document.getElementById('pointsBanner').style.display = 'none';
-    document.getElementById('resultShopSection').style.display = 'none';
-  } else {
-    document.getElementById('pointsBanner').style.display = 'flex';
-    document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
-    document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
-    document.getElementById('bannerCoin').innerHTML = `<div style="width:64px;height:64px;">${getCoinSVG(currentStudent.playera_activa)}</div>`;
-    document.getElementById('resultShopSection').style.display = 'block';
-    await loadShopInResults();
-  }
+  document.getElementById('pointsBanner').style.display = 'flex';
+  document.getElementById('pointsEarned').textContent = `+${puntosGanados} pts`;
+  document.getElementById('pointsTotal').textContent = `Total acumulado: ${totalPuntos} pts`;
+  document.getElementById('bannerCoin').innerHTML = `<div style="width:64px;height:64px;">${getCoinSVG(getInsigniaInfo(totalPuntos).current.slug)}</div>`;
+  document.getElementById('resultShopSection').style.display = 'block';
+  document.getElementById('insigniaBanner').innerHTML = renderInsigniaBanner(totalPuntos);
   const letters = ['A', 'B', 'C', 'D'];
   const getOpt = (q, l) => [q.option_a, q.option_b, q.option_c, q.option_d][letters.indexOf(l)] || '—';
   document.getElementById('reviewList').innerHTML = currentQuestions.map((q, i) => {
@@ -1025,95 +1101,83 @@ async function showResults(score, calificacion, puntosGanados, totalPuntos) {
   showScreen('screenResult');
 }
 
-async function loadShopItems() {
-  if (allShopItems.length > 0) return;
-  const { data } = await sb.from('shop_items').select('*').eq('disponible', true).order('costo_puntos');
-  allShopItems = data || [];
-}
+const AVATAR_CATEGORIES = [
+  { key: 'skin', label: 'Piel' }, { key: 'hair', label: 'Cabello' }, { key: 'top', label: 'Playera' },
+  { key: 'headwear', label: 'Gorra' }, { key: 'background', label: 'Fondo' }
+];
+let currentAvatarTab = 'skin';
+let allAvatarItems = [];
 
-function renderCoinCard(item, isOwned, isActive, pts, context) {
-  const canBuy = !isOwned && pts >= item.costo_puntos;
-  const fn = context === 'results' ? (isOwned ? `equipCoin` : `buyCoin`) : (isOwned ? `equipCoinShop` : `buyCoinShop`);
-  const onclickAttr = isOwned ? `onclick="${fn}('${item.slug}')"` : canBuy ? `onclick="${fn}('${item.slug}', ${item.costo_puntos})"` : '';
-  return `<div class="coin-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-coin' : ''}" ${onclickAttr}>
-    ${isActive ? '<span class="coin-active-badge">ACTIVA</span>' : ''}
-    ${isOwned && !isActive ? '<span class="coin-owned-badge">✓</span>' : ''}
-    <div class="coin-svg-wrap ${isActive ? 'coin-spin' : ''}">${getCoinSVG(item.slug)}</div>
-    <div class="coin-name">${item.nombre}</div>
-    <div class="coin-cost">${isOwned ? (isActive ? 'Equipada' : 'Equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
-  </div>`;
-}
-
-async function loadShopInResults() {
-  await loadShopItems();
-  const owned = currentStudent.playeras_desbloqueadas || ['ajolote'];
-  const pts = currentStudent.puntos_totales || 0;
-  document.getElementById('shopPoints').textContent = `${pts} pts disponibles`;
-  document.getElementById('shopGrid').innerHTML = allShopItems.map(item =>
-    renderCoinCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'results')).join('');
+async function loadAvatarItems() {
+  if (allAvatarItems.length > 0) return;
+  const { data } = await sb.from('avatar_items').select('*').eq('disponible', true).order('costo_puntos');
+  allAvatarItems = data || [];
 }
 
 async function loadShopScreen() {
-  await loadShopItems();
+  await loadAvatarItems();
   if (!currentStudent) return;
-  const owned = currentStudent.playeras_desbloqueadas || ['ajolote'];
-  const pts = currentStudent.puntos_totales || 0;
   document.getElementById('shopStudentName').textContent = currentStudent.nombre;
-  document.getElementById('shopStudentPoints').textContent = `${pts} puntos acumulados`;
-  document.getElementById('shopActiveCoin').innerHTML = `<div style="width:64px;height:64px;">${getCoinSVG(currentStudent.playera_activa)}</div>`;
-  const activeItem = allShopItems.find(i => i.slug === currentStudent.playera_activa);
-  document.getElementById('shopActiveCoinName').textContent = activeItem?.nombre || 'Ajolote';
-  document.getElementById('shopGridFull').innerHTML = allShopItems.map(item =>
-    renderCoinCard(item, owned.includes(item.slug), currentStudent.playera_activa === item.slug, pts, 'shop')).join('');
+  document.getElementById('shopStudentPoints').textContent = `${currentStudent.puntos_totales || 0} puntos acumulados`;
+  document.getElementById('avatarPreview').innerHTML = getAvatarSVG(currentStudent.avatar_equipped);
+  renderAvatarTabs();
+  renderAvatarItemsGrid();
 }
 
-async function buyCoin(slug, cost) {
-  if (!confirm(`¿Comprar esta moneda por ${cost} puntos?`)) return;
+function renderAvatarTabs() {
+  document.getElementById('avatarTabs').innerHTML = AVATAR_CATEGORIES.map(c => `
+    <div onclick="switchAvatarTab('${c.key}')" style="flex:1;text-align:center;padding:10px 4px;cursor:pointer;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;
+      color:${currentAvatarTab === c.key ? 'var(--cb-navy)' : 'var(--cb-gray-3)'};
+      border-bottom:3px solid ${currentAvatarTab === c.key ? 'var(--cb-gold)' : 'var(--cb-border)'};">${c.label}</div>`).join('');
+}
+
+function switchAvatarTab(key) { currentAvatarTab = key; renderAvatarTabs(); renderAvatarItemsGrid(); }
+
+function getAvatarItemPreview(category, slug) {
+  const preview = Object.assign({}, currentStudent.avatar_equipped, { [category]: slug });
+  return `<div class="coin-visual">${getAvatarSVG(preview)}</div>`;
+}
+
+function renderAvatarItemsGrid() {
+  const unlocked = currentStudent.avatar_unlocked || [];
+  const equipped = Object.assign({}, DEFAULT_AVATAR, currentStudent.avatar_equipped || {});
+  const pts = currentStudent.puntos_totales || 0;
+  const items = allAvatarItems.filter(i => i.category === currentAvatarTab);
+  document.getElementById('avatarItemsGrid').innerHTML = items.map(item => {
+    const isOwned = item.costo_puntos === 0 || unlocked.includes(item.slug);
+    const isActive = equipped[currentAvatarTab] === item.slug;
+    const canBuy = !isOwned && pts >= item.costo_puntos;
+    const fn = isOwned ? `equipAvatarItem('${currentAvatarTab}','${item.slug}')` : canBuy ? `buyAvatarItem('${currentAvatarTab}','${item.slug}',${item.costo_puntos})` : '';
+    return `<div class="coin-card ${isOwned ? 'owned' : 'locked'} ${isActive ? 'active-coin' : ''}" ${fn ? `onclick="${fn}"` : ''}>
+      ${isActive ? '<span class="coin-active-badge">ACTIVA</span>' : ''}
+      ${isOwned && !isActive ? '<span class="coin-owned-badge">✓</span>' : ''}
+      <div class="coin-svg-wrap">${getAvatarItemPreview(currentAvatarTab, item.slug)}</div>
+      <div class="coin-name">${item.nombre}</div>
+      <div class="coin-cost">${isOwned ? (isActive ? 'Equipada' : 'Equipar') : canBuy ? `${item.costo_puntos} pts` : `🔒 ${item.costo_puntos} pts`}</div>
+    </div>`;
+  }).join('');
+}
+
+async function buyAvatarItem(category, slug, cost) {
+  if (!confirm(`¿Comprar este artículo por ${cost} puntos?`)) return;
   const newPts = (currentStudent.puntos_totales || 0) - cost;
   if (newPts < 0) return alert('No tienes suficientes puntos');
-  const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['ajolote']), slug];
-  await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
-  await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.puntos_totales = newPts; currentStudent.playeras_desbloqueadas = newUnlocked; currentStudent.playera_activa = slug;
+  const newUnlocked = [...(currentStudent.avatar_unlocked || []), slug];
+  const newEquipped = Object.assign({}, DEFAULT_AVATAR, currentStudent.avatar_equipped, { [category]: slug });
+  await sb.from('students').update({ puntos_totales: newPts, avatar_unlocked: newUnlocked, avatar_equipped: newEquipped }).eq('id', currentStudent.id);
+  currentStudent.puntos_totales = newPts; currentStudent.avatar_unlocked = newUnlocked; currentStudent.avatar_equipped = newEquipped;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
-  document.getElementById('shopPoints').textContent = `${newPts} pts disponibles`;
-  document.getElementById('pointsTotal').textContent = `Total acumulado: ${newPts} pts`;
-  document.getElementById('bannerCoin').innerHTML = `<div style="width:64px;height:64px;">${getCoinSVG(slug)}</div>`;
-  await loadShopInResults();
+  loadShopScreen();
 }
 
-async function equipCoin(slug) {
-  await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.playera_activa = slug;
+async function equipAvatarItem(category, slug) {
+  const newEquipped = Object.assign({}, DEFAULT_AVATAR, currentStudent.avatar_equipped, { [category]: slug });
+  await sb.from('students').update({ avatar_equipped: newEquipped }).eq('id', currentStudent.id);
+  currentStudent.avatar_equipped = newEquipped;
   localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
   updateHeaderAvatar();
-  document.getElementById('bannerCoin').innerHTML = `<div style="width:64px;height:64px;">${getCoinSVG(slug)}</div>`;
-  await loadShopInResults();
-}
-
-async function buyCoinShop(slug, cost) {
-  if (!confirm(`¿Comprar esta moneda por ${cost} puntos?`)) return;
-  const newPts = (currentStudent.puntos_totales || 0) - cost;
-  if (newPts < 0) return alert('No tienes suficientes puntos');
-  const newUnlocked = [...(currentStudent.playeras_desbloqueadas || ['ajolote']), slug];
-  await sb.from('student_inventory').insert({ student_id: currentStudent.id, item_id: await getItemId(slug) });
-  await sb.from('students').update({ puntos_totales: newPts, playeras_desbloqueadas: newUnlocked, playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.puntos_totales = newPts; currentStudent.playeras_desbloqueadas = newUnlocked; currentStudent.playera_activa = slug;
-  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  updateHeaderAvatar(); loadShopScreen();
-}
-
-async function equipCoinShop(slug) {
-  await sb.from('students').update({ playera_activa: slug }).eq('id', currentStudent.id);
-  currentStudent.playera_activa = slug;
-  localStorage.setItem('piense1_alumno', JSON.stringify(currentStudent));
-  updateHeaderAvatar(); loadShopScreen();
-}
-
-async function getItemId(slug) {
-  const item = allShopItems.find(i => i.slug === slug);
-  return item?.id || null;
+  loadShopScreen();
 }
 </script>
 </body>

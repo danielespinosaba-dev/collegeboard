@@ -1203,3 +1203,69 @@ END $$;
 -- Alumnos que tenían equipadas monedas que salieron del roster final
 -- quedan con la moneda inicial (ajolote).
 UPDATE public.students SET playera_activa = 'ajolote' WHERE playera_activa IN ('guacamaya', 'aguila_real');
+
+-- =========================================================================
+-- 13. AVATAR PERSONALIZABLE + INSIGNIAS + ROSTER DE MAESTRA
+-- =========================================================================
+-- Las monedas de animales (ajolote, venado, etc.) dejan de ser un objeto
+-- que se "compra": ahora son INSIGNIAS de nivel que se desbloquean solas
+-- al llegar a cierto puntaje (igual que un certificado de Mathletics). El
+-- nivel se calcula en el frontend a partir de students.puntos_totales, así
+-- que no se necesita ninguna columna/tabla nueva para eso.
+--
+-- Lo que SÍ compran los alumnos con sus puntos ahora es la personalización
+-- del avatar (piel, cabello, playera, gorra, fondo). Aditivo:
+--   - Nuevas columnas en students para guardar qué trae puesto y qué ha
+--     desbloqueado (no se toca playera_activa/playeras_desbloqueadas, que
+--     quedan como columnas legadas sin uso, por si algún día se requieren).
+--   - Tabla nueva avatar_items (independiente de shop_items, para no
+--     arrastrar el problema de la columna "pais" extra que tiene la tabla
+--     real de shop_items).
+--
+-- También: primaria baja ya NO usa el modo invitado (solo nombre); ahora
+-- la maestra registra a cada alumno con usuario/contraseña desde su panel
+-- (igual que cualquier otro registro en la tabla students), para tener un
+-- registro completo y que el avatar/puntos se guarden de verdad.
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS avatar_equipped jsonb DEFAULT '{"skin":"piel_clara","hair":"pelo_corto_negro","top":"playera_azul","headwear":"ninguno","background":"fondo_azul"}'::jsonb;
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS avatar_unlocked jsonb DEFAULT '[]'::jsonb;
+
+CREATE TABLE IF NOT EXISTS public.avatar_items (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    slug text UNIQUE NOT NULL,
+    category text NOT NULL,
+    nombre text NOT NULL,
+    costo_puntos integer NOT NULL DEFAULT 0,
+    disponible boolean DEFAULT true
+);
+ALTER TABLE public.avatar_items DISABLE ROW LEVEL SECURITY;
+
+INSERT INTO public.avatar_items (slug, category, nombre, costo_puntos, disponible) VALUES
+('piel_clara','skin','Piel clara',0,true),
+('piel_media','skin','Piel media',0,true),
+('piel_morena','skin','Piel morena',0,true),
+('piel_oscura','skin','Piel oscura',0,true),
+('pelo_corto_negro','hair','Corto negro',0,true),
+('pelo_corto_cafe','hair','Corto café',50,true),
+('pelo_largo_negro','hair','Largo negro',50,true),
+('pelo_largo_rubio','hair','Largo rubio',100,true),
+('pelo_chino_cafe','hair','Chino café',100,true),
+('pelo_moño','hair','Moño alto',150,true),
+('playera_azul','top','Playera azul',0,true),
+('playera_roja','top','Playera roja',50,true),
+('playera_verde','top','Playera verde',50,true),
+('playera_amarilla','top','Playera amarilla',100,true),
+('playera_rayas','top','Playera de rayas',150,true),
+('playera_estrellas','top','Playera de estrellas',200,true),
+('ninguno','headwear','Sin gorra',0,true),
+('gorra_roja','headwear','Gorra roja',100,true),
+('gorra_azul','headwear','Gorra azul',100,true),
+('casco_futbol','headwear','Casco de fútbol',250,true),
+('corona','headwear','Corona',350,true),
+('flores','headwear','Corona de flores',200,true),
+('fondo_azul','background','Cielo azul',0,true),
+('fondo_bosque','background','Bosque',100,true),
+('fondo_espacio','background','Espacio',200,true),
+('fondo_playa','background','Playa',150,true),
+('fondo_atardecer','background','Atardecer',250,true),
+('fondo_fuego','background','Aro de fuego',400,true)
+ON CONFLICT (slug) DO NOTHING;
