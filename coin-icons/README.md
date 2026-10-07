@@ -1,12 +1,16 @@
 # Íconos de monedas
 
-Coloca aquí 6 archivos PNG (fondo transparente recomendado), cuadrados, mínimo 200x200px, con estos nombres EXACTOS (coinciden con el slug en la base de datos):
+Roster final de 10 monedas (ilustraciones provistas por el docente, recortadas automáticamente de una hoja de referencia y con fondo transparente):
 
-- `ajolote.png`
-- `mariposa.png`
-- `quetzal.png`
-- `jaguar.png`
-- `guacamaya.png`
-- `aguila_real.png`
+- `ajolote.png` — Ajolote (0 pts, inicial)
+- `mariposa.png` — Mariposa Monarca (50 pts)
+- `mapache.png` — Mapache (100 pts)
+- `venado.png` — Venado Cola Blanca (150 pts)
+- `tortuga.png` — Tortuga Marina (200 pts)
+- `puma.png` — Puma (250 pts)
+- `quetzal.png` — Quetzal (300 pts)
+- `tiburon_ballena.png` — Tiburón Ballena (400 pts)
+- `jaguar.png` — Jaguar (500 pts)
+- `morpho.png` — Mariposa Morpho Azul (600 pts)
 
-La app los muestra dentro de un marco circular dorado (ya incluido en el código), así que la imagen puede ser cuadrada — no hace falta recortarla en círculo de antemano. Si un archivo falta, la app muestra un ícono de moneda genérico como respaldo en vez de romperse.
+Cada imagen ya incluye su propio marco circular dorado (parte del diseño), así que la app solo las muestra con `object-fit: contain`, sin agregarles ningún marco adicional. Si se reemplaza alguna, basta con mantener fondo transparente y proporciones cuadradas aproximadas.

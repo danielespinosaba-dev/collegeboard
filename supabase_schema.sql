@@ -1185,3 +1185,60 @@ ALTER TABLE public.exam_sessions_p2 DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.student_results_p2 DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.student_challenges DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.challenge_results DISABLE ROW LEVEL SECURITY;
+
+-- =========================================================================
+-- 12. ROSTER FINAL DE 10 MONEDAS (con ilustraciones propias del docente)
+-- =========================================================================
+-- Reemplaza el set inicial de 6 monedas dibujadas a mano por un roster de
+-- 10 con ilustraciones reales (coin-icons/<slug>.png). 'guacamaya' y
+-- 'aguila_real' no quedaron en el roster final, así que se desactivan
+-- (no se borran, mismo criterio no destructivo de siempre). Los 4 slugs
+-- que sí continúan (ajolote, mariposa, quetzal, jaguar) solo actualizan
+-- nombre/costo; los 6 nuevos (puma, tiburon_ballena, tortuga, venado,
+-- mapache, morpho) se insertan. Reutiliza la misma detección de la
+-- columna "pais" que el bloque anterior.
+UPDATE public.shop_items SET disponible = false WHERE slug IN ('guacamaya', 'aguila_real');
+
+DO $$
+DECLARE
+  has_pais boolean;
+BEGIN
+  SELECT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = 'public' AND table_name = 'shop_items' AND column_name = 'pais'
+  ) INTO has_pais;
+
+  IF has_pais THEN
+    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible, pais) VALUES
+    ('ajolote', 'Ajolote', 0, true, 'México'),
+    ('mariposa', 'Mariposa Monarca', 50, true, 'México'),
+    ('mapache', 'Mapache', 100, true, 'México'),
+    ('venado', 'Venado Cola Blanca', 150, true, 'México'),
+    ('tortuga', 'Tortuga Marina', 200, true, 'México'),
+    ('puma', 'Puma', 250, true, 'México'),
+    ('quetzal', 'Quetzal', 300, true, 'México'),
+    ('tiburon_ballena', 'Tiburón Ballena', 400, true, 'México'),
+    ('jaguar', 'Jaguar', 500, true, 'México'),
+    ('morpho', 'Mariposa Morpho Azul', 600, true, 'México')
+    ON CONFLICT (slug) DO UPDATE SET disponible = true, nombre = excluded.nombre, costo_puntos = excluded.costo_puntos;
+  ELSE
+    INSERT INTO public.shop_items (slug, nombre, costo_puntos, disponible) VALUES
+    ('ajolote', 'Ajolote', 0, true),
+    ('mariposa', 'Mariposa Monarca', 50, true),
+    ('mapache', 'Mapache', 100, true),
+    ('venado', 'Venado Cola Blanca', 150, true),
+    ('tortuga', 'Tortuga Marina', 200, true),
+    ('puma', 'Puma', 250, true),
+    ('quetzal', 'Quetzal', 300, true),
+    ('tiburon_ballena', 'Tiburón Ballena', 400, true),
+    ('jaguar', 'Jaguar', 500, true),
+    ('morpho', 'Mariposa Morpho Azul', 600, true)
+    ON CONFLICT (slug) DO UPDATE SET disponible = true, nombre = excluded.nombre, costo_puntos = excluded.costo_puntos;
+  END IF;
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'Se omitió el insert del roster final de monedas: %', SQLERRM;
+END $$;
+
+-- Alumnos que tenían equipadas monedas que salieron del roster final
+-- quedan con la moneda inicial (ajolote).
+UPDATE public.students SET playera_activa = 'ajolote' WHERE playera_activa IN ('guacamaya', 'aguila_real');
