@@ -40,13 +40,18 @@
   .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.55); transition: all 0.15s; text-decoration: none; }
   .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
   .nav-item.active { background: rgba(245,145,49,0.18); color: #ffb673; }
-  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+  .nav-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .nav-icon svg { width: 100%; height: 100%; }
+  .btn-logout svg { width: 14px; height: 14px; }
+  .login-logo .icon, .logo-mark .icon { width: 22px; height: 22px; color: var(--accent); display: inline-flex; vertical-align: -5px; margin-right: 4px; }
+  .login-logo .icon svg, .logo-mark .icon svg { width: 100%; height: 100%; }
+  .empty-icon svg { width: 100%; height: 100%; }
   .sidebar-footer { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.08); }
   .teacher-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; }
   .teacher-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sky); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
   .teacher-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
   .teacher-role { font-size: 11px; color: rgba(255,255,255,0.3); }
-  .btn-logout { display: block; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; }
+  .btn-logout { display: flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; font-family: inherit; }
   .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
   .main { margin-left: 220px; flex: 1; }
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
@@ -147,7 +152,7 @@
   .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
   .alert-info { background: var(--sky-light); color: var(--sky-dark); border: 1px solid #bfdbfe; }
   .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
-  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-icon { width: 40px; height: 40px; margin: 0 auto 12px; color: var(--text-3); }
   .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
   .empty-text { font-size: 14px; }
   .exam-code-display { background: linear-gradient(135deg, var(--navy), var(--sky-dark)); color: #fff; border-radius: var(--radius); padding: 24px; text-align: center; margin-bottom: 16px; box-shadow: var(--shadow); }
@@ -175,7 +180,8 @@
   .prueba-ing { background: #fff7ed; color: #c2410c; }
   .flex-between { display: flex; justify-content: space-between; align-items: center; }
   .flex-gap { display: flex; gap: 8px; align-items: center; }
-  .mb-16 { margin-bottom: 16px; } .mb-20 { margin-bottom: 20px; } .mb-24 { margin-bottom: 24px; }
+  .mb-8 { margin-bottom: 8px; } .mb-16 { margin-bottom: 16px; } .mb-20 { margin-bottom: 20px; } .mb-24 { margin-bottom: 24px; }
+  .feedback-scope { display: inline-block; background: var(--sky-light); color: var(--sky-dark); border-radius: 999px; padding: 1px 9px; font-size: 11px; font-weight: 600; }
   .text-sm { font-size: 13px; } .text-xs { font-size: 12px; } .text-muted { color: var(--text-3); }
   .fw-600 { font-weight: 600; } .divider { height: 1px; background: var(--border); margin: 16px 0; }
   .spinner { width: 20px; height: 20px; border: 2px solid rgba(91,155,216,0.2); border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
@@ -191,7 +197,7 @@
 <!-- LOGIN -->
 <div id="authSection" style="display:none;">
   <div class="login-wrap"><div class="login-box">
-    <div class="login-logo">📚 PIENSE Mini-Exámenes</div>
+    <div class="login-logo"><span class="icon">__ICON_BOOK__</span>PIENSE Mini-Exámenes</div>
     <div class="login-badge">PIENSE II · 9no grado</div>
     <div class="login-sub">Plataforma docente</div>
     <div id="loginForm">
@@ -216,16 +222,17 @@
     <aside class="sidebar">
       <div class="sidebar-logo">
         <div class="logo-badge">PIENSE II</div>
-        <div class="logo-mark">📚 Mini-Exámenes</div>
+        <div class="logo-mark"><span class="icon">__ICON_BOOK__</span>Mini-Exámenes</div>
         <div class="logo-sub">9no grado · Docente</div>
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">👥</span> Mis grupos</a>
-        <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">📋</span> Banco de reactivos</a>
-        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">🤖</span> Recomendaciones IA</a>
+        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">__ICON_PEOPLE__</span> Mis grupos</a>
+        <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">__ICON_CLIPBOARD__</span> Banco de reactivos</a>
+        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">__ICON_SPARK__</span> Recomendaciones IA</a>
+        <a class="nav-item" data-view="feedback" onclick="showView('feedback')"><span class="nav-icon">__ICON_MESSAGE__</span> Feedback de coordinación</a>
         <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-          <a class="nav-item" onclick="window.open('piense2-alumno.html','_blank')"><span class="nav-icon">🔗</span> Vista alumno ↗</a>
-          <a class="nav-item" onclick="window.open('index.html','_blank')"><span class="nav-icon">🔙</span> PIENSE I ↗</a>
+          <a class="nav-item" onclick="window.open('piense2-alumno.html','_blank')"><span class="nav-icon">__ICON_EXTERNAL__</span> Vista alumno</a>
+          <a class="nav-item" onclick="window.open('index.html','_blank')"><span class="nav-icon">__ICON_BACK__</span> PIENSE I</a>
         </div>
       </nav>
       <div class="sidebar-footer">
@@ -236,7 +243,7 @@
             <div class="teacher-role">9no grado</div>
           </div>
         </div>
-        <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
+        <button class="btn-logout" onclick="doLogout()"><span class="icon">__ICON_LOGOUT__</span> Cerrar sesión</button>
       </div>
     </aside>
 
@@ -253,7 +260,8 @@
       <div class="content">
         <!-- GRUPOS -->
         <div class="view active" id="view-grupos">
-          <div class="grid-2" id="groupsGrid"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div></div></div>
+          <div class="grid-stats" id="groupsStats" style="display:none;"></div>
+          <div class="grid-2" id="groupsGrid"><div class="empty"><div class="empty-icon">__ICON_PEOPLE__</div><div class="empty-title">Sin grupos todavía</div></div></div>
         </div>
         <!-- DETALLE GRUPO -->
         <div class="view" id="view-grupo-detalle">
@@ -290,7 +298,7 @@
             </div>
           </div>
           <div class="selected-counter" id="selectedCounter" style="display:none;">
-            <span>✅ <span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
+            <span><span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
             <button class="btn btn-primary btn-sm" onclick="openCreateExamModal()">Crear examen con estos reactivos →</button>
           </div>
           <div class="questions-list" id="questionsList"><div class="empty"><span class="spinner"></span></div></div>
@@ -305,7 +313,13 @@
               <button class="btn btn-primary" onclick="generateRecommendations()">Analizar con IA →</button>
             </div>
           </div>
-          <div id="recPanel"><div class="empty"><div class="empty-icon">🤖</div><div class="empty-title">Selecciona un examen para analizar</div></div></div>
+          <div id="recPanel"><div class="empty"><div class="empty-icon">__ICON_SPARK__</div><div class="empty-title">Selecciona un examen para analizar</div></div></div>
+        </div>
+
+        <!-- FEEDBACK DE COORDINACIÓN -->
+        <div class="view" id="view-feedback">
+          <p class="text-sm text-muted mb-16">Notas y sugerencias que la coordinación académica te ha dejado sobre tus grupos.</p>
+          <div id="feedbackList"><div class="empty"><div class="empty-icon">__ICON_MESSAGE__</div><div class="empty-title">Cargando...</div></div></div>
         </div>
       </div>
     </main>
@@ -344,12 +358,12 @@
       <div class="modalidad-selector">
         <label class="modalidad-option selected-m" id="mOpt-examen" onclick="selectModalidad('examen')">
           <input type="radio" name="modalidad" value="examen" checked>
-          <div class="modalidad-title">📋 Examen</div>
+          <div class="modalidad-title">Examen</div>
           <div class="modalidad-desc">Una sola vez por alumno</div>
         </label>
         <label class="modalidad-option" id="mOpt-prueba" onclick="selectModalidad('prueba')">
           <input type="radio" name="modalidad" value="prueba">
-          <div class="modalidad-title">🔄 Prueba</div>
+          <div class="modalidad-title">Prueba</div>
           <div class="modalidad-desc">Reintentos ilimitados</div>
         </label>
       </div>
@@ -392,12 +406,33 @@ const { createClient } = supabase;
 // Read credentials from window.CONFIG (loaded from config.js)
 const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://euwsjtcvfwcivywpkyyn.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk');
 
+// ── ICONOS (SVG en línea, sin emojis) ──────────────────────────────
+const ICONS = {
+  book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2H3v15h3c2.4 0 4.5.7 6 2"/><path d="M12 6c1.5-1.3 3.6-2 6-2h3v15h-3c-2.4 0-4.5.7-6 2V6Z"/></svg>`,
+  people: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 14.1c2.6.5 4.5 2.6 4.7 5.9"/></svg>`,
+  clipboard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M8.5 10h7M8.5 14h7M8.5 18h4"/></svg>`,
+  spark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11a9 9 0 1 1-5-8.1"/><path d="M19 3v4M17 5h4"/><path d="M9 10v4M7 12h4"/></svg>`,
+  externalLink: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M14 4h6v6"/><path d="M20 4 11 13"/></svg>`,
+  back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`,
+  logout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
+  message: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>`,
+};
+document.body.innerHTML = document.body.innerHTML
+  .replaceAll('__ICON_BOOK__', ICONS.book)
+  .replaceAll('__ICON_PEOPLE__', ICONS.people)
+  .replaceAll('__ICON_CLIPBOARD__', ICONS.clipboard)
+  .replaceAll('__ICON_SPARK__', ICONS.spark)
+  .replaceAll('__ICON_EXTERNAL__', ICONS.externalLink)
+  .replaceAll('__ICON_BACK__', ICONS.back)
+  .replaceAll('__ICON_LOGOUT__', ICONS.logout)
+  .replaceAll('__ICON_MESSAGE__', ICONS.message);
+
 let currentTeacher = null, allQuestions = [], selectedQuestionIds = new Set();
 let currentExamForCode = null, currentGroupId = null;
 let usedQuestionIds = new Set();
 let selectedModalidad = 'examen';
 
-const pruebaLabels = { habilidad_cognoscitiva:'🧠 Habilidad Cognoscitiva', espanol:'📖 Español', matematicas:'📐 Matemáticas', ingles:'🌐 Inglés' };
+const pruebaLabels = { habilidad_cognoscitiva:'Habilidad Cognoscitiva', espanol:'Español', matematicas:'Matemáticas', ingles:'Inglés' };
 const pruebaClasses = { habilidad_cognoscitiva:'prueba-hc', espanol:'prueba-esp', matematicas:'prueba-mat', ingles:'prueba-ing' };
 const diffLabels = { 1:'Fácil', 2:'Medio', 3:'Difícil' };
 const diffColors = { 1:'#16a34a', 2:'#d97706', 3:'#dc2626' };
@@ -465,7 +500,7 @@ function showView(name) {
   document.getElementById('view-' + name).classList.add('active');
   const navEl = document.querySelector(`[data-view="${name}"]`);
   if (navEl) navEl.classList.add('active');
-  const titles = { grupos:'Mis grupos', banco:'Banco de reactivos', recomendaciones:'Recomendaciones IA' };
+  const titles = { grupos:'Mis grupos', banco:'Banco de reactivos', recomendaciones:'Recomendaciones IA', feedback:'Feedback de coordinación' };
   document.getElementById('topbarTitleText').textContent = titles[name] || '';
   document.getElementById('topbarBack').style.display = 'none';
   const actions = {
@@ -480,6 +515,7 @@ function showView(name) {
     document.getElementById('topbarAction').style.display = '';
   } else { document.getElementById('topbarAction').style.display = 'none'; }
   if (name === 'recomendaciones') loadRecExamSelect();
+  if (name === 'feedback') loadFeedback();
 }
 
 function openGroupDetail(groupId, groupName, groupCode) {
@@ -502,18 +538,28 @@ function backToGroups() { currentGroupId = null; showView('grupos'); loadGroups(
 async function loadGroups() {
   const { data } = await sb.from('groups').select('id, name, access_code, created_at').eq('teacher_id', currentTeacher.id).order('created_at');
   const grid = document.getElementById('groupsGrid');
+  const statsEl = document.getElementById('groupsStats');
   const sel = document.getElementById('newExamGroup');
   if (!data || data.length === 0) {
-    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div></div>`;
+    statsEl.style.display = 'none';
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">${ICONS.people}</div><div class="empty-title">Sin grupos todavía</div></div>`;
     sel.innerHTML = '<option value="">Sin grupos disponibles</option>'; return;
   }
   const { data: exams } = await sb.from('exam_sessions_p2').select('id, group_id, activa').eq('docente_id', currentTeacher.id);
+  const { data: students } = await sb.from('students').select('id, group_id').in('group_id', data.map(g => g.id));
   const examsByGroup = {};
   (exams || []).forEach(e => {
     if (!examsByGroup[e.group_id]) examsByGroup[e.group_id] = { total: 0, active: 0 };
     examsByGroup[e.group_id].total++;
     if (e.activa) examsByGroup[e.group_id].active++;
   });
+  const totalActivos = (exams || []).filter(e => e.activa).length;
+  statsEl.style.display = '';
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-label">Grupos</div><div class="stat-value">${data.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${(students || []).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes creados</div><div class="stat-value">${(exams || []).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Activos ahora</div><div class="stat-value">${totalActivos}</div></div>`;
   grid.innerHTML = `<div class="grid-2">${data.map(g => {
     const stats = examsByGroup[g.id] || { total: 0, active: 0 };
     return `<div class="group-card" onclick="openGroupDetail('${g.id}','${g.name.replace(/'/g,"\\'")}','${g.access_code}')">
@@ -534,7 +580,7 @@ async function createGroup() {
   const { error } = await sb.from('groups').insert({ teacher_id: currentTeacher.id, name, access_code: code });
   if (error) return toast('Error al crear grupo: ' + error.message);
   closeModal('modalCreateGroup'); document.getElementById('newGroupName').value = '';
-  toast('Grupo creado ✅'); loadGroups();
+  toast('Grupo creado'); loadGroups();
 }
 async function deleteGroup(id) {
   if (!confirm('¿Eliminar este grupo?')) return;
@@ -547,9 +593,9 @@ async function loadGroupExams(groupId) {
   const el = document.getElementById('groupExamsList');
   el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
   const { data: exams } = await sb.from('exam_sessions_p2').select('*').eq('group_id', groupId).eq('docente_id', currentTeacher.id).order('created_at', { ascending: false });
-  if (!exams || exams.length === 0) { el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`; return; }
+  if (!exams || exams.length === 0) { el.innerHTML = `<div class="empty"><div class="empty-icon">${ICONS.clipboard}</div><div class="empty-title">Sin exámenes todavía</div></div>`; return; }
   el.innerHTML = exams.map(e => {
-    const modBadge = e.modalidad === 'prueba' ? '<span class="badge badge-prueba">🔄 Prueba</span>' : '<span class="badge badge-examen">📋 Examen</span>';
+    const modBadge = e.modalidad === 'prueba' ? '<span class="badge badge-prueba">Prueba</span>' : '<span class="badge badge-examen">Examen</span>';
     return `<div class="exam-row" id="exam-row-${e.id}">
       <div class="exam-row-header">
         <div>
@@ -557,13 +603,13 @@ async function loadGroupExams(groupId) {
           <div class="exam-row-meta">
             Código: <strong style="font-family:'DM Mono',monospace;color:var(--sky-dark)">${e.codigo}</strong>
             · ${e.question_ids?.length || 0} reactivos
-            · <span class="badge ${e.activa ? 'badge-active' : 'badge-draft'}">${e.activa ? '🟢 Activo' : '⚪ Inactivo'}</span>
+            · <span class="badge ${e.activa ? 'badge-active' : 'badge-draft'}">${e.activa ? 'Activo' : 'Inactivo'}</span>
             · ${modBadge}
           </div>
         </div>
         <div class="exam-row-actions">
-          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.codigo}',${e.activa})">⚙ Gestionar</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}','${e.modalidad || 'examen'}')">📊 Resultados</button>
+          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.codigo}',${e.activa})">Gestionar</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}','${e.modalidad || 'examen'}')">Resultados</button>
         </div>
       </div>
       <div class="results-inline" id="results-${e.id}"></div>
@@ -615,7 +661,7 @@ async function toggleResults(examId, modalidad) {
             <span style="font-weight:600;color:${color};font-size:20px;">${r.calificacion}%</span>
             <span style="font-size:13px;color:var(--text-3);">${r.aciertos}/${r.total_preguntas} correctas</span>
             <span style="font-size:13px;color:var(--text-3);">⏱ ${mins}:${secs}</span>
-            <span style="font-size:13px;color:var(--text-3);">📅 ${fecha}</span>
+            <span style="font-size:13px;color:var(--text-3);">${fecha}</span>
             <span style="color:var(--gold);font-weight:600;font-size:13px;">+${r.puntos_ganados || 0} pts</span>
           </div>
         </div>`;
@@ -683,7 +729,7 @@ function renderExamResults(results, examData, studentMap, questions) {
     </table>
     <div class="section-label">Análisis por reactivo</div>
     <table class="data-table">
-      <thead><tr><th>#</th><th>Reactivo</th><th style="text-align:center;">✅</th><th style="text-align:center;">❌</th><th>% Acierto</th></tr></thead>
+      <thead><tr><th>#</th><th>Reactivo</th><th style="text-align:center;">Correctas</th><th style="text-align:center;">Incorrectas</th><th>% Acierto</th></tr></thead>
       <tbody>${orderedStats.map(({ num, question, correct, wrong }) => {
         const tot = correct + wrong;
         const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
@@ -731,14 +777,14 @@ function renderQuestions(list) {
   if (!list.length) { el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div></div>'; return; }
   el.innerHTML = list.map(q => {
     const isUsed = usedQuestionIds.has(q.id);
-    const usedBadge = isUsed ? '<span class="q-used-badge">📌 Usado</span>' : '';
+    const usedBadge = isUsed ? '<span class="q-used-badge">Usado</span>' : '';
     return `<div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''} ${isUsed ? 'used' : ''}" onclick="toggleQuestion('${q.id}')">
       <div class="q-check">${selectedQuestionIds.has(q.id) ? '✓' : ''}</div>
       <div class="q-body">
         <div class="q-stem">${q.enunciado.substring(0,160)}${q.enunciado.length>160?'...':''}${usedBadge}</div>
         <div class="q-meta">
           <span class="prueba-pill ${pruebaClasses[q.prueba]||''}">${pruebaLabels[q.prueba]||q.prueba}</span>
-          <span class="q-topic">📌 ${q.subtipo?q.subtipo.replace(/_/g,' '):'—'}</span>
+          <span class="q-topic">${q.subtipo?q.subtipo.replace(/_/g,' '):'—'}</span>
           <span style="color:${diffColors[q.dificultad]}">● ${diffLabels[q.dificultad]||q.dificultad}</span>
         </div>
       </div>
@@ -785,7 +831,7 @@ async function createExam() {
   closeModal('modalCreateExam'); document.getElementById('newExamName').value = '';
   selectedQuestionIds.clear(); updateSelectedCounter(); filterQuestions();
   await loadUsedQuestions(); filterQuestions();
-  toast('Examen creado ✅');
+  toast('Examen creado');
   if (currentGroupId === groupId) loadGroupExams(groupId);
   openExamCodeModal(data.id, codigo, false);
 }
@@ -812,7 +858,7 @@ async function toggleExamStatus() {
   if (error) return toast('Error al actualizar');
   currentExamForCode.activa = newActiva;
   document.getElementById('statusBtnText').textContent = newActiva ? '⏸ Pausar examen' : '▶ Activar examen';
-  toast(newActiva ? '🟢 Examen activado' : '⏸ Examen pausado');
+  toast(newActiva ? 'Examen activado' : 'Examen pausado');
   if (currentGroupId) loadGroupExams(currentGroupId);
 }
 async function closeExamStatus() {
@@ -828,6 +874,22 @@ async function loadRecExamSelect() {
   const sel = document.getElementById('recExamSelect');
   if (!data) return;
   sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.nombre} · ${e.grupo||''}</option>`).join('');
+}
+
+// ── FEEDBACK DE COORDINACIÓN ────────────────────────────────────
+async function loadFeedback() {
+  const el = document.getElementById('feedbackList');
+  const { data } = await sb.from('coordinator_feedback').select('*, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
+  const items = data || [];
+  el.innerHTML = items.length ? items.map(f => `
+    <div class="card mb-16">
+      <div class="flex-gap mb-8">
+        <span class="text-xs text-muted">${new Date(f.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+        <span class="feedback-scope">${f.groups?.name || 'General'}</span>
+      </div>
+      <div class="text-sm" style="white-space:pre-wrap;">${f.mensaje}</div>
+    </div>`).join('')
+    : `<div class="empty"><div class="empty-icon">${ICONS.message}</div><div class="empty-title">Sin feedback todavía</div><div class="empty-text">Aquí verás las notas que tu coordinación te deje sobre tus grupos.</div></div>`;
 }
 async function generateRecommendations() {
   const examId = document.getElementById('recExamSelect').value;
@@ -854,7 +916,7 @@ async function generateRecommendations() {
   try {
     const res = await fetch('/api/gemini', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    const text = (data.text||'Sin análisis.').replace(/##\s(.+)/g,'<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+)/g,'<li style="margin-bottom:6px;">$1</li>').replace(/\n\n/g,'</p><p style="margin-bottom:10px;">').replace(/\n/g,'<br>');
+    const text = (data.text || `Sin análisis. ${data.error || ''}`).replace(/##\s(.+)/g,'<h3 style="font-size:15px;font-weight:600;color:var(--navy);margin:16px 0 8px;">$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+)/g,'<li style="margin-bottom:6px;">$1</li>').replace(/\n\n/g,'</p><p style="margin-bottom:10px;">').replace(/\n/g,'<br>');
     panel.innerHTML = `<div class="card mb-16"><div class="card-title">Análisis — ${exam.nombre}</div><div class="grid-stats mb-16">${Object.entries(subtipErrors).sort((a,b)=>(b[1].wrong/(b[1].correct+b[1].wrong))-(a[1].wrong/(a[1].correct+a[1].wrong))).slice(0,5).map(([key,stats])=>{const pct=Math.round((stats.wrong/(stats.correct+stats.wrong))*100);const color=pct>=60?'var(--danger)':pct>=40?'var(--warning)':'var(--success)';return `<div class="stat-card"><div class="stat-label">${key}</div><div class="stat-value" style="color:${color};font-size:20px;">${pct}%</div><div class="stat-sub">de errores</div></div>`;}).join('')}</div></div><div class="card"><div class="card-title">Recomendaciones IA</div><div style="font-size:14px;line-height:1.7;"><p style="margin-bottom:10px;">${text}</p></div><div class="divider"></div><div class="text-xs text-muted">Generado con IA · ${new Date().toLocaleDateString('es-MX')}</div></div>`;
   } catch(e) { panel.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>'; }
 }

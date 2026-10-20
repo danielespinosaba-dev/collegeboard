@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Coordinación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #4358a7; --sky: #2591cf; --sky-light: #e8f3fb; --sky-dark: #1b6fa0;
+    --accent: #f59131; --accent-dark: #d9780f; --accent-light: #fff1df;
+    --text: #1a1a2e; --text-2: #4a5568; --text-3: #8896a6;
+    --bg: #f7f9fc; --surface: #ffffff; --border: #e2e8f0;
+    --success: #22c55e; --success-bg: #f0fdf4;
+    --warning: #f59e0b; --warning-bg: #fffbeb;
+    --danger: #ef4444; --danger-bg: #fef2f2;
+    --radius: 14px; --shadow: 0 10px 26px -14px rgba(67,88,167,0.28), 0 1px 2px rgba(0,0,0,0.04);
+    --font-friendly: 'Baloo 2', 'DM Sans', sans-serif;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6;
+    background:
+      radial-gradient(900px 500px at 100% -8%, rgba(37,145,207,0.08), transparent 60%),
+      radial-gradient(800px 460px at -8% 108%, rgba(245,145,49,0.08), transparent 55%),
+      var(--bg);
+  }
+  .view.active { animation: viewIn .3s ease; }
+  @keyframes viewIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .app { display: flex; min-height: 100vh; }
+  .sidebar { width: 230px; background: var(--navy); display: flex; flex-direction: column; padding: 0; flex-shrink: 0; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; }
+  .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+  .sidebar-logo .icon { width: 26px; height: 26px; color: var(--accent); flex-shrink: 0; }
+  .sidebar-logo .icon svg { width: 100%; height: 100%; }
+  .logo-mark { font-family: var(--font-friendly); font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.2; }
+  .logo-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+  .sidebar-nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.6); transition: all 0.15s; text-decoration: none; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+  .nav-item.active { background: rgba(245,145,49,0.18); color: #ffb673; }
+  .nav-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .nav-icon svg { width: 100%; height: 100%; }
+  .sidebar-footer { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .admin-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+  .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sky); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
+  .admin-name { font-size: 13px; color: rgba(255,255,255,0.75); font-weight: 500; }
+  .admin-role { font-size: 11px; color: rgba(255,255,255,0.35); }
+  .btn-logout { display: flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.45); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; font-family: inherit; }
+  .btn-logout svg { width: 14px; height: 14px; }
+  .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+  .main { margin-left: 230px; flex: 1; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .topbar-back { cursor: pointer; color: var(--sky); font-size: 14px; display: flex; align-items: center; }
+  .topbar-back svg { width: 18px; height: 18px; }
+  .content { padding: 28px; max-width: 1200px; }
+  .view { display: none; } .view.active { display: block; }
+
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(67,88,167,0.88), rgba(27,111,160,0.78)), url('img/christelhouse-hero.jpg') center 28% / cover no-repeat; padding: 20px; }
+  .login-box { background: var(--surface); border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35); position: relative; overflow: hidden; animation: popIn .4s cubic-bezier(.22,1,.36,1); }
+  .login-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--accent), var(--sky)); }
+  @keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+  .login-logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-friendly); font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .login-logo .icon { width: 26px; height: 26px; color: var(--accent); }
+  .login-logo .icon svg { width: 100%; height: 100%; }
+  .login-sub { font-size: 13px; color: var(--text-3); margin-bottom: 28px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+  .field input, .field select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s; }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--sky); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 18px; border-radius: var(--radius); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+  .btn svg { width: 15px; height: 15px; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; box-shadow: 0 10px 22px -10px rgba(245,145,49,0.45); }
+  .btn-primary:hover { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); transform: translateY(-1px); box-shadow: 0 14px 26px -10px rgba(245,145,49,0.55); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary { background: var(--sky-light); color: var(--sky-dark); border: 1px solid var(--sky); }
+  .btn-secondary:hover { background: var(--sky); color: #fff; }
+  .btn-outline { background: transparent; color: var(--text-2); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--sky); color: var(--sky); }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .btn-full { width: 100%; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px 24px; box-shadow: var(--shadow); }
+  .card-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
+  .stat-value { font-family: var(--font-friendly); font-size: 26px; font-weight: 700; color: var(--navy); line-height: 1; }
+  .stat-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  .section-label { font-size: 13px; font-weight: 600; color: var(--text); margin: 24px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .detail-header { background: linear-gradient(135deg, var(--navy), var(--sky-dark)); color: #fff; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
+  .detail-header-name { font-family: var(--font-friendly); font-size: 21px; font-weight: 700; }
+  .detail-header-meta { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 3px; }
+
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { text-align: left; font-size: 12px; font-weight: 500; color: var(--text-3); padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--bg); text-transform: uppercase; letter-spacing: 0.04em; }
+  .data-table td { padding: 12px 12px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr.clickable { cursor: pointer; transition: background .12s; }
+  .data-table tr.clickable:hover td { background: var(--sky-light); }
+  .pct-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pct-good { background: var(--success-bg); color: #16a34a; }
+  .pct-mid { background: var(--warning-bg); color: #b45309; }
+  .pct-low { background: var(--danger-bg); color: #b91c1c; }
+  .pct-none { background: #f1f5f9; color: var(--text-3); }
+
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+  .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface); }
+  .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--sky); }
+  .filter-bar input[type="text"] { min-width: 200px; }
+
+  .feedback-item { padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: var(--bg); }
+  .feedback-item:last-child { margin-bottom: 0; }
+  .feedback-meta { font-size: 12px; color: var(--text-3); margin-bottom: 6px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .feedback-scope { display: inline-block; background: var(--sky-light); color: var(--sky-dark); border-radius: 999px; padding: 1px 9px; font-size: 11px; font-weight: 600; }
+  .feedback-text { font-size: 14px; color: var(--text); white-space: pre-wrap; }
+  textarea.fb-textarea { width: 100%; min-height: 90px; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 14px; color: var(--text); resize: vertical; }
+  textarea.fb-textarea:focus { outline: none; border-color: var(--sky); }
+
+  .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
+  .empty-icon { width: 40px; height: 40px; margin: 0 auto 12px; color: var(--text-3); }
+  .empty-icon svg { width: 100%; height: 100%; }
+  .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
+  .empty-text { font-size: 14px; }
+
+  .flex { display: flex; } .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .flex-gap { display: flex; gap: 8px; align-items: center; }
+  .mb-8 { margin-bottom: 8px; } .mb-16 { margin-bottom: 16px; } .mb-20 { margin-bottom: 20px; }
+  .text-sm { font-size: 13px; } .text-xs { font-size: 12px; } .text-muted { color: var(--text-3); }
+  .fw-600 { font-weight: 600; }
+
+  .spinner { width: 20px; height: 20px; border: 2px solid rgba(91,155,216,0.2); border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+  .toast { background: linear-gradient(135deg, var(--navy), var(--sky-dark)); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 14px; animation: slideIn 0.2s ease; max-width: 320px; box-shadow: var(--shadow); }
+  @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="authSection" style="display:none;">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo"><span class="icon">__ICON_BOOK__</span> Panel de Coordinación</div>
+      <div class="login-sub">Acceso exclusivo de coordinación académica</div>
+      <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="coordinacion@christelhouse.org" autocomplete="email"></div>
+      <div class="field"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" onkeyup="if(event.key==='Enter') doLogin()"></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">Iniciar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="appSection" style="display:none;">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span class="icon">__ICON_BOOK__</span>
+        <div>
+          <div class="logo-mark">Coordinación</div>
+          <div class="logo-sub">Christel House</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-view="resumen" onclick="goHome('resumen')"><span class="nav-icon">__ICON_GRID__</span> Resumen</a>
+        <a class="nav-item" data-view="docentes" onclick="goHome('docentes')"><span class="nav-icon">__ICON_USER__</span> Docentes</a>
+        <a class="nav-item" data-view="alumnos" onclick="goHome('alumnos')"><span class="nav-icon">__ICON_PEOPLE__</span> Alumnos</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-info">
+          <div class="admin-avatar" id="sidebarInitials">A</div>
+          <div>
+            <div class="admin-name" id="sidebarName">Coordinación</div>
+            <div class="admin-role">Administrador</div>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="doLogout()">__ICON_LOGOUT__ Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-title">
+          <span id="topbarBack" style="display:none;" onclick="goBack()" class="topbar-back">__ICON_BACK__</span>
+          <span id="topbarTitleText">Resumen</span>
+        </div>
+      </div>
+      <div class="content">
+
+        <!-- RESUMEN -->
+        <div class="view active" id="view-resumen">
+          <div class="grid-stats" id="resumenStats"></div>
+          <div class="section-label">Promedio por grado</div>
+          <div class="card" style="margin-bottom:24px;"><table class="data-table" id="gradoTable"></table></div>
+          <div class="section-label">Docentes</div>
+          <div class="card"><table class="data-table" id="resumenDocentesTable"></table></div>
+        </div>
+
+        <!-- DOCENTES (lista) -->
+        <div class="view" id="view-docentes">
+          <div class="card"><table class="data-table" id="docentesTable"></table></div>
+        </div>
+
+        <!-- DOCENTE (detalle) -->
+        <div class="view" id="view-docente-detalle">
+          <div class="detail-header">
+            <div class="detail-header-name" id="docDetalleNombre">Docente</div>
+            <div class="detail-header-meta" id="docDetalleMeta"></div>
+          </div>
+          <div class="grid-stats" id="docDetalleStats"></div>
+          <div class="section-label">Grupos a cargo</div>
+          <div class="card" style="margin-bottom:24px;"><table class="data-table" id="docDetalleGrupos"></table></div>
+          <div class="section-label">Feedback de coordinación</div>
+          <div class="card">
+            <div class="mb-16">
+              <label class="text-sm fw-600 mb-8" style="display:block;">Enfocar a un grupo (opcional)</label>
+              <select id="fbGroupSelect" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;margin-bottom:10px;">
+                <option value="">General (todo el docente)</option>
+              </select>
+              <textarea id="fbTextarea" class="fb-textarea" placeholder="Ej. El grupo 3°A necesita reforzar comprensión lectora; sugiero dedicar la próxima sesión a lectura guiada."></textarea>
+              <div style="margin-top:10px;"><button class="btn btn-primary btn-sm" onclick="enviarFeedback()">__ICON_MESSAGE__ Enviar feedback</button></div>
+            </div>
+            <div id="fbHistory"></div>
+          </div>
+        </div>
+
+        <!-- GRUPO (detalle) -->
+        <div class="view" id="view-grupo-detalle">
+          <div class="detail-header">
+            <div class="detail-header-name" id="grpDetalleNombre">Grupo</div>
+            <div class="detail-header-meta" id="grpDetalleMeta"></div>
+          </div>
+          <div class="grid-stats" id="grpDetalleStats"></div>
+          <div class="section-label">Alumnos</div>
+          <div class="card"><table class="data-table" id="grpDetalleAlumnos"></table></div>
+        </div>
+
+        <!-- ALUMNOS (lista global) -->
+        <div class="view" id="view-alumnos">
+          <div class="filter-bar">
+            <input type="text" id="alumnoSearch" placeholder="Buscar por nombre..." oninput="renderAlumnosList()">
+            <select id="alumnoGradoFilter" onchange="renderAlumnosList()"><option value="">Todos los grados</option></select>
+            <select id="alumnoDocenteFilter" onchange="renderAlumnosList()"><option value="">Todos los docentes</option></select>
+          </div>
+          <div class="card"><table class="data-table" id="alumnosTable"></table></div>
+        </div>
+
+        <!-- ALUMNO (detalle) -->
+        <div class="view" id="view-alumno-detalle">
+          <div class="detail-header">
+            <div class="detail-header-name" id="alDetalleNombre">Alumno</div>
+            <div class="detail-header-meta" id="alDetalleMeta"></div>
+          </div>
+          <div class="grid-stats" id="alDetalleStats"></div>
+          <div class="section-label">Historial de exámenes</div>
+          <div class="card"><table class="data-table" id="alDetalleHistorial"></table></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script type="module">
+import CONFIG from './config.js';
+window.CONFIG = CONFIG;
+</script>
+<script>
+const { createClient } = supabase;
+const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://euwsjtcvfwcivywpkyyn.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk');
+
+// ── ICONOS (SVG en línea, sin emojis) ──────────────────────────────
+const ICONS = {
+  book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2H3v15h3c2.4 0 4.5.7 6 2"/><path d="M12 6c1.5-1.3 3.6-2 6-2h3v15h-3c-2.4 0-4.5.7-6 2V6Z"/></svg>`,
+  grid: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>`,
+  people: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 14.1c2.6.5 4.5 2.6 4.7 5.9"/></svg>`,
+  logout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
+  back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`,
+  message: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>`,
+  empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 7l2-4h14l2 4"/><path d="M9 11h6"/></svg>`,
+};
+document.body.innerHTML = document.body.innerHTML
+  .replaceAll('__ICON_BOOK__', ICONS.book)
+  .replaceAll('__ICON_GRID__', ICONS.grid)
+  .replaceAll('__ICON_USER__', ICONS.user)
+  .replaceAll('__ICON_PEOPLE__', ICONS.people)
+  .replaceAll('__ICON_LOGOUT__', ICONS.logout)
+  .replaceAll('__ICON_BACK__', ICONS.back)
+  .replaceAll('__ICON_MESSAGE__', ICONS.message);
+
+let currentAdmin = null;
+let navStack = []; // {viewName, renderFn}
+let currentViewName = 'resumen';
+
+// Datos en memoria (cargados una vez al entrar)
+let DB = { teachers: [], groups: [], students: [], exams: [], responses: [], sessions: [], resultsP2: [], feedback: [] };
+let AGG = null; // estructuras derivadas
+
+window.onload = async () => {
+  const saved = localStorage.getItem('piense_admin');
+  if (saved) { currentAdmin = JSON.parse(saved); await showApp(); }
+  else { document.getElementById('authSection').style.display = 'block'; }
+};
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return toast('Completa todos los campos');
+  const { data, error } = await sb.from('admins').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  if (error || !data) return toast('Credenciales incorrectas');
+  currentAdmin = data;
+  localStorage.setItem('piense_admin', JSON.stringify(data));
+  await showApp();
+}
+function doLogout() { localStorage.removeItem('piense_admin'); currentAdmin = null; location.reload(); }
+
+async function showApp() {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('appSection').style.display = 'block';
+  document.getElementById('sidebarInitials').textContent = currentAdmin.nombre.slice(0, 2).toUpperCase();
+  document.getElementById('sidebarName').textContent = currentAdmin.nombre;
+  await loadAllData();
+  goHome('resumen');
+}
+
+// ── CARGA DE DATOS ──────────────────────────────────────────────────
+async function loadAllData() {
+  const [teachers, groups, students, exams, responses, sessions, resultsP2, feedback] = await Promise.all([
+    sb.from('teachers').select('*'),
+    sb.from('groups').select('*'),
+    sb.from('students').select('*'),
+    sb.from('exams').select('*'),
+    sb.from('responses').select('*'),
+    sb.from('exam_sessions_p2').select('*'),
+    sb.from('student_results_p2').select('*'),
+    sb.from('coordinator_feedback').select('*').order('created_at', { ascending: false }),
+  ]);
+  DB.teachers = teachers.data || [];
+  DB.groups = groups.data || [];
+  DB.students = students.data || [];
+  DB.exams = exams.data || [];
+  DB.responses = responses.data || [];
+  DB.sessions = sessions.data || [];
+  DB.resultsP2 = resultsP2.data || [];
+  DB.feedback = feedback.data || [];
+  buildAggregates();
+}
+
+function buildAggregates() {
+  const examsById = Object.fromEntries(DB.exams.map(e => [e.id, e]));
+  const sessionsById = Object.fromEntries(DB.sessions.map(s => [s.id, s]));
+
+  // Intentos unificados por alumno: { fecha, app, examen, pct, tiempo }
+  const attemptsByStudent = {};
+  const pushAttempt = (studentId, attempt) => {
+    if (!attemptsByStudent[studentId]) attemptsByStudent[studentId] = [];
+    attemptsByStudent[studentId].push(attempt);
+  };
+  DB.responses.forEach(r => {
+    const exam = examsById[r.exam_id];
+    pushAttempt(r.student_id, {
+      fecha: r.created_at, app: 'Mini-Exámenes', examen: exam?.name || 'Examen',
+      pct: r.total_questions ? Math.round((r.score / r.total_questions) * 100) : null,
+      tiempo: r.elapsed_seconds,
+    });
+  });
+  DB.resultsP2.forEach(r => {
+    const session = sessionsById[r.session_id];
+    pushAttempt(r.student_id, {
+      fecha: r.completed_at, app: 'PIENSE II', examen: session?.nombre || 'Examen',
+      pct: r.calificacion, tiempo: r.tiempo_segundos,
+    });
+  });
+
+  const avgPct = list => {
+    const valid = list.filter(a => a.pct != null);
+    if (!valid.length) return null;
+    return Math.round(valid.reduce((s, a) => s + a.pct, 0) / valid.length);
+  };
+
+  const studentsByGroup = {};
+  DB.students.forEach(s => {
+    const gid = s.group_id || '__sin_grupo__';
+    if (!studentsByGroup[gid]) studentsByGroup[gid] = [];
+    studentsByGroup[gid].push(s);
+  });
+
+  const groupsByTeacher = {};
+  DB.groups.forEach(g => {
+    if (!groupsByTeacher[g.teacher_id]) groupsByTeacher[g.teacher_id] = [];
+    groupsByTeacher[g.teacher_id].push(g);
+  });
+
+  AGG = { examsById, sessionsById, attemptsByStudent, avgPct, studentsByGroup, groupsByTeacher };
+}
+
+function studentAttempts(studentId) { return AGG.attemptsByStudent[studentId] || []; }
+function studentPct(studentId) { return AGG.avgPct(studentAttempts(studentId)); }
+function groupStudents(groupId) { return AGG.studentsByGroup[groupId] || []; }
+function groupPct(groupId) {
+  const list = groupStudents(groupId).flatMap(s => studentAttempts(s.id));
+  return AGG.avgPct(list);
+}
+function teacherGroups(teacherId) { return AGG.groupsByTeacher[teacherId] || []; }
+function teacherStudents(teacherId) { return teacherGroups(teacherId).flatMap(g => groupStudents(g.id)); }
+function teacherPct(teacherId) {
+  const list = teacherStudents(teacherId).flatMap(s => studentAttempts(s.id));
+  return AGG.avgPct(list);
+}
+function teacherExamCount(teacherId) {
+  return DB.exams.filter(e => e.teacher_id === teacherId).length + DB.sessions.filter(s => s.docente_id === teacherId).length;
+}
+
+function pctPill(pct) {
+  if (pct == null) return `<span class="pct-pill pct-none">Sin datos</span>`;
+  const cls = pct >= 70 ? 'pct-good' : pct >= 50 ? 'pct-mid' : 'pct-low';
+  return `<span class="pct-pill ${cls}">${pct}%</span>`;
+}
+function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'; }
+
+// ── NAVEGACIÓN ──────────────────────────────────────────────────────
+function showAdminView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  const navEl = document.querySelector(`[data-view="${name}"]`);
+  if (navEl) navEl.classList.add('active');
+}
+const VIEW_TITLES = {
+  resumen: 'Resumen', docentes: 'Docentes', alumnos: 'Alumnos',
+  'docente-detalle': 'Docente', 'grupo-detalle': 'Grupo', 'alumno-detalle': 'Alumno',
+};
+function goHome(name) {
+  navStack = [];
+  currentViewName = name;
+  document.getElementById('topbarBack').style.display = 'none';
+  document.getElementById('topbarTitleText').textContent = VIEW_TITLES[name];
+  showAdminView(name);
+  if (name === 'resumen') renderResumen();
+  if (name === 'docentes') renderDocentesList();
+  if (name === 'alumnos') renderAlumnosFilters(), renderAlumnosList();
+}
+function goTo(name, renderFn) {
+  navStack.push({ viewName: currentViewName, title: document.getElementById('topbarTitleText').textContent });
+  currentViewName = name;
+  document.getElementById('topbarBack').style.display = 'inline-flex';
+  document.getElementById('topbarTitleText').textContent = VIEW_TITLES[name];
+  showAdminView(name);
+  renderFn();
+}
+function goBack() {
+  const prev = navStack.pop();
+  if (!prev) return goHome('resumen');
+  currentViewName = prev.viewName;
+  document.getElementById('topbarBack').style.display = navStack.length ? 'inline-flex' : 'none';
+  document.getElementById('topbarTitleText').textContent = prev.title;
+  showAdminView(prev.viewName);
+  if (prev.viewName === 'resumen') renderResumen();
+  else if (prev.viewName === 'docentes') renderDocentesList();
+  else if (prev.viewName === 'alumnos') renderAlumnosList();
+  else if (prev.viewName === 'docente-detalle') renderDocenteDetalle(window.__lastTeacherId);
+  else if (prev.viewName === 'grupo-detalle') renderGrupoDetalle(window.__lastGroupId);
+}
+
+// ── RESUMEN ───────────────────────────────────────────────────────
+function renderResumen() {
+  const totalAlumnos = DB.students.length;
+  const totalAttempts = DB.responses.length + DB.resultsP2.length;
+  const allPct = AGG.avgPct(Object.values(AGG.attemptsByStudent).flat());
+  document.getElementById('resumenStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Docentes</div><div class="stat-value">${DB.teachers.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Grupos</div><div class="stat-value">${DB.groups.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${totalAlumnos}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes presentados</div><div class="stat-value">${totalAttempts}</div></div>
+    <div class="stat-card"><div class="stat-label">Promedio general</div><div class="stat-value">${allPct != null ? allPct + '%' : '—'}</div></div>`;
+
+  const porGrado = {};
+  DB.students.forEach(s => {
+    const grado = s.grado || 'Sin grado';
+    if (!porGrado[grado]) porGrado[grado] = [];
+    porGrado[grado].push(...studentAttempts(s.id));
+  });
+  const gradosOrdenados = Object.keys(porGrado).sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99));
+  document.getElementById('gradoTable').innerHTML = gradosOrdenados.length ? `
+    <tr><th>Grado</th><th>Alumnos</th><th>Exámenes</th><th>Promedio</th></tr>
+    ${gradosOrdenados.map(grado => {
+      const n = DB.students.filter(s => (s.grado || 'Sin grado') === grado).length;
+      return `<tr><td>${grado}°</td><td>${n}</td><td>${porGrado[grado].length}</td><td>${pctPill(AGG.avgPct(porGrado[grado]))}</td></tr>`;
+    }).join('')}`
+    : `<tr><td class="text-muted text-sm">Todavía no hay alumnos registrados.</td></tr>`;
+
+  document.getElementById('resumenDocentesTable').innerHTML = DB.teachers.length ? `
+    <tr><th>Nombre</th><th>Grupos</th><th>Alumnos</th><th>Exámenes</th><th>Promedio</th></tr>
+    ${DB.teachers.map(t => `
+      <tr class="clickable" onclick="openDocente('${t.id}')">
+        <td class="fw-600">${t.name}</td>
+        <td>${teacherGroups(t.id).length}</td>
+        <td>${teacherStudents(t.id).length}</td>
+        <td>${teacherExamCount(t.id)}</td>
+        <td>${pctPill(teacherPct(t.id))}</td>
+      </tr>`).join('')}`
+    : `<tr><td class="text-muted text-sm">Todavía no hay docentes registrados.</td></tr>`;
+}
+
+// ── DOCENTES ──────────────────────────────────────────────────────
+function renderDocentesList() {
+  document.getElementById('docentesTable').innerHTML = DB.teachers.length ? `
+    <tr><th>Nombre</th><th>Correo</th><th>Grupos</th><th>Alumnos</th><th>Exámenes</th><th>Promedio</th></tr>
+    ${DB.teachers.map(t => `
+      <tr class="clickable" onclick="openDocente('${t.id}')">
+        <td class="fw-600">${t.name}</td>
+        <td class="text-sm text-muted">${t.email}</td>
+        <td>${teacherGroups(t.id).length}</td>
+        <td>${teacherStudents(t.id).length}</td>
+        <td>${teacherExamCount(t.id)}</td>
+        <td>${pctPill(teacherPct(t.id))}</td>
+      </tr>`).join('')}`
+    : `<tr><td class="text-muted text-sm">Todavía no hay docentes registrados.</td></tr>`;
+}
+
+function openDocente(teacherId) { goTo('docente-detalle', () => renderDocenteDetalle(teacherId)); }
+
+function renderDocenteDetalle(teacherId) {
+  window.__lastTeacherId = teacherId;
+  const t = DB.teachers.find(x => x.id === teacherId);
+  if (!t) return;
+  document.getElementById('docDetalleNombre').textContent = t.name;
+  document.getElementById('docDetalleMeta').textContent = t.email;
+  const grupos = teacherGroups(teacherId);
+  const alumnos = teacherStudents(teacherId);
+  document.getElementById('docDetalleStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Grupos</div><div class="stat-value">${grupos.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${alumnos.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes</div><div class="stat-value">${teacherExamCount(teacherId)}</div></div>
+    <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${teacherPct(teacherId) != null ? teacherPct(teacherId) + '%' : '—'}</div></div>`;
+  document.getElementById('docDetalleGrupos').innerHTML = grupos.length ? `
+    <tr><th>Grupo</th><th>Código</th><th>Alumnos</th><th>Promedio</th></tr>
+    ${grupos.map(g => `
+      <tr class="clickable" onclick="openGrupo('${g.id}')">
+        <td class="fw-600">${g.name}</td>
+        <td class="text-sm text-muted">${g.access_code}</td>
+        <td>${groupStudents(g.id).length}</td>
+        <td>${pctPill(groupPct(g.id))}</td>
+      </tr>`).join('')}`
+    : `<tr><td class="text-muted text-sm">Este docente todavía no tiene grupos.</td></tr>`;
+
+  const sel = document.getElementById('fbGroupSelect');
+  sel.innerHTML = `<option value="">General (todo el docente)</option>` + grupos.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+  renderFeedbackHistory(teacherId);
+}
+
+function renderFeedbackHistory(teacherId) {
+  const groupsById = Object.fromEntries(DB.groups.map(g => [g.id, g]));
+  const items = DB.feedback.filter(f => f.teacher_id === teacherId);
+  document.getElementById('fbHistory').innerHTML = items.length ? items.map(f => `
+    <div class="feedback-item">
+      <div class="feedback-meta">
+        <span>${fmtDate(f.created_at)}</span>
+        ${f.group_id ? `<span class="feedback-scope">${groupsById[f.group_id]?.name || 'Grupo'}</span>` : `<span class="feedback-scope">General</span>`}
+      </div>
+      <div class="feedback-text">${f.mensaje}</div>
+    </div>`).join('')
+    : `<div class="text-muted text-sm">Todavía no le has dejado feedback a este docente.</div>`;
+}
+
+async function enviarFeedback() {
+  const teacherId = window.__lastTeacherId;
+  const groupId = document.getElementById('fbGroupSelect').value || null;
+  const mensaje = document.getElementById('fbTextarea').value.trim();
+  if (!mensaje) return toast('Escribe un mensaje antes de enviar');
+  const { data, error } = await sb.from('coordinator_feedback').insert({
+    admin_id: currentAdmin.id, teacher_id: teacherId, group_id: groupId, mensaje,
+  }).select().single();
+  if (error) return toast('Error al enviar: ' + error.message);
+  DB.feedback.unshift(data);
+  document.getElementById('fbTextarea').value = '';
+  renderFeedbackHistory(teacherId);
+  toast('Feedback enviado ✓');
+}
+
+// ── GRUPOS ────────────────────────────────────────────────────────
+function openGrupo(groupId) { goTo('grupo-detalle', () => renderGrupoDetalle(groupId)); }
+
+function renderGrupoDetalle(groupId) {
+  window.__lastGroupId = groupId;
+  const g = DB.groups.find(x => x.id === groupId);
+  if (!g) return;
+  const t = DB.teachers.find(x => x.id === g.teacher_id);
+  document.getElementById('grpDetalleNombre').textContent = g.name;
+  document.getElementById('grpDetalleMeta').textContent = `Código ${g.access_code} · Docente: ${t?.name || '—'}`;
+  const alumnos = groupStudents(groupId);
+  document.getElementById('grpDetalleStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${alumnos.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes presentados</div><div class="stat-value">${alumnos.flatMap(s => studentAttempts(s.id)).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Promedio del grupo</div><div class="stat-value">${groupPct(groupId) != null ? groupPct(groupId) + '%' : '—'}</div></div>`;
+  document.getElementById('grpDetalleAlumnos').innerHTML = alumnos.length ? `
+    <tr><th>Nombre</th><th>Grado</th><th>Exámenes</th><th>Promedio</th><th>Puntos</th></tr>
+    ${alumnos.map(s => `
+      <tr class="clickable" onclick="openAlumno('${s.id}')">
+        <td class="fw-600">${s.nombre}</td>
+        <td>${s.grado || '—'}°</td>
+        <td>${studentAttempts(s.id).length}</td>
+        <td>${pctPill(studentPct(s.id))}</td>
+        <td>${s.puntos_totales || 0}</td>
+      </tr>`).join('')}`
+    : `<tr><td class="text-muted text-sm">Este grupo todavía no tiene alumnos.</td></tr>`;
+}
+
+// ── ALUMNOS ───────────────────────────────────────────────────────
+function renderAlumnosFilters() {
+  const grados = [...new Set(DB.students.map(s => s.grado).filter(Boolean))].sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99));
+  document.getElementById('alumnoGradoFilter').innerHTML = `<option value="">Todos los grados</option>` + grados.map(g => `<option value="${g}">${g}°</option>`).join('');
+  document.getElementById('alumnoDocenteFilter').innerHTML = `<option value="">Todos los docentes</option>` + DB.teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+}
+
+function renderAlumnosList() {
+  const q = (document.getElementById('alumnoSearch')?.value || '').trim().toLowerCase();
+  const gradoFiltro = document.getElementById('alumnoGradoFilter')?.value || '';
+  const docenteFiltro = document.getElementById('alumnoDocenteFilter')?.value || '';
+  const groupsById = Object.fromEntries(DB.groups.map(g => [g.id, g]));
+
+  let list = DB.students.slice();
+  if (q) list = list.filter(s => s.nombre.toLowerCase().includes(q));
+  if (gradoFiltro) list = list.filter(s => s.grado === gradoFiltro);
+  if (docenteFiltro) list = list.filter(s => groupsById[s.group_id]?.teacher_id === docenteFiltro);
+
+  document.getElementById('alumnosTable').innerHTML = list.length ? `
+    <tr><th>Nombre</th><th>Grado</th><th>Grupo</th><th>Docente</th><th>Exámenes</th><th>Promedio</th></tr>
+    ${list.map(s => {
+      const grupo = groupsById[s.group_id];
+      const docente = grupo ? DB.teachers.find(t => t.id === grupo.teacher_id) : null;
+      return `<tr class="clickable" onclick="openAlumno('${s.id}')">
+        <td class="fw-600">${s.nombre}</td>
+        <td>${s.grado || '—'}°</td>
+        <td class="text-sm text-muted">${grupo?.name || 'Sin grupo'}</td>
+        <td class="text-sm text-muted">${docente?.name || '—'}</td>
+        <td>${studentAttempts(s.id).length}</td>
+        <td>${pctPill(studentPct(s.id))}</td>
+      </tr>`;
+    }).join('')}`
+    : `<tr><td class="text-muted text-sm">Ningún alumno coincide con ese filtro.</td></tr>`;
+}
+
+function openAlumno(studentId) { goTo('alumno-detalle', () => renderAlumnoDetalle(studentId)); }
+
+function renderAlumnoDetalle(studentId) {
+  const s = DB.students.find(x => x.id === studentId);
+  if (!s) return;
+  const grupo = DB.groups.find(g => g.id === s.group_id);
+  const docente = grupo ? DB.teachers.find(t => t.id === grupo.teacher_id) : null;
+  document.getElementById('alDetalleNombre').textContent = s.nombre;
+  document.getElementById('alDetalleMeta').textContent = `${s.grado || '—'}° · ${grupo?.name || 'Sin grupo'} · Docente: ${docente?.name || '—'}`;
+  const attempts = studentAttempts(studentId).slice().sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+  document.getElementById('alDetalleStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Exámenes presentados</div><div class="stat-value">${attempts.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Promedio</div><div class="stat-value">${studentPct(studentId) != null ? studentPct(studentId) + '%' : '—'}</div></div>
+    <div class="stat-card"><div class="stat-label">Puntos acumulados</div><div class="stat-value">${s.puntos_totales || 0}</div></div>`;
+  document.getElementById('alDetalleHistorial').innerHTML = attempts.length ? `
+    <tr><th>Fecha</th><th>Plataforma</th><th>Examen</th><th>Calificación</th><th>Tiempo</th></tr>
+    ${attempts.map(a => `
+      <tr>
+        <td class="text-sm">${fmtDate(a.fecha)}</td>
+        <td class="text-sm text-muted">${a.app}</td>
+        <td>${a.examen}</td>
+        <td>${pctPill(a.pct)}</td>
+        <td class="text-sm text-muted">${a.tiempo ? Math.round(a.tiempo / 60) + ' min' : '—'}</td>
+      </tr>`).join('')}`
+    : `<tr><td class="text-muted text-sm">Este alumno todavía no presenta exámenes.</td></tr>`;
+}
+
+function toast(msg, duration = 3000) {
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+</script>
+</body>
+</html>

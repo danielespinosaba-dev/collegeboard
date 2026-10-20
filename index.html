@@ -38,13 +38,20 @@
   .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; color: rgba(255,255,255,0.55); transition: all 0.15s; text-decoration: none; }
   .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
   .nav-item.active { background: rgba(245,145,49,0.18); color: #ffb673; }
-  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+  .nav-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .nav-icon svg { width: 100%; height: 100%; }
+  .btn-logout svg { width: 14px; height: 14px; }
+  .login-logo .icon, .logo-mark .icon { width: 22px; height: 22px; color: var(--accent); display: inline-flex; vertical-align: -5px; margin-right: 4px; }
+  .login-logo .icon svg, .logo-mark .icon svg { width: 100%; height: 100%; }
+  .empty-icon svg { width: 100%; height: 100%; }
+  .card-title .icon, .btn .icon { width: 16px; height: 16px; display: inline-flex; vertical-align: -3px; }
+  .card-title .icon svg, .btn .icon svg { width: 100%; height: 100%; }
   .sidebar-footer { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.08); }
   .teacher-info { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
   .teacher-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sky); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
   .teacher-name { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 500; }
   .teacher-role { font-size: 11px; color: rgba(255,255,255,0.3); }
-  .btn-logout { display: block; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; }
+  .btn-logout { display: flex; align-items: center; gap: 6px; margin-top: 6px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; border-radius: 6px; width: 100%; text-align: left; transition: all 0.15s; font-family: inherit; }
   .btn-logout:hover { background: rgba(239,68,68,0.15); color: #f87171; }
   .main { margin-left: 220px; flex: 1; }
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
@@ -123,6 +130,7 @@
   /* Modalidad badges */
   .badge-prueba { background: #ede9fe; color: #6d28d9; }
   .badge-examen { background: #fff7ed; color: #c2410c; }
+  .feedback-scope { display: inline-block; background: var(--sky-light); color: var(--sky-dark); border-radius: 999px; padding: 1px 9px; font-size: 11px; font-weight: 600; }
  
   .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
   .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface); cursor: pointer; }
@@ -176,7 +184,7 @@
   .alert-danger { background: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
  
   .empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
-  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-icon { width: 40px; height: 40px; margin: 0 auto 12px; color: var(--text-3); }
   .empty-title { font-size: 16px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
   .empty-text { font-size: 14px; }
  
@@ -207,7 +215,7 @@
 <div id="authSection" style="display:none;">
   <div class="login-wrap">
     <div class="login-box">
-      <div class="login-logo">📚 College Board Mini-Exámenes</div>
+      <div class="login-logo"><span class="icon">__ICON_BOOK__</span>College Board Mini-Exámenes</div>
       <div class="login-sub">Plataforma docente · 1° a 11°</div>
       <div id="loginForm">
         <div class="field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@escuela.edu.mx" autocomplete="email"></div>
@@ -231,17 +239,18 @@
   <div class="app">
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <div class="logo-mark">📚 College Board</div>
+        <div class="logo-mark"><span class="icon">__ICON_BOOK__</span>College Board</div>
         <div class="logo-sub">Mini-Exámenes · 1° a 11°</div>
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">👥</span> Mis grupos</a>
-        <a class="nav-item" data-view="estandar" onclick="showView('estandar')"><span class="nav-icon">🎯</span> Pruebas estandarizadas</a>
-        <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">📋</span> Banco de reactivos</a>
-        <a class="nav-item" data-view="examenes" onclick="showView('examenes')"><span class="nav-icon">📝</span> Exámenes</a>
-        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">🤖</span> Recomendaciones IA</a>
+        <a class="nav-item active" data-view="grupos" onclick="showView('grupos')"><span class="nav-icon">__ICON_PEOPLE__</span> Mis grupos</a>
+        <a class="nav-item" data-view="estandar" onclick="showView('estandar')"><span class="nav-icon">__ICON_TARGET__</span> Pruebas estandarizadas</a>
+        <a class="nav-item" data-view="banco" onclick="showView('banco')"><span class="nav-icon">__ICON_CLIPBOARD__</span> Banco de reactivos</a>
+        <a class="nav-item" data-view="examenes" onclick="showView('examenes')"><span class="nav-icon">__ICON_DOCUMENT__</span> Exámenes</a>
+        <a class="nav-item" data-view="recomendaciones" onclick="showView('recomendaciones')"><span class="nav-icon">__ICON_SPARK__</span> Recomendaciones IA</a>
+        <a class="nav-item" data-view="feedback" onclick="showView('feedback')"><span class="nav-icon">__ICON_MESSAGE__</span> Feedback de coordinación</a>
         <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-          <a class="nav-item" onclick="window.open('students.html','_blank')"><span class="nav-icon">🔗</span> Vista alumno ↗</a>
+          <a class="nav-item" onclick="window.open('students.html','_blank')"><span class="nav-icon">__ICON_EXTERNAL__</span> Vista alumno</a>
         </div>
       </nav>
       <div class="sidebar-footer">
@@ -252,7 +261,7 @@
             <div class="teacher-role">Docente</div>
           </div>
         </div>
-        <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
+        <button class="btn-logout" onclick="doLogout()"><span class="icon">__ICON_LOGOUT__</span> Cerrar sesión</button>
       </div>
     </aside>
  
@@ -270,8 +279,9 @@
  
         <!-- GRUPOS -->
         <div class="view active" id="view-grupos">
+          <div class="grid-stats" id="groupsStats" style="display:none;"></div>
           <div id="groupsGrid">
-            <div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>
+            <div class="empty"><div class="empty-icon">__ICON_PEOPLE__</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>
           </div>
         </div>
  
@@ -293,7 +303,7 @@
         <!-- PRUEBAS ESTANDARIZADAS -->
         <div class="view" id="view-estandar">
           <div class="card mb-16">
-            <div class="card-title">🎯 Generador de pruebas estandarizadas</div>
+            <div class="card-title"><span class="flex-gap"><span class="icon">__ICON_TARGET__</span> Generador de pruebas estandarizadas</span></div>
             <p class="text-sm text-muted mb-16">Elige el grado y la materia. El sistema arma automáticamente una prueba de <strong>10 reactivos</strong> para <strong>10 minutos</strong>, graduada según el nivel escolar.</p>
             <div class="filter-bar">
               <select id="stdGrade" onchange="updateEstandarHint()">
@@ -320,7 +330,7 @@
             </div>
           </div>
           <div class="alert alert-info" id="stdHint" style="font-size:13px;">Selecciona un grado para ver cuántos reactivos hay disponibles.</div>
-          <button class="btn btn-primary" style="margin-top:14px;" onclick="generarPruebaEstandarizada()">⚡ Generar prueba (10 reactivos · 10 min) →</button>
+          <button class="btn btn-primary" style="margin-top:14px;" onclick="generarPruebaEstandarizada()">Generar prueba (10 reactivos · 10 min) →</button>
         </div>
 
         <!-- BANCO -->
@@ -365,7 +375,7 @@
             </div>
           </div>
           <div class="selected-counter" id="selectedCounter" style="display:none;">
-            <span>✅ <span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
+            <span><span id="selectedCount">0</span> de 10 reactivos seleccionados</span>
             <button class="btn btn-primary btn-sm" onclick="openCreateExamModal()">Crear examen con estos reactivos →</button>
           </div>
           <div class="questions-list" id="questionsList"><div class="empty"><span class="spinner"></span></div></div>
@@ -373,9 +383,10 @@
  
         <!-- EXÁMENES -->
         <div class="view" id="view-examenes">
+          <div class="grid-stats" id="examsStats" style="display:none;"></div>
           <div class="card">
             <div class="card-title">Exámenes creados <button class="btn btn-secondary btn-sm" onclick="showView('banco')">+ Crear desde banco →</button></div>
-            <div id="examsList"><div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div></div>
+            <div id="examsList"><div class="empty"><div class="empty-icon">__ICON_DOCUMENT__</div><div class="empty-title">Sin exámenes todavía</div></div></div>
           </div>
         </div>
  
@@ -391,9 +402,15 @@
               <button class="btn btn-primary" onclick="generateRecommendations()">Analizar con IA →</button>
             </div>
           </div>
-          <div id="recPanel"><div class="empty"><div class="empty-icon">🤖</div><div class="empty-title">Selecciona un examen para analizar</div></div></div>
+          <div id="recPanel"><div class="empty"><div class="empty-icon">__ICON_SPARK__</div><div class="empty-title">Selecciona un examen para analizar</div></div></div>
         </div>
- 
+
+        <!-- FEEDBACK DE COORDINACIÓN -->
+        <div class="view" id="view-feedback">
+          <p class="text-sm text-muted mb-16">Notas y sugerencias que la coordinación académica te ha dejado sobre tus grupos.</p>
+          <div id="feedbackList"><div class="empty"><div class="empty-icon">__ICON_MESSAGE__</div><div class="empty-title">Cargando...</div></div></div>
+        </div>
+
       </div>
     </main>
   </div>
@@ -461,12 +478,12 @@
       <div class="modalidad-selector">
         <label class="modalidad-option selected-m" id="mOpt-examen" onclick="selectModalidad('examen')">
           <input type="radio" name="modalidad" value="examen" checked>
-          <div class="modalidad-title">📋 Examen</div>
+          <div class="modalidad-title">Examen</div>
           <div class="modalidad-desc">Una sola vez por alumno</div>
         </label>
         <label class="modalidad-option" id="mOpt-prueba" onclick="selectModalidad('prueba')">
           <input type="radio" name="modalidad" value="prueba">
-          <div class="modalidad-title">🔄 Prueba</div>
+          <div class="modalidad-title">Prueba</div>
           <div class="modalidad-desc">Reintentos ilimitados</div>
         </label>
       </div>
@@ -497,7 +514,7 @@
       <button class="btn btn-danger btn-sm" onclick="closeExamStatus()">⬛ Cerrar examen</button>
     </div>
     <div class="flex-gap mb-12" style="justify-content:center;gap:12px;">
-      <button class="btn btn-secondary" onclick="abrirVersionImprimible()">🖨 Versión imprimible</button>
+      <button class="btn btn-secondary" onclick="abrirVersionImprimible()">Versión imprimible</button>
     </div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="closeModal('modalExamCode')">Cerrar</button>
@@ -508,7 +525,7 @@
 <!-- MODAL: Analizar reactivo (IA) -->
 <div class="modal-overlay" id="modalAnalizarReactivo">
   <div class="modal" style="max-width:560px;">
-    <div class="modal-title">🔎 Análisis del reactivo</div>
+    <div class="modal-title">Análisis del reactivo</div>
     <div id="analizarReactivoBody"></div>
     <div class="modal-footer">
       <button class="btn btn-primary" onclick="closeModal('modalAnalizarReactivo')">Cerrar</button>
@@ -528,6 +545,29 @@ window.CONFIG = CONFIG;
 const { createClient } = supabase;
 // Read credentials from window.CONFIG (loaded from config.js)
 const sb = createClient(window.CONFIG?.SUPABASE_URL || 'https://euwsjtcvfwcivywpkyyn.supabase.co', window.CONFIG?.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1d3NqdGN2ZndjaXZ5d3BreXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDUyMTgsImV4cCI6MjA5NDY4MTIxOH0.w2s8ZCaCKe_w25uuqKU5Io520SM_ecABdrTMQI95Swk');
+
+// ── ICONOS (SVG en línea, sin emojis) ──────────────────────────────
+const ICONS = {
+  book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-1.5-1.3-3.6-2-6-2H3v15h3c2.4 0 4.5.7 6 2"/><path d="M12 6c1.5-1.3 3.6-2 6-2h3v15h-3c-2.4 0-4.5.7-6 2V6Z"/></svg>`,
+  people: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.3 14.1c2.6.5 4.5 2.6 4.7 5.9"/></svg>`,
+  target: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/></svg>`,
+  clipboard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M8.5 10h7M8.5 14h7M8.5 18h4"/></svg>`,
+  document: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>`,
+  spark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11a9 9 0 1 1-5-8.1"/><path d="M19 3v4M17 5h4"/><path d="M9 10v4M7 12h4"/></svg>`,
+  externalLink: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/><path d="M14 4h6v6"/><path d="M20 4 11 13"/></svg>`,
+  logout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
+  message: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>`,
+};
+document.body.innerHTML = document.body.innerHTML
+  .replaceAll('__ICON_BOOK__', ICONS.book)
+  .replaceAll('__ICON_PEOPLE__', ICONS.people)
+  .replaceAll('__ICON_TARGET__', ICONS.target)
+  .replaceAll('__ICON_CLIPBOARD__', ICONS.clipboard)
+  .replaceAll('__ICON_DOCUMENT__', ICONS.document)
+  .replaceAll('__ICON_SPARK__', ICONS.spark)
+  .replaceAll('__ICON_EXTERNAL__', ICONS.externalLink)
+  .replaceAll('__ICON_LOGOUT__', ICONS.logout)
+  .replaceAll('__ICON_MESSAGE__', ICONS.message);
 
  
 let currentTeacher = null;
@@ -602,7 +642,7 @@ function selectModalidad(val) {
 }
  
 // ── NAVIGATION ──────────────────────────────────────────────────
-const viewTitles = { grupos:'Mis grupos', estandar:'Pruebas estandarizadas', banco:'Banco de reactivos', examenes:'Exámenes', recomendaciones:'Recomendaciones IA' };
+const viewTitles = { grupos:'Mis grupos', estandar:'Pruebas estandarizadas', banco:'Banco de reactivos', examenes:'Exámenes', recomendaciones:'Recomendaciones IA', feedback:'Feedback de coordinación' };
 const viewActions = {
   grupos: { text: '+ Nuevo grupo', fn: 'openCreateGroupModal()' },
   estandar: { text: 'Actualizar', fn: 'loadQuestions()' },
@@ -623,9 +663,12 @@ function showView(name) {
     document.getElementById('topbarAction').textContent = action.text;
     document.getElementById('topbarAction').setAttribute('onclick', action.fn);
     document.getElementById('topbarAction').style.display = '';
+  } else {
+    document.getElementById('topbarAction').style.display = 'none';
   }
   if (name === 'recomendaciones') loadRecExamSelect();
   if (name === 'estandar') updateEstandarHint();
+  if (name === 'feedback') loadFeedback();
 }
  
 function openGroupDetail(groupId, groupName, groupCode) {
@@ -649,18 +692,28 @@ function backToGroups() { currentGroupId = null; showView('grupos'); loadGroups(
 async function loadGroups() {
   const { data } = await sb.from('groups').select('id, name, access_code, created_at').eq('teacher_id', currentTeacher.id).order('created_at');
   const grid = document.getElementById('groupsGrid');
+  const statsEl = document.getElementById('groupsStats');
   const sel = document.getElementById('newExamGroup');
   if (!data || data.length === 0) {
-    grid.innerHTML = `<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>`;
+    statsEl.style.display = 'none';
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">${ICONS.people}</div><div class="empty-title">Sin grupos todavía</div><div class="empty-text">Crea tu primer grupo para empezar</div></div>`;
     sel.innerHTML = '<option value="">Sin grupos disponibles</option>'; return;
   }
   const { data: exams } = await sb.from('exams').select('id, group_id, status').eq('teacher_id', currentTeacher.id);
+  const { data: students } = await sb.from('students').select('id, group_id').in('group_id', data.map(g => g.id));
   const examsByGroup = {};
   (exams || []).forEach(e => {
     if (!examsByGroup[e.group_id]) examsByGroup[e.group_id] = { total: 0, active: 0 };
     examsByGroup[e.group_id].total++;
     if (e.status === 'active') examsByGroup[e.group_id].active++;
   });
+  const totalActivos = (exams || []).filter(e => e.status === 'active').length;
+  statsEl.style.display = '';
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-label">Grupos</div><div class="stat-value">${data.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Alumnos</div><div class="stat-value">${(students || []).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes creados</div><div class="stat-value">${(exams || []).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Exámenes activos</div><div class="stat-value">${totalActivos}</div></div>`;
   grid.innerHTML = `<div class="grid-2">${data.map(g => {
     const stats = examsByGroup[g.id] || { total: 0, active: 0 };
     return `<div class="group-card" onclick="openGroupDetail('${g.id}','${g.name.replace(/'/g,"\\'")}','${g.access_code}')">
@@ -681,7 +734,7 @@ async function createGroup() {
   const { error } = await sb.from('groups').insert({ teacher_id: currentTeacher.id, name, access_code: code });
   if (error) return toast('Error al crear grupo: ' + error.message);
   closeModal('modalCreateGroup'); document.getElementById('newGroupName').value = '';
-  toast('Grupo creado ✅'); loadGroups();
+  toast('Grupo creado'); loadGroups();
 }
 async function deleteGroup(id) {
   if (!confirm('¿Eliminar este grupo? Los exámenes asociados no se borrarán.')) return;
@@ -704,9 +757,9 @@ async function loadGroupStudents(groupId) {
         <div class="group-stats">
           <div class="group-stat"><span>${s.puntos_totales || 0}</span> pts</div>
         </div>
-        <button class="btn btn-outline btn-sm" style="margin-top:10px;width:100%;" onclick="resetStudentPassword('${s.id}','${s.nombre.replace(/'/g, "\\'")}')">🔑 Restablecer contraseña</button>
+        <button class="btn btn-outline btn-sm" style="margin-top:10px;width:100%;" onclick="resetStudentPassword('${s.id}','${s.nombre.replace(/'/g, "\\'")}')">Restablecer contraseña</button>
       </div>`).join('')}</div>`
-    : `<div class="empty"><div class="empty-icon">🧑‍🎓</div><div class="empty-title">Sin alumnos registrados</div><div class="empty-text">Agrégalos para que entren con su usuario y contraseña</div></div>`;
+    : `<div class="empty"><div class="empty-icon">${ICONS.people}</div><div class="empty-title">Sin alumnos registrados</div><div class="empty-text">Agrégalos para que entren con su usuario y contraseña</div></div>`;
 }
 
 function openAddStudentModal() { openModal('modalAddStudent'); }
@@ -727,7 +780,7 @@ async function addStudentToGroup() {
   document.getElementById('newStudentEmail').value = '';
   document.getElementById('newStudentPassword').value = '';
   document.getElementById('newStudentGrado').value = '';
-  toast('Alumno agregado ✅');
+  toast('Alumno agregado');
   loadGroupStudents(currentGroupId);
 }
 
@@ -737,7 +790,7 @@ async function resetStudentPassword(id, nombre) {
   if (nueva.length < 4) return toast('Mínimo 4 caracteres');
   const { error } = await sb.from('students').update({ password_hash: btoa(nueva) }).eq('id', id);
   if (error) return toast('Error: ' + error.message);
-  toast('Contraseña actualizada ✅');
+  toast('Contraseña actualizada');
 }
 
 // ── GROUP EXAMS ──────────────────────────────────────────────────
@@ -746,12 +799,12 @@ async function loadGroupExams(groupId) {
   el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
   const { data: exams } = await sb.from('exams').select('*').eq('group_id', groupId).eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
   if (!exams || exams.length === 0) {
-    el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`; return;
+    el.innerHTML = `<div class="empty"><div class="empty-icon">${ICONS.document}</div><div class="empty-title">Sin exámenes todavía</div></div>`; return;
   }
   el.innerHTML = exams.map(e => {
     const modBadge = e.modalidad === 'prueba'
-      ? '<span class="badge badge-prueba">🔄 Prueba</span>'
-      : '<span class="badge badge-examen">📋 Examen</span>';
+      ? '<span class="badge badge-prueba">Prueba</span>'
+      : '<span class="badge badge-examen">Examen</span>';
     return `<div class="exam-row" id="exam-row-${e.id}">
       <div class="exam-row-header">
         <div>
@@ -759,13 +812,13 @@ async function loadGroupExams(groupId) {
           <div class="exam-row-meta">
             Código: <strong style="font-family:'DM Mono',monospace;color:var(--sky-dark)">${e.exam_code}</strong>
             · ${e.question_ids?.length || 0} reactivos
-            · <span class="badge badge-${e.status}">${e.status === 'active' ? '🟢 Activo' : e.status === 'closed' ? '⬛ Cerrado' : '⚪ Inactivo'}</span>
+            · <span class="badge badge-${e.status}">${e.status === 'active' ? 'Activo' : e.status === 'closed' ? 'Cerrado' : 'Inactivo'}</span>
             · ${modBadge}
           </div>
         </div>
         <div class="exam-row-actions">
-          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}','${e.modalidad || 'examen'}')">📊 Resultados</button>
+          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">Gestionar</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleResults('${e.id}','${e.modalidad || 'examen'}')">Resultados</button>
           <button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
         </div>
       </div>
@@ -824,7 +877,7 @@ async function toggleResults(examId, modalidad) {
             <span style="font-weight:600;color:${color};font-size:20px;">${pct}%</span>
             <span class="text-muted text-sm">${r.score}/${totalQ} correctas</span>
             <span class="text-muted text-sm">⏱ ${mins}:${secs}</span>
-            <span class="text-muted text-sm">📅 ${fecha}</span>
+            <span class="text-muted text-sm">${fecha}</span>
           </div>
         </div>`;
       }).join('');
@@ -905,7 +958,7 @@ function renderExamResults(responses, examData, studentMap, questions, totalQ) {
     </table>
     <div style="font-size:13px;font-weight:600;color:var(--text);margin:16px 0 10px;display:flex;align-items:center;gap:8px;">Análisis por reactivo<span style="flex:1;height:1px;background:var(--border);display:block;"></span></div>
     <table class="data-table">
-      <thead><tr><th>#</th><th>Reactivo</th><th style="text-align:center;">✅</th><th style="text-align:center;">❌</th><th>% Acierto</th></tr></thead>
+      <thead><tr><th>#</th><th>Reactivo</th><th style="text-align:center;">Correctas</th><th style="text-align:center;">Incorrectas</th><th>% Acierto</th></tr></thead>
       <tbody>${orderedStats.map(({ num, question, correct, wrong }) => {
         const tot = correct + wrong;
         const pct = tot > 0 ? Math.round((correct / tot) * 100) : 0;
@@ -917,7 +970,7 @@ function renderExamResults(responses, examData, studentMap, questions, totalQ) {
           <td style="color:var(--text-3);font-weight:600;font-family:'DM Mono',monospace;">${num}</td>
           <td style="max-width:320px;line-height:1.4;">
             <div style="font-size:13px;">${question.stem.substring(0, 100)}${question.stem.length > 100 ? '…' : ''}</div>
-            <div style="margin-top:3px;"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:${subBg};color:${subTxt};">${subjectLabels[question.subject] || question.subject}</span><span style="font-size:11px;color:var(--text-3);margin-left:6px;">📌 ${question.topic}</span></div>
+            <div style="margin-top:3px;"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:${subBg};color:${subTxt};">${subjectLabels[question.subject] || question.subject}</span><span style="font-size:11px;color:var(--text-3);margin-left:6px;">${question.topic}</span></div>
           </td>
           <td style="text-align:center;font-weight:600;color:var(--success);">${correct}</td>
           <td style="text-align:center;font-weight:600;color:var(--danger);">${wrong}</td>
@@ -960,7 +1013,7 @@ function filterQuestions() {
   renderQuestions(filtered); updateSelectedCounter();
 }
  
-const subjectLabels = { matematicas:'📐 Matemáticas', espanol:'📖 Español', habilidad:'🧠 Habilidad', ingles:'🌐 Inglés' };
+const subjectLabels = { matematicas:'Matemáticas', espanol:'Español', habilidad:'Habilidad', ingles:'Inglés' };
 const diffColors = { facil:'#16a34a', medio:'#d97706', dificil:'#dc2626' };
  
 function renderQuestions(list) {
@@ -968,17 +1021,17 @@ function renderQuestions(list) {
   if (!list.length) { el.innerHTML = '<div class="empty"><div class="empty-title">Sin resultados</div><div class="empty-text">Prueba con otros filtros</div></div>'; return; }
   el.innerHTML = list.map(q => {
     const isUsed = usedQuestionIds.has(q.id);
-    const usedBadge = isUsed ? '<span class="q-used-badge">📌 Usado</span>' : '';
+    const usedBadge = isUsed ? '<span class="q-used-badge">Usado</span>' : '';
     return `<div class="question-item ${selectedQuestionIds.has(q.id) ? 'selected' : ''} ${isUsed ? 'used' : ''}" onclick="toggleQuestion('${q.id}')">
       <div class="q-check">${selectedQuestionIds.has(q.id) ? '✓' : ''}</div>
       <div class="q-body">
         <div class="q-stem">${q.stem}${usedBadge}</div>
         <div class="q-meta">
-          ${q.grade_level ? `<span>🎓 ${q.grade_level}° grado</span>` : ''}
+          ${q.grade_level ? `<span>${q.grade_level}° grado</span>` : ''}
           <span>${subjectLabels[q.subject] || q.subject}</span>
-          <span class="q-topic">📌 ${q.topic}</span>
+          <span class="q-topic">${q.topic}</span>
           <span style="color:${diffColors[q.difficulty]}">● ${q.difficulty}</span>
-          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); analizarReactivo('${q.id}')">🔎 Analizar</button>
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); analizarReactivo('${q.id}')">Analizar</button>
         </div>
       </div>
     </div>`;
@@ -1023,7 +1076,7 @@ function updateEstandarHint() {
     hint.textContent = `Hay ${pool.length} de 10 reactivos disponibles para ${grade}° grado. La prueba se generará con los ${pool.length} que hay.`;
   } else {
     hint.className = 'alert alert-success';
-    hint.textContent = `✅ Hay ${pool.length} reactivos disponibles para ${grade}° grado. Se elegirán 10 al azar.`;
+    hint.textContent = `Hay ${pool.length} reactivos disponibles para ${grade}° grado. Se elegirán 10 al azar.`;
   }
 }
 function generarPruebaEstandarizada() {
@@ -1047,7 +1100,18 @@ function generarPruebaEstandarizada() {
 async function loadExams() {
   const { data } = await sb.from('exams').select('*, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
   const el = document.getElementById('examsList');
-  if (!data || data.length === 0) { el.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin exámenes todavía</div></div>`; return; }
+  const statsEl = document.getElementById('examsStats');
+  if (!data || data.length === 0) {
+    statsEl.style.display = 'none';
+    el.innerHTML = `<div class="empty"><div class="empty-icon">${ICONS.document}</div><div class="empty-title">Sin exámenes todavía</div></div>`; return;
+  }
+  const activos = data.filter(e => e.status === 'active').length;
+  const totalReactivos = data.reduce((s, e) => s + (e.question_ids?.length || 0), 0);
+  statsEl.style.display = '';
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-label">Exámenes</div><div class="stat-value">${data.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Activos ahora</div><div class="stat-value">${activos}</div></div>
+    <div class="stat-card"><div class="stat-label">Reactivos usados</div><div class="stat-value">${totalReactivos}</div></div>`;
   el.innerHTML = `<table class="data-table">
     <thead><tr><th>Nombre</th><th>Grupo</th><th>Código</th><th>Estado</th><th>Modalidad</th><th>Reactivos</th><th>Acciones</th></tr></thead>
     <tbody>${data.map(e => `
@@ -1055,11 +1119,11 @@ async function loadExams() {
         <td><span class="fw-600">${e.name}</span></td>
         <td class="text-muted">${e.groups?.name || '-'}</td>
         <td><span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--sky-dark);font-weight:500;">${e.exam_code}</span></td>
-        <td><span class="badge badge-${e.status}">${e.status === 'active' ? '🟢 Activo' : e.status === 'closed' ? '⬛ Cerrado' : '⚪ Borrador'}</span></td>
-        <td>${e.modalidad === 'prueba' ? '<span class="badge badge-prueba">🔄 Prueba</span>' : '<span class="badge badge-examen">📋 Examen</span>'}</td>
+        <td><span class="badge badge-${e.status}">${e.status === 'active' ? 'Activo' : e.status === 'closed' ? 'Cerrado' : 'Borrador'}</span></td>
+        <td>${e.modalidad === 'prueba' ? '<span class="badge badge-prueba">Prueba</span>' : '<span class="badge badge-examen">Examen</span>'}</td>
         <td class="text-muted">${e.question_ids?.length || 0}</td>
         <td>
-          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">⚙ Gestionar</button>
+          <button class="btn btn-secondary btn-sm" onclick="openExamCodeModal('${e.id}','${e.exam_code}','${e.status}')">Gestionar</button>
           <button class="btn btn-outline btn-sm" onclick="duplicateExam('${e.id}')">⧉ Duplicar</button>
         </td>
       </tr>`).join('')}</tbody>
@@ -1097,7 +1161,7 @@ async function createExam() {
   selectedQuestionIds.clear(); updateSelectedCounter(); filterQuestions();
   // Actualizar reactivos usados
   await loadUsedQuestions(); filterQuestions();
-  toast('Examen creado ✅'); loadExams();
+  toast('Examen creado'); loadExams();
   if (currentGroupId === groupId) loadGroupExams(groupId);
   openExamCodeModal(data.id, code, 'draft');
 }
@@ -1112,7 +1176,7 @@ async function duplicateExam(examId) {
     status: 'draft', modalidad: original.modalidad || 'examen'
   }).select().single();
   if (error) return toast('Error al duplicar: ' + error.message);
-  toast(`Examen duplicado ✅ — Nuevo código: ${newCode}`);
+  toast(`Examen duplicado — Nuevo código: ${newCode}`);
   loadExams(); if (currentGroupId) loadGroupExams(currentGroupId);
   openExamCodeModal(newExam.id, newCode, 'draft');
 }
@@ -1136,7 +1200,7 @@ async function toggleExamStatus() {
   if (error) return toast('Error al actualizar');
   currentExamForCode.status = newStatus;
   document.getElementById('statusBtnText').textContent = newStatus === 'active' ? '⏸ Pausar examen' : '▶ Activar examen';
-  toast(newStatus === 'active' ? '🟢 Examen activado' : '⏸ Examen pausado');
+  toast(newStatus === 'active' ? 'Examen activado' : 'Examen pausado');
   loadExams(); if (currentGroupId) loadGroupExams(currentGroupId);
 }
 async function closeExamStatus() {
@@ -1153,6 +1217,22 @@ async function loadRecExamSelect() {
   const sel = document.getElementById('recExamSelect');
   if (!data) return;
   sel.innerHTML = '<option value="">Selecciona un examen...</option>' + data.map(e => `<option value="${e.id}">${e.name} · ${e.groups?.name || ''}</option>`).join('');
+}
+
+// ── FEEDBACK DE COORDINACIÓN ────────────────────────────────────
+async function loadFeedback() {
+  const el = document.getElementById('feedbackList');
+  const { data } = await sb.from('coordinator_feedback').select('*, groups(name)').eq('teacher_id', currentTeacher.id).order('created_at', { ascending: false });
+  const items = data || [];
+  el.innerHTML = items.length ? items.map(f => `
+    <div class="card mb-16">
+      <div class="flex-gap mb-8">
+        <span class="text-xs text-muted">${new Date(f.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+        <span class="feedback-scope">${f.groups?.name || 'General'}</span>
+      </div>
+      <div class="text-sm" style="white-space:pre-wrap;">${f.mensaje}</div>
+    </div>`).join('')
+    : `<div class="empty"><div class="empty-icon">${ICONS.message}</div><div class="empty-title">Sin feedback todavía</div><div class="empty-text">Aquí verás las notas que tu coordinación te deje sobre tus grupos.</div></div>`;
 }
 async function generateRecommendations() {
   const examId = document.getElementById('recExamSelect').value;
@@ -1191,7 +1271,7 @@ async function generateRecommendations() {
   try {
     const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    const text = formatAiText(data.text || 'No se pudo generar el análisis.');
+    const text = formatAiText(data.text || `No se pudo generar el análisis. ${data.error || ''}`);
     const alumnoRows = studentAnalysis.map(s => {
       const pct = Math.round((s.score / questions.length) * 100);
       const color = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
@@ -1217,7 +1297,7 @@ async function analizarReactivo(id) {
   try {
     const res = await fetch('/api/gemini', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    const text = formatAiText(data.text || 'No se pudo generar el análisis.');
+    const text = formatAiText(data.text || `No se pudo generar el análisis. ${data.error || ''}`);
     body.innerHTML = `<div style="font-size:13px;color:var(--text-3);margin-bottom:10px;">${q.stem}</div><div style="font-size:14px;line-height:1.7;color:var(--text);"><p style="margin-bottom:10px;">${text}</p></div>`;
   } catch (e) {
     body.innerHTML = '<div class="empty"><div class="empty-title">Error al conectar con la IA</div></div>';

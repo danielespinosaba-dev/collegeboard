@@ -1333,3 +1333,35 @@ ALTER TABLE public.students ALTER COLUMN avatar_equipped
 UPDATE public.students SET
   avatar_equipped = '{"skin":"piel_clara","hair":"corto_a","hairColor":"negro","accessory":"ninguno","background":"fondo_celeste"}'::jsonb,
   avatar_unlocked = '[]'::jsonb;
+
+-- =========================================================================
+-- 13. PANEL DE ADMINISTRADOR / COORDINACIÓN
+-- =========================================================================
+-- Rol de coordinación por encima de los docentes: ve resultados agregados
+-- por docente/grupo/alumno/grado (de PIENSE I y PIENSE II) y puede dejarle
+-- retroalimentación a un docente sobre su(s) grupo(s). No usa Supabase Auth
+-- (igual que el resto de la app): login propio con email/password_hash
+-- contra la tabla admins, controlado desde admin.html con el anon key.
+
+CREATE TABLE IF NOT EXISTS public.admins (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    nombre text NOT NULL,
+    email text UNIQUE NOT NULL,
+    password_hash text NOT NULL,
+    created_at timestamp with time zone DEFAULT now()
+);
+
+-- Retroalimentación de un admin hacia un docente, opcionalmente enfocada
+-- en un grupo específico. El docente la ve en su propio dashboard.
+CREATE TABLE IF NOT EXISTS public.coordinator_feedback (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    admin_id uuid REFERENCES public.admins(id) ON DELETE SET NULL,
+    teacher_id uuid REFERENCES public.teachers(id) ON DELETE CASCADE,
+    group_id uuid REFERENCES public.groups(id) ON DELETE SET NULL,
+    mensaje text NOT NULL,
+    leido boolean DEFAULT false,
+    created_at timestamp with time zone DEFAULT now()
+);
+
+ALTER TABLE public.admins DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.coordinator_feedback DISABLE ROW LEVEL SECURITY;
