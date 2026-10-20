@@ -1,3 +1,5 @@
+import CONFIG from '../config.js';
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -45,7 +47,7 @@ export default async function handler(req, res) {
         'X-Title': 'PIENSE Mini-Examenes'
       },
       body: JSON.stringify({
-        model: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free', // Unified model
+        model: CONFIG.OPENROUTER_MODEL,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         max_tokens: 1000
@@ -55,7 +57,8 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('OpenRouter API error:', response.status, errorText);
-      return res.status(502).json({ error: 'External service error' });
+      // Se expone el motivo (sin datos sensibles) para poder depurar desde el panel en vez de un mensaje ciego.
+      return res.status(502).json({ error: `External service error (${response.status}): ${errorText.slice(0, 300)}` });
     }
 
     const data = await response.json();
