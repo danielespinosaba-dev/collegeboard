@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS public.piense2_questions (
 -- Tabla de Exámenes (Sesiones PIENSE II)
 CREATE TABLE IF NOT EXISTS public.exam_sessions_p2 (
     id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    group_id uuid REFERENCES public.groups(id) ON DELETE CASCADE,
+    group_id uuid REFERENCES public.groups(id) ON DELETE SET NULL,
     docente_id uuid REFERENCES public.teachers(id) ON DELETE CASCADE,
     nombre text NOT NULL,
     question_ids jsonb NOT NULL,
