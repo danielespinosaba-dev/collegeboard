@@ -568,9 +568,26 @@ const urlExamCode = (new URLSearchParams(location.search).get('code') || '').tri
 const urlChallengeCode = (new URLSearchParams(location.search).get('reto') || '').trim().toUpperCase();
 
 window.onload = async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    const { data } = await sb.from('students').select('*').eq('user_id', session.user.id).single();
+    if (data) {
+      currentStudent = data;
+      localStorage.setItem('piense1_alumno', JSON.stringify(data));
+      showScreen('screenEntry');
+      document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
+      updateShopLinkVisibility();
+      updateGroupButtonVisibility();
+      updateHeaderAvatar();
+      afterLoginGoToCodeIfNeeded();
+      return;
+    }
+  }
+  // Modo invitado: no usa Supabase Auth, solo estado local.
   const saved = localStorage.getItem('piense1_alumno');
-  if (saved) {
-    currentStudent = JSON.parse(saved);
+  const parsed = saved ? JSON.parse(saved) : null;
+  if (parsed?.isGuest) {
+    currentStudent = parsed;
     showScreen('screenEntry');
     document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
     updateShopLinkVisibility();
@@ -671,7 +688,9 @@ async function doLoginAlumno() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   if (!email || !password) return alert('Completa todos los campos');
-  const { data, error } = await sb.from('students').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email, password });
+  if (authError || !authData.user) return alert('Credenciales incorrectas');
+  const { data, error } = await sb.from('students').select('*').eq('user_id', authData.user.id).single();
   if (error || !data) return alert('Credenciales incorrectas');
   currentStudent = data;
   localStorage.setItem('piense1_alumno', JSON.stringify(data));
@@ -696,12 +715,26 @@ async function doRegisterAlumno() {
     if (!group) return alert('Código de grupo no encontrado. Verifica con tu docente o deja ese campo en blanco.');
     groupId = group.id;
   }
-  const { data, error } = await sb.from('students').insert({
-    nombre, email, password_hash: btoa(password),
-    grado: '6', puntos_totales: 0, group_id: groupId,
-    playera_activa: 'ajolote', playeras_desbloqueadas: ['ajolote']
-  }).select().single();
-  if (error) return alert(error.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + error.message);
+  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password });
+  if (authError) return alert(authError.message.toLowerCase().includes('registered') ? 'Este correo ya está registrado' : 'Error: ' + authError.message);
+  let session = signUpData.session;
+  if (!session) {
+    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+    if (signInError) return alert('Revisa tu correo para confirmar tu cuenta antes de entrar');
+    session = signInData.session;
+  }
+  const res = await fetch('/api/complete-registration', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: 'students',
+      accessToken: session.access_token,
+      profile: { nombre, email, grado: '6', puntos_totales: 0, group_id: groupId, playera_activa: 'ajolote', playeras_desbloqueadas: ['ajolote'] }
+    })
+  });
+  const json = await res.json();
+  if (!res.ok) return alert(json.error?.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + (json.error?.message || json.error));
+  const data = json.data;
   currentStudent = data;
   localStorage.setItem('piense1_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
@@ -712,8 +745,9 @@ async function doRegisterAlumno() {
   afterLoginGoToCodeIfNeeded();
 }
 
-function cerrarSesionAlumno() {
+async function cerrarSesionAlumno() {
   clearAllTimers();
+  await sb.auth.signOut();
   localStorage.removeItem('piense1_alumno');
   currentStudent = null;
   showScreen('screenLogin');

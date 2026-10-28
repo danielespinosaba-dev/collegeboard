@@ -469,13 +469,19 @@ function clearAllTimers() {
 
 // ── INIT ──────────────────────────────────────────────────────────
 window.onload = async () => {
-  const saved = localStorage.getItem('piense2_alumno');
-  if (saved) {
-    currentStudent = JSON.parse(saved);
-    showScreen('screenEntry');
-    document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
-    updateHeaderAvatar();
-  } else { showScreen('screenLogin'); }
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    const { data } = await sb.from('students').select('*').eq('user_id', session.user.id).single();
+    if (data) {
+      currentStudent = data;
+      localStorage.setItem('piense2_alumno', JSON.stringify(data));
+      showScreen('screenEntry');
+      document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + currentStudent.nombre;
+      updateHeaderAvatar();
+      return;
+    }
+  }
+  showScreen('screenLogin');
 };
 
 function toggleLoginRegister() {
@@ -489,7 +495,9 @@ async function doLoginAlumno() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   if (!email || !password) return alert('Completa todos los campos');
-  const { data, error } = await sb.from('students').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email, password });
+  if (authError || !authData.user) return alert('Credenciales incorrectas');
+  const { data, error } = await sb.from('students').select('*').eq('user_id', authData.user.id).single();
   if (error || !data) return alert('Credenciales incorrectas');
   currentStudent = data;
   localStorage.setItem('piense2_alumno', JSON.stringify(data));
@@ -504,12 +512,26 @@ async function doRegisterAlumno() {
   const password = document.getElementById('regPassword').value;
   if (!nombre || !email || !password) return alert('Completa todos los campos');
   if (password.length < 6) return alert('La contraseña debe tener al menos 6 caracteres');
-  const { data, error } = await sb.from('students').insert({
-    nombre, email, password_hash: btoa(password),
-    grado: '9', puntos_totales: 0,
-    playera_activa: 'mexico', playeras_desbloqueadas: ['mexico']
-  }).select().single();
-  if (error) return alert(error.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + error.message);
+  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password });
+  if (authError) return alert(authError.message.toLowerCase().includes('registered') ? 'Este correo ya está registrado' : 'Error: ' + authError.message);
+  let session = signUpData.session;
+  if (!session) {
+    const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({ email, password });
+    if (signInError) return alert('Revisa tu correo para confirmar tu cuenta antes de entrar');
+    session = signInData.session;
+  }
+  const res = await fetch('/api/complete-registration', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: 'students',
+      accessToken: session.access_token,
+      profile: { nombre, email, grado: '9', puntos_totales: 0, playera_activa: 'mexico', playeras_desbloqueadas: ['mexico'] }
+    })
+  });
+  const json = await res.json();
+  if (!res.ok) return alert(json.error?.code === '23505' ? 'Este correo ya está registrado' : 'Error: ' + (json.error?.message || json.error));
+  const data = json.data;
   currentStudent = data;
   localStorage.setItem('piense2_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
@@ -517,8 +539,9 @@ async function doRegisterAlumno() {
   showScreen('screenEntry');
 }
 
-function cerrarSesionAlumno() {
+async function cerrarSesionAlumno() {
   clearAllTimers();
+  await sb.auth.signOut();
   localStorage.removeItem('piense2_alumno');
   currentStudent = null;
   showScreen('screenLogin');

@@ -308,22 +308,26 @@ let DB = { teachers: [], groups: [], students: [], exams: [], responses: [], ses
 let AGG = null; // estructuras derivadas
 
 window.onload = async () => {
-  const saved = localStorage.getItem('piense_admin');
-  if (saved) { currentAdmin = JSON.parse(saved); await showApp(); }
-  else { document.getElementById('authSection').style.display = 'block'; }
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    const { data } = await sb.from('admins').select('*').eq('user_id', session.user.id).single();
+    if (data) { currentAdmin = data; await showApp(); return; }
+  }
+  document.getElementById('authSection').style.display = 'block';
 };
 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   if (!email || !password) return toast('Completa todos los campos');
-  const { data, error } = await sb.from('admins').select('*').eq('email', email).eq('password_hash', btoa(password)).single();
+  const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email, password });
+  if (authError || !authData.user) return toast('Credenciales incorrectas');
+  const { data, error } = await sb.from('admins').select('*').eq('user_id', authData.user.id).single();
   if (error || !data) return toast('Credenciales incorrectas');
   currentAdmin = data;
-  localStorage.setItem('piense_admin', JSON.stringify(data));
   await showApp();
 }
-function doLogout() { localStorage.removeItem('piense_admin'); currentAdmin = null; location.reload(); }
+async function doLogout() { await sb.auth.signOut(); currentAdmin = null; location.reload(); }
 
 async function showApp() {
   document.getElementById('authSection').style.display = 'none';
