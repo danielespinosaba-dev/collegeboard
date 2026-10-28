@@ -114,6 +114,21 @@
   .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--sky); }
   .filter-bar input[type="text"] { min-width: 200px; }
 
+  .bar-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .bar-row-label { width: 150px; flex-shrink: 0; font-size: 13px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 5px; min-width: 2px; }
+  .bar-row-value { width: 84px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
+  .bar-row.highlighted .bar-row-label { font-weight: 700; color: var(--navy); }
+  .bar-row.highlighted .bar-track { box-shadow: 0 0 0 2px var(--sky); }
+
+  .dist-bar { display: flex; height: 28px; border-radius: 8px; overflow: hidden; background: var(--bg); }
+  .dist-seg { height: 100%; }
+  .dist-seg + .dist-seg { border-left: 2px solid var(--surface); }
+  .dist-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+  .dist-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-2); }
+  .dist-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
   .feedback-item { padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: var(--bg); }
   .feedback-item:last-child { margin-bottom: 0; }
   .feedback-meta { font-size: 12px; color: var(--text-3); margin-bottom: 6px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -172,6 +187,7 @@
         <a class="nav-item active" data-view="resumen" onclick="goHome('resumen')"><span class="nav-icon">__ICON_GRID__</span> Resumen</a>
         <a class="nav-item" data-view="docentes" onclick="goHome('docentes')"><span class="nav-icon">__ICON_USER__</span> Docentes</a>
         <a class="nav-item" data-view="alumnos" onclick="goHome('alumnos')"><span class="nav-icon">__ICON_PEOPLE__</span> Alumnos</a>
+        <a class="nav-item" data-view="analisis" onclick="goHome('analisis')"><span class="nav-icon">__ICON_CHART__</span> Análisis</a>
       </nav>
       <div class="sidebar-footer">
         <div class="admin-info">
@@ -263,6 +279,20 @@
           <div class="card"><table class="data-table" id="alDetalleHistorial"></table></div>
         </div>
 
+        <!-- ANÁLISIS -->
+        <div class="view" id="view-analisis">
+          <div class="filter-bar">
+            <select id="analisisGradoFilter" onchange="renderAnalisis()"><option value="">Todos los grados</option></select>
+            <select id="analisisGrupoFilter" onchange="renderAnalisis()"><option value="">Todos los grupos</option></select>
+          </div>
+          <div class="section-label">Promedio por grado</div>
+          <div class="card mb-20" id="chartPorGrado"></div>
+          <div class="section-label">Promedio por grupo</div>
+          <div class="card mb-20" id="chartPorGrupo"></div>
+          <div class="section-label">Distribución de desempeño</div>
+          <div class="card" id="chartDistribucion"></div>
+        </div>
+
       </div>
     </main>
   </div>
@@ -289,6 +319,7 @@ const ICONS = {
   back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`,
   message: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"/></svg>`,
   empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 7l2-4h14l2 4"/><path d="M9 11h6"/></svg>`,
+  chart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="5" rx="0.5"/><rect x="12" y="9" width="3" height="9" rx="0.5"/><rect x="17" y="6" width="3" height="12" rx="0.5"/></svg>`,
 };
 document.body.innerHTML = document.body.innerHTML
   .replaceAll('__ICON_BOOK__', ICONS.book)
@@ -297,7 +328,8 @@ document.body.innerHTML = document.body.innerHTML
   .replaceAll('__ICON_PEOPLE__', ICONS.people)
   .replaceAll('__ICON_LOGOUT__', ICONS.logout)
   .replaceAll('__ICON_BACK__', ICONS.back)
-  .replaceAll('__ICON_MESSAGE__', ICONS.message);
+  .replaceAll('__ICON_MESSAGE__', ICONS.message)
+  .replaceAll('__ICON_CHART__', ICONS.chart);
 
 let currentAdmin = null;
 let navStack = []; // {viewName, renderFn}
@@ -442,7 +474,7 @@ function showAdminView(name) {
   if (navEl) navEl.classList.add('active');
 }
 const VIEW_TITLES = {
-  resumen: 'Resumen', docentes: 'Docentes', alumnos: 'Alumnos',
+  resumen: 'Resumen', docentes: 'Docentes', alumnos: 'Alumnos', analisis: 'Análisis',
   'docente-detalle': 'Docente', 'grupo-detalle': 'Grupo', 'alumno-detalle': 'Alumno',
 };
 function goHome(name) {
@@ -454,6 +486,7 @@ function goHome(name) {
   if (name === 'resumen') renderResumen();
   if (name === 'docentes') renderDocentesList();
   if (name === 'alumnos') renderAlumnosFilters(), renderAlumnosList();
+  if (name === 'analisis') renderAnalisisFilters(), renderAnalisis();
 }
 function goTo(name, renderFn) {
   navStack.push({ viewName: currentViewName, title: document.getElementById('topbarTitleText').textContent });
@@ -654,6 +687,91 @@ function renderAlumnosList() {
       </tr>`;
     }).join('')}`
     : `<tr><td class="text-muted text-sm">Ningún alumno coincide con ese filtro.</td></tr>`;
+}
+
+// ── ANÁLISIS ──────────────────────────────────────────────────────
+function renderAnalisisFilters() {
+  const grados = [...new Set(DB.students.map(s => s.grado).filter(Boolean))].sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99));
+  document.getElementById('analisisGradoFilter').innerHTML = `<option value="">Todos los grados</option>` + grados.map(g => `<option value="${g}">${g}°</option>`).join('');
+  document.getElementById('analisisGrupoFilter').innerHTML = `<option value="">Todos los grupos</option>` + DB.groups.map(g => {
+    const t = DB.teachers.find(x => x.id === g.teacher_id);
+    return `<option value="${g.id}">${g.name}${t ? ' · ' + t.name : ''}</option>`;
+  }).join('');
+}
+
+function bandColor(pct) {
+  if (pct == null) return 'var(--text-3)';
+  return pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warning)' : 'var(--danger)';
+}
+
+function barRowHtml(label, pct, n, highlighted) {
+  const color = bandColor(pct);
+  const width = pct == null ? 0 : Math.max(pct, 2);
+  const valueText = pct == null ? 'Sin datos' : `${pct}%`;
+  const title = pct == null ? `${label}: sin intentos todavía` : `${label}: ${pct}% (${n} intento${n === 1 ? '' : 's'})`;
+  return `<div class="bar-row${highlighted ? ' highlighted' : ''}" title="${title}">
+    <div class="bar-row-label">${label}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${width}%;background:${color}"></div></div>
+    <div class="bar-row-value">${valueText}</div>
+  </div>`;
+}
+
+function renderAnalisis() {
+  const gradoFiltro = document.getElementById('analisisGradoFilter')?.value || '';
+  const grupoFiltro = document.getElementById('analisisGrupoFilter')?.value || '';
+
+  // 1. Promedio por grado: siempre todos los grados, resalta el filtrado.
+  const porGrado = {};
+  DB.students.forEach(s => {
+    const grado = s.grado || 'Sin grado';
+    if (!porGrado[grado]) porGrado[grado] = [];
+    porGrado[grado].push(...studentAttempts(s.id));
+  });
+  const gradosOrdenados = Object.keys(porGrado).sort((a, b) => (parseInt(a) || 99) - (parseInt(b) || 99));
+  document.getElementById('chartPorGrado').innerHTML = gradosOrdenados.length
+    ? gradosOrdenados.map(g => barRowHtml(g === 'Sin grado' ? g : `${g}°`, AGG.avgPct(porGrado[g]), porGrado[g].length, g === gradoFiltro)).join('')
+    : `<div class="empty text-sm text-muted">Todavía no hay alumnos registrados.</div>`;
+
+  // 2. Promedio por grupo: si hay grado filtrado, solo grupos con alumnos de ese grado.
+  let gruposVisibles = DB.groups;
+  if (gradoFiltro) {
+    const idsConGrado = new Set(DB.students.filter(s => s.grado === gradoFiltro).map(s => s.group_id));
+    gruposVisibles = gruposVisibles.filter(g => idsConGrado.has(g.id));
+  }
+  document.getElementById('chartPorGrupo').innerHTML = gruposVisibles.length
+    ? gruposVisibles
+        .map(g => ({ g, pct: groupPct(g.id), n: groupStudents(g.id).flatMap(s => studentAttempts(s.id)).length }))
+        .sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1))
+        .map(({ g, pct, n }) => barRowHtml(g.name, pct, n, g.id === grupoFiltro))
+        .join('')
+    : `<div class="empty text-sm text-muted">Ningún grupo coincide con ese filtro.</div>`;
+
+  // 3. Distribución de desempeño: respeta ambos filtros (grupo tiene prioridad sobre grado).
+  let poblacion = DB.students;
+  if (grupoFiltro) poblacion = poblacion.filter(s => s.group_id === grupoFiltro);
+  else if (gradoFiltro) poblacion = poblacion.filter(s => s.grado === gradoFiltro);
+  const pctsPorAlumno = poblacion.map(s => studentPct(s.id)).filter(p => p != null);
+  const nAlta = pctsPorAlumno.filter(p => p >= 70).length;
+  const nMedia = pctsPorAlumno.filter(p => p >= 50 && p < 70).length;
+  const nBaja = pctsPorAlumno.filter(p => p < 50).length;
+  const total = pctsPorAlumno.length;
+  if (!total) {
+    document.getElementById('chartDistribucion').innerHTML = `<div class="empty text-sm text-muted">Ningún alumno de este filtro tiene exámenes presentados todavía.</div>`;
+  } else {
+    const pA = Math.round(nAlta / total * 100), pM = Math.round(nMedia / total * 100), pB = 100 - pA - pM;
+    document.getElementById('chartDistribucion').innerHTML = `
+      <div class="dist-bar">
+        <div class="dist-seg" style="width:${pA}%;background:var(--success)" title="Alta (≥70%): ${nAlta} alumnos"></div>
+        <div class="dist-seg" style="width:${pM}%;background:var(--warning)" title="Media (50-69%): ${nMedia} alumnos"></div>
+        <div class="dist-seg" style="width:${pB}%;background:var(--danger)" title="Baja (menos de 50%): ${nBaja} alumnos"></div>
+      </div>
+      <div class="dist-legend">
+        <span class="dist-legend-item"><span class="dist-swatch" style="background:var(--success)"></span>Alta (≥70%): ${nAlta} (${pA}%)</span>
+        <span class="dist-legend-item"><span class="dist-swatch" style="background:var(--warning)"></span>Media (50-69%): ${nMedia} (${pM}%)</span>
+        <span class="dist-legend-item"><span class="dist-swatch" style="background:var(--danger)"></span>Baja (&lt;50%): ${nBaja} (${pB}%)</span>
+      </div>
+      <div class="text-xs text-muted" style="margin-top:10px;">Basado en ${total} alumno${total === 1 ? '' : 's'} con al menos un examen presentado.</div>`;
+  }
 }
 
 function openAlumno(studentId) { goTo('alumno-detalle', () => renderAlumnoDetalle(studentId)); }

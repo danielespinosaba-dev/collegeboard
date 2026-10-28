@@ -765,17 +765,32 @@ async function loadGroupStudents(groupId) {
   el.innerHTML = '<div class="empty"><span class="spinner"></span></div>';
   const { data } = await sb.from('students').select('id, nombre, email, grado, puntos_totales').eq('group_id', groupId).order('nombre');
   const list = data || [];
+  const gradoOptions = ['1','2','3','4','5','6','7','8','9','10','11']
+    .map(g => `<option value="${g}">${g}°</option>`).join('');
   el.innerHTML = list.length
     ? `<div class="grid-2">${list.map(s => `
       <div class="group-card" style="cursor:default;">
         <div class="group-name">${s.nombre}</div>
-        <div class="group-code" style="font-size:12px;letter-spacing:0;text-transform:none;">${s.email} · ${s.grado || '?'}°</div>
-        <div class="group-stats">
+        <div class="group-code" style="font-size:12px;letter-spacing:0;text-transform:none;">${s.email}</div>
+        <div class="group-stats" style="align-items:center;">
           <div class="group-stat"><span>${s.puntos_totales || 0}</span> pts</div>
+          <select onchange="updateStudentGrado('${s.id}', this.value)" style="padding:4px 8px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;">
+            ${gradoOptions}
+          </select>
         </div>
         <button class="btn btn-outline btn-sm" style="margin-top:10px;width:100%;" onclick="resetStudentPassword('${s.id}','${s.nombre.replace(/'/g, "\\'")}')">Restablecer contraseña</button>
       </div>`).join('')}</div>`
     : `<div class="empty"><div class="empty-icon">${ICONS.people}</div><div class="empty-title">Sin alumnos registrados</div><div class="empty-text">Agrégalos para que entren con su usuario y contraseña</div></div>`;
+  list.forEach(s => {
+    const sel = el.querySelector(`select[onchange*="'${s.id}'"]`);
+    if (sel) sel.value = s.grado || '';
+  });
+}
+
+async function updateStudentGrado(studentId, grado) {
+  const { error } = await sb.from('students').update({ grado }).eq('id', studentId);
+  if (error) return toast('Error al actualizar grado: ' + error.message);
+  toast('Grado actualizado');
 }
 
 function openAddStudentModal() { openModal('modalAddStudent'); }
