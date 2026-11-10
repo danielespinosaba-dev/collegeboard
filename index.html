@@ -582,11 +582,24 @@ let selectedModalidad = 'examen';
 window.onload = async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
-    const { data } = await sb.from('teachers').select('*').eq('user_id', session.user.id).single();
+    let { data } = await sb.from('teachers').select('*').eq('user_id', session.user.id).single();
+    if (!data) data = await completeRegistrationFromMetadata('teachers', session);
     if (data) { currentTeacher = data; showApp(); return; }
   }
   document.getElementById('authSection').style.display = 'block';
 };
+async function completeRegistrationFromMetadata(table, session) {
+  const profile = session?.user?.user_metadata;
+  if (!profile || !profile.email) return null;
+  const res = await fetch('/api/complete-registration', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ table, accessToken: session.access_token, profile })
+  });
+  if (!res.ok) return null;
+  const json = await res.json();
+  return json.data || null;
+}
  
 function showApp() {
   document.getElementById('authSection').style.display = 'none';
@@ -612,8 +625,9 @@ async function doLogin() {
   if (!email || !password) return toast('Completa todos los campos');
   const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email, password });
   if (authError || !authData.user) return toast('Credenciales incorrectas');
-  const { data, error } = await sb.from('teachers').select('*').eq('user_id', authData.user.id).single();
-  if (error || !data) return toast('Credenciales incorrectas');
+  let { data } = await sb.from('teachers').select('*').eq('user_id', authData.user.id).single();
+  if (!data) data = await completeRegistrationFromMetadata('teachers', authData.session);
+  if (!data) return toast('Credenciales incorrectas');
   currentTeacher = data;
   showApp();
 }
@@ -623,7 +637,7 @@ async function doRegister() {
   const password = document.getElementById('regPassword').value;
   if (!name || !email || !password) return toast('Completa todos los campos');
   if (password.length < 6) return toast('Contraseña mínimo 6 caracteres');
-  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password });
+  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password, options: { data: { name, email } } });
   if (authError) return toast(authError.message.toLowerCase().includes('registered') ? 'Este correo ya está registrado' : 'Error al crear cuenta');
   let session = signUpData.session;
   if (!session) {

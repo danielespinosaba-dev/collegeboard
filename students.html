@@ -570,7 +570,8 @@ const urlChallengeCode = (new URLSearchParams(location.search).get('reto') || ''
 window.onload = async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
-    const { data } = await sb.from('students').select('*').eq('user_id', session.user.id).single();
+    let { data } = await sb.from('students').select('*').eq('user_id', session.user.id).single();
+    if (!data) data = await completeRegistrationFromMetadata('students', session);
     if (data) {
       currentStudent = data;
       localStorage.setItem('piense1_alumno', JSON.stringify(data));
@@ -596,6 +597,18 @@ window.onload = async () => {
     afterLoginGoToCodeIfNeeded();
   } else { showScreen('screenLogin'); }
 };
+async function completeRegistrationFromMetadata(table, session) {
+  const profile = session?.user?.user_metadata;
+  if (!profile || !profile.email) return null;
+  const res = await fetch('/api/complete-registration', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ table, accessToken: session.access_token, profile })
+  });
+  if (!res.ok) return null;
+  const json = await res.json();
+  return json.data || null;
+}
 
 function afterLoginGoToCodeIfNeeded() {
   if (urlChallengeCode) return joinChallenge(urlChallengeCode);
@@ -690,8 +703,9 @@ async function doLoginAlumno() {
   if (!email || !password) return alert('Completa todos los campos');
   const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email, password });
   if (authError || !authData.user) return alert('Credenciales incorrectas');
-  const { data, error } = await sb.from('students').select('*').eq('user_id', authData.user.id).single();
-  if (error || !data) return alert('Credenciales incorrectas');
+  let { data } = await sb.from('students').select('*').eq('user_id', authData.user.id).single();
+  if (!data) data = await completeRegistrationFromMetadata('students', authData.session);
+  if (!data) return alert('Credenciales incorrectas');
   currentStudent = data;
   localStorage.setItem('piense1_alumno', JSON.stringify(data));
   document.getElementById('entryStudentName').textContent = 'Bienvenido, ' + data.nombre;
@@ -715,7 +729,8 @@ async function doRegisterAlumno() {
     if (!group) return alert('Código de grupo no encontrado. Verifica con tu docente o deja ese campo en blanco.');
     groupId = group.id;
   }
-  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password });
+  const profile = { nombre, email, grado: '6', puntos_totales: 0, group_id: groupId, playera_activa: 'ajolote', playeras_desbloqueadas: ['ajolote'] };
+  const { data: signUpData, error: authError } = await sb.auth.signUp({ email, password, options: { data: profile } });
   if (authError) return alert(authError.message.toLowerCase().includes('registered') ? 'Este correo ya está registrado' : 'Error: ' + authError.message);
   let session = signUpData.session;
   if (!session) {
@@ -729,7 +744,7 @@ async function doRegisterAlumno() {
     body: JSON.stringify({
       table: 'students',
       accessToken: session.access_token,
-      profile: { nombre, email, grado: '6', puntos_totales: 0, group_id: groupId, playera_activa: 'ajolote', playeras_desbloqueadas: ['ajolote'] }
+      profile
     })
   });
   const json = await res.json();
