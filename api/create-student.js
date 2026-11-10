@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         return res.status(409).json({ error: { code: '23505', message: 'Ese correo ya está registrado' } });
       }
       console.error('create-student createUser error:', createError);
-      return res.status(500).json({ error: 'No se pudo crear la cuenta' });
+      return res.status(500).json({ error: 'No se pudo crear la cuenta: ' + createError.message });
     }
 
     const { error: insertError } = await admin.from('students').insert({
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         return res.status(409).json({ error: { code: '23505', message: 'Ese correo ya está registrado' } });
       }
       console.error('create-student insert error:', insertError);
-      return res.status(500).json({ error: 'No se pudo crear el alumno' });
+      return res.status(500).json({ error: 'No se pudo crear el alumno: ' + insertError.message });
     }
 
     res.status(200).json({ ok: true });

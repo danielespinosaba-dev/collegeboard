@@ -815,7 +815,7 @@ async function addStudentToGroup() {
   const password = document.getElementById('newStudentPassword').value;
   const grado = document.getElementById('newStudentGrado').value;
   if (!nombre || !email || !password || !grado) return toast('Completa todos los campos');
-  if (password.length < 4) return toast('La contraseña debe tener al menos 4 caracteres');
+  if (password.length < 6) return toast('La contraseña debe tener al menos 6 caracteres');
   const { data: { session } } = await sb.auth.getSession();
   const res = await fetch('/api/create-student', {
     method: 'POST',
